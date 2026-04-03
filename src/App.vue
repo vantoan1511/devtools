@@ -309,36 +309,6 @@ const saveNewProfile = () => {
 .glass-input {
   @apply bg-white/50 dark:bg-surface-950/50 backdrop-blur-sm border-white/10 dark:border-surface-700/50 transition-all duration-300 focus:ring-2 focus:ring-primary/50;
 }
-
-:deep(.glass-dialog) {
-  @apply backdrop-blur-2xl bg-white/80 dark:bg-surface-900/80 border border-white/20 dark:border-white/10 shadow-2xl rounded-3xl overflow-hidden;
-}
-
-:deep(.p-dialog-header) {
-  @apply bg-transparent p-6 border-none;
-}
-
-:deep(.p-dialog-content) {
-  @apply bg-transparent px-6 pb-6;
-}
-
-:deep(.p-dialog-footer) {
-  @apply bg-transparent p-6 border-t border-white/10 dark:border-white/5;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-surface-300/50 dark:bg-surface-700/50 rounded-full hover:bg-primary/50 transition-colors;
-}
 </style>
 
 <style>
@@ -358,5 +328,36 @@ html {
 /* Fix for PrimeVue Button focus */
 .p-button:focus {
   box-shadow: 0 0 0 2px var(--p-primary-200);
+}
+
+/* Glass Morphism Classes */
+.glass-dialog {
+  @apply backdrop-blur-2xl bg-white/80 dark:bg-surface-900/80 border border-white/20 dark:border-white/10 shadow-2xl rounded-3xl overflow-hidden;
+}
+
+.p-dialog-header {
+  @apply bg-transparent p-6 border-none;
+}
+
+.p-dialog-content {
+  @apply bg-transparent px-6 pb-6;
+}
+
+.p-dialog-footer {
+  @apply bg-transparent p-6 border-t border-white/10 dark:border-white/5;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-surface-300/50 dark:bg-surface-700/50 rounded-full hover:bg-primary/50 transition-colors;
 }
 </style>
