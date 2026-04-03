@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-primeui";
+
+@custom-variant dark (&:where(.p-dark, .p-dark *));
+
+@layer base, primevue, components, utilities;
+
+@theme {
+    --color-primary: var(--p-primary-color);
+    --color-primary-emphasis: var(--p-primary-hover-color);
+    --color-primary-muted: var(--p-primary-200);
+
+    /* Explicitly map surface colors for Tailwind v4 */
+    --color-surface-0: var(--p-surface-0);
+    --color-surface-50: var(--p-surface-50);
+    --color-surface-100: var(--p-surface-100);
+    --color-surface-200: var(--p-surface-200);
+    --color-surface-300: var(--p-surface-300);
+    --color-surface-400: var(--p-surface-400);
+    --color-surface-500: var(--p-surface-500);
+    --color-surface-600: var(--p-surface-600);
+    --color-surface-700: var(--p-surface-700);
+    --color-surface-800: var(--p-surface-800);
+    --color-surface-900: var(--p-surface-900);
+    --color-surface-950: var(--p-surface-950);
+}
+
+@layer base {
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: var(--p-surface-0);
+        color: var(--p-text-color);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        min-height: 100vh;
+    }
+
+    #app {
+        width: 100%;
+        min-height: 100vh;
+    }
+}
