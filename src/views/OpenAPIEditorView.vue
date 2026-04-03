@@ -1,19 +1,22 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch, computed, nextTick } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import * as monaco from 'monaco-editor'
-import { SwaggerUIBundle, SwaggerUIStandalonePreset } from 'swagger-ui-dist'
+import { useProfileStore } from '@/stores/profileStore'
 import jsYaml from 'js-yaml'
+import * as monaco from 'monaco-editor'
+import { useConfirm, useToast } from 'primevue'
 import Button from 'primevue/button'
-import Message from 'primevue/message'
 import InputText from 'primevue/inputtext'
+import Message from 'primevue/message'
 import Splitter from 'primevue/splitter'
 import SplitterPanel from 'primevue/splitterpanel'
-import { useProfileStore } from '@/stores/profileStore'
+import { SwaggerUIBundle, SwaggerUIStandalonePreset } from 'swagger-ui-dist'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
 const profileStore = useProfileStore()
+const confirm = useConfirm();
+const toast = useToast();
 
 const STORAGE_KEY = 'devtool_openapi_spec'
 
@@ -218,10 +221,32 @@ const saveName = () => {
 }
 
 const deleteProfile = () => {
-  if (profileId.value && confirm('Are you sure you want to delete this profile?')) {
-    const idToDelete = profileId.value
-    profileStore.removeProfile(idToDelete)
-    router.push('/openapi')
+  if (profileId.value) {
+    confirm.require({
+      message: 'This action cannot be undone. Are you sure you want to delete this spec?',
+      header: 'Delete confirmation',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true
+      },
+      acceptProps: {
+        label: 'Delete',
+        severity: 'danger'
+      },
+      accept: () => {
+        const idToDelete = profileId.value
+        if (idToDelete) {
+          profileStore.removeProfile(idToDelete)
+          router.push('/openapi')
+          toast.add({ severity: 'success', summary: 'Profile Deleted', detail: 'The OpenAPI spec profile has been deleted.', life: 3000 })
+        }
+      },
+      reject: () => {
+      }
+    });
   }
 }
 </script>

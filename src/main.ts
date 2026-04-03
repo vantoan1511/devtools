@@ -7,6 +7,8 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import { MyPreset } from './assets/theme'
+import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
 
 import App from './App.vue'
 import router from './router'
@@ -56,3 +58,5 @@ app.use(PrimeVue, {
 })
 
 app.mount('#app')
+app.use(ConfirmationService);
+app.use(ToastService);

@@ -44,3 +44,36 @@
         min-height: 100vh;
     }
 }
+
+@layer components {
+    /* Glass Morphism Classes */
+    .glass-dialog {
+        @apply backdrop-blur-2xl bg-white/80 dark:bg-surface-900/80 border border-white/20 dark:border-white/10 shadow-2xl rounded-3xl overflow-hidden !important;
+    }
+
+    .glass-dialog .p-dialog-header {
+        @apply bg-transparent p-6 border-none;
+    }
+
+    .glass-dialog .p-dialog-content {
+        @apply bg-transparent px-6 pb-6;
+    }
+
+    .glass-dialog .p-dialog-footer {
+        @apply bg-transparent p-6 border-t border-white/10 dark:border-white/5;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-surface-300/50 dark:bg-surface-700/50 rounded-full hover:bg-primary/50 transition-colors;
+    }
+}
