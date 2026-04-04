@@ -360,8 +360,16 @@ const deleteProfile = () => {
   @apply rounded-tl-3xl;
 }
 
+:deep(.swagger-ui .info ) {
+  @apply p-6 bg-surface-100/50 dark:bg-surface-800/50 rounded-3xl border-b border-white/10;
+}
+
 :deep(.swagger-ui .info .title) {
   @apply font-black tracking-tight text-primary text-3xl mb-4;
+}
+
+:deep(.swagger-ui .info p) {
+  @apply text-surface-700 dark:text-surface-300 mb-4;
 }
 
 :deep(.swagger-ui .opblock) {
@@ -370,6 +378,18 @@ const deleteProfile = () => {
 
 :deep(.swagger-ui .opblock .opblock-summary) {
   @apply py-3 px-4;
+}
+
+:deep(.swagger-ui .opblock-tag) {
+  @apply bg-primary/10 text-primary rounded-2xl font-medium;
+}
+
+:deep(.swagger-ui .opblock .opblock-section-header) {
+  @apply bg-surface-100/50 dark:bg-surface-800/50 border-b border-white/10 text-lg font-semibold;
+}
+
+:deep(.swagger-ui .opblock-body select) {
+  @apply bg-transparent border border-white/20 rounded-md px-2 py-1 text-sm focus:ring-2 focus:ring-primary focus:border-primary;
 }
 
 :deep(.swagger-ui .scheme-container) {
