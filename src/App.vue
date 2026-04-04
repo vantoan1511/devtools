@@ -41,28 +41,43 @@
             <Button icon="pi pi-times" severity="secondary" text rounded size="small" @click="sidebarOpen = false" />
           </div>
 
-          <nav class="flex-1 space-y-6">
-            <div v-for="group in menuItems" :key="group.label as string">
-              <h3
-                class="px-4 mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-surface-400 dark:text-surface-500">
-                {{ group.label }}
-              </h3>
-              <div class="space-y-1">
-                <div v-for="item in group.items" :key="item.label as string"
-                  v-show="item.visible !== false && (typeof item.visible !== 'function' || item.visible())"
-                  class="group">
-                  <button @click="item.command?.({ item, originalEvent: $event })" :class="[
-                    'flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 cursor-pointer',
+          <nav class="flex-1">
+            <PanelMenu :model="menuItems" class="w-full border-none bg-transparent">
+              <template #item="{ item, props, hasSubmenu, active }">
+                <!-- Header Item (Branch with Submenu) -->
+                <div v-if="hasSubmenu"
+                  class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 cursor-pointer mb-1 mx-1 text-surface-600 dark:text-surface-400 hover:text-primary hover:bg-primary/10 select-none group"
+                  v-bind="props.action">
+                  <i :class="[item.icon, 'text-lg transition-transform duration-300 group-hover:scale-110']"></i>
+                  <span class="flex-1">{{ item.label }}</span>
+                  <i
+                    :class="['pi text-[10px] text-surface-400 group-hover:text-primary transition-all duration-300', active ? 'pi-chevron-down' : 'pi-chevron-right']">
+                  </i>
+                </div>
+
+                <!-- Leaf Item (Link or Action) -->
+                <router-link v-else-if="item.path" :to="item.path" custom v-slot="{ href, navigate }">
+                  <a :href="href" @click="navigate" :class="[
+                    'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 cursor-pointer mb-1 mx-1',
                     'hover:bg-primary/10 hover:translate-x-1',
                     isRouteActive(item) ? 'bg-primary/10 text-primary shadow-sm shadow-primary/5' : 'text-surface-600 dark:text-surface-400 hover:text-primary'
-                  ]">
+                  ]" v-ripple>
                     <i :class="[item.icon, 'text-lg transition-transform duration-300 group-hover:scale-110']"></i>
                     <span>{{ item.label }}</span>
-                    <i v-if="isRouteActive(item)" class="pi pi-chevron-right ml-auto text-[10px]"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
+                    <i v-if="isRouteActive(item) && !hasSubmenu" class="pi pi-chevron-right ml-auto text-[10px]"></i>
+                  </a>
+                </router-link>
+
+                <!-- Generic Action Item -->
+                <a v-else @click="item.command?.({ item, originalEvent: $event })" :class="[
+                  'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 cursor-pointer mb-1 mx-1',
+                  'hover:bg-primary/10 hover:translate-x-1 text-surface-600 dark:text-surface-400 hover:text-primary'
+                ]" v-ripple>
+                  <i :class="[item.icon, 'text-lg transition-transform duration-300 group-hover:scale-110']"></i>
+                  <span>{{ item.label }}</span>
+                </a>
+              </template>
+            </PanelMenu>
           </nav>
 
           <div class="mt-auto pt-6 px-4">
@@ -136,6 +151,7 @@ import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import type { MenuItem } from 'primevue/menuitem'
+import PanelMenu from 'primevue/panelmenu'
 import Textarea from 'primevue/textarea'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { RouterView, useRoute, useRouter } from 'vue-router'
@@ -172,32 +188,44 @@ const toggleSidebar = () => {
 }
 
 const menuItems = computed<MenuItem[]>(() => {
-  return [
+  const items: MenuItem[] = [
     {
-      label: 'Tools',
+      label: 'Home',
+      icon: 'pi pi-home',
+      path: '/',
+      command: () => {
+        router.push('/')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    }
+  ]
+
+  if (profileStore.profiles.length === 0) {
+    items.push({
+      label: 'OpenAPI Editor',
+      icon: 'pi pi-pencil',
+      path: '/openapi',
+      command: () => {
+        router.push('/openapi')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      },
       items: [
         {
-          label: 'Home',
-          icon: 'pi pi-home',
-          path: '/',
+          label: 'New Profile',
+          icon: 'pi pi-plus',
+          visible: () => profileStore.profiles.length < 5,
           command: () => {
-            router.push('/')
-            if (!isLargeScreen.value) sidebarOpen.value = false
-          }
-        },
-        {
-          label: 'OpenAPI Scratchpad',
-          icon: 'pi pi-pencil',
-          path: '/openapi',
-          command: () => {
-            router.push('/openapi')
+            createDialogVisible.value = true
             if (!isLargeScreen.value) sidebarOpen.value = false
           }
         }
       ]
-    },
-    {
-      label: 'OpenAPI Profiles',
+    })
+  } else {
+    items.push({
+      label: 'OpenAPI Editor',
+      icon: 'pi pi-pencil',
+      expanded: true,
       items: [
         ...profileStore.profiles.map(p => ({
           label: p.name,
@@ -218,22 +246,20 @@ const menuItems = computed<MenuItem[]>(() => {
           }
         }
       ]
-    },
-    {
-      label: 'Application',
-      items: [
-        {
-          label: 'About',
-          icon: 'pi pi-info-circle',
-          path: '/about',
-          command: () => {
-            router.push('/about')
-            if (!isLargeScreen.value) sidebarOpen.value = false
-          }
-        }
-      ]
+    })
+  }
+
+  items.push({
+    label: 'About',
+    icon: 'pi pi-info-circle',
+    path: '/about',
+    command: () => {
+      router.push('/about')
+      if (!isLargeScreen.value) sidebarOpen.value = false
     }
-  ]
+  })
+
+  return items
 })
 
 const isRouteActive = (item: any) => {
@@ -310,5 +336,26 @@ const saveNewProfile = () => {
 /* Glass Morphism Classes */
 .glass-input {
   @apply bg-white/50 dark:bg-surface-950/50 backdrop-blur-sm border-white/10 dark:border-surface-700/50 transition-all duration-300 focus:ring-2 focus:ring-primary/50;
+}
+
+/* PanelMenu Overrides */
+:deep(.p-panelmenu) {
+  @apply flex flex-col gap-2;
+}
+
+:deep(.p-panelmenu-panel) {
+  @apply border-none bg-transparent;
+}
+
+:deep(.p-panelmenu-header-content) {
+  @apply border-none bg-transparent ! p-0 !;
+}
+
+:deep(.p-panelmenu-content) {
+  @apply border-none bg-transparent ! p-0 ! mt-1;
+}
+
+:deep(.p-panelmenu-item-content) {
+  @apply border-none bg-transparent !;
 }
 </style>
