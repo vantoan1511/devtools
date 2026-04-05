@@ -23,6 +23,11 @@ const router = createRouter({
       name: 'openapi',
       component: OpenAPIEditorView,
     },
+    {
+      path: '/base64',
+      name: 'base64',
+      component: () => import('../views/Base64View.vue'),
+    },
   ],
 })
 

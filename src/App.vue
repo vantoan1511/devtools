@@ -250,6 +250,16 @@ const menuItems = computed<MenuItem[]>(() => {
   }
 
   items.push({
+    label: 'Base64 Tool',
+    icon: 'pi pi-lock',
+    path: '/base64',
+    command: () => {
+      router.push('/base64')
+      if (!isLargeScreen.value) sidebarOpen.value = false
+    }
+  })
+
+  items.push({
     label: 'About',
     icon: 'pi pi-info-circle',
     path: '/about',
@@ -267,6 +277,7 @@ const isRouteActive = (item: any) => {
   if (item.path === '/' && route.path === '/') return true
   if (item.path?.startsWith('/openapi/') && route.path === item.path) return true
   if (item.path === '/about' && route.path === '/about') return true
+  if (item.path === '/base64' && route.path === '/base64') return true
   return false
 }
 
