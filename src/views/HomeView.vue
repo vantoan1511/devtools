@@ -87,6 +87,26 @@
             </template>
           </Card>
         </div>
+        <div class="h-full p-1">
+          <Card
+            class="h-full border-none shadow-sm transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border hover:border-2 hover:border-primary hover:border-dashed cursor-pointer">
+            <template #title>
+              <div class="flex items-center gap-2">
+                <i class="pi pi-columns text-2xl text-primary"></i>
+                <span>Comparison Tool</span>
+              </div>
+            </template>
+            <template #content>
+              <p class="m-0 leading-relaxed text-surface-600 dark:text-surface-400">
+                Compare two pieces of text and see the differences side-by-side or inline.
+              </p>
+            </template>
+            <template #footer>
+              <Button label="Open Tool" icon="pi pi-external-link" class="w-full"
+                @click="router.push('/comparison')" />
+            </template>
+          </Card>
+        </div>
       </div>
     </div>
   </div>

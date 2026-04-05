@@ -38,6 +38,11 @@ const router = createRouter({
       name: 'hash-generator',
       component: () => import('../views/HashGeneratorView.vue'),
     },
+    {
+      path: '/comparison',
+      name: 'comparison',
+      component: () => import('../views/ComparisonView.vue'),
+    },
   ],
 })
 

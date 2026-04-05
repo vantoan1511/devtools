@@ -280,6 +280,16 @@ const menuItems = computed<MenuItem[]>(() => {
   })
 
   items.push({
+    label: 'Comparison Tool',
+    icon: 'pi pi-objects-column',
+    path: '/comparison',
+    command: () => {
+      router.push('/comparison')
+      if (!isLargeScreen.value) sidebarOpen.value = false
+    }
+  })
+
+  items.push({
     label: 'About',
     icon: 'pi pi-info-circle',
     path: '/about',
@@ -300,6 +310,7 @@ const isRouteActive = (item: any) => {
   if (item.path === '/base64' && route.path === '/base64') return true
   if (item.path === '/json-formatter' && route.path === '/json-formatter') return true
   if (item.path === '/hash-generator' && route.path === '/hash-generator') return true
+  if (item.path === '/comparison' && route.path === '/comparison') return true
   return false
 }
 
@@ -381,14 +392,14 @@ const saveNewProfile = () => {
 }
 
 :deep(.p-panelmenu-header-content) {
-  @apply border-none bg-transparent ! p-0 !;
+  @apply border-none bg-transparent! p-0!;
 }
 
 :deep(.p-panelmenu-content) {
-  @apply border-none bg-transparent ! p-0 ! mt-1;
+  @apply border-none bg-transparent! p-0! mt-1;
 }
 
 :deep(.p-panelmenu-item-content) {
-  @apply border-none bg-transparent !;
+  @apply border-none bg-transparent!;
 }
 </style>
