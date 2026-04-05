@@ -28,6 +28,11 @@ const router = createRouter({
       name: 'base64',
       component: () => import('../views/Base64View.vue'),
     },
+    {
+      path: '/json-formatter',
+      name: 'json-formatter',
+      component: () => import('../views/JSONFormatterView.vue'),
+    },
   ],
 })
 
