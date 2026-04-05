@@ -67,6 +67,26 @@
             </template>
           </Card>
         </div>
+        <div class="h-full p-1">
+          <Card
+            class="h-full border-none shadow-sm transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border hover:border-2 hover:border-primary hover:border-dashed cursor-pointer">
+            <template #title>
+              <div class="flex items-center gap-2">
+                <i class="pi pi-fingerprint text-2xl text-primary"></i>
+                <span>Hash Generator</span>
+              </div>
+            </template>
+            <template #content>
+              <p class="m-0 leading-relaxed text-surface-600 dark:text-surface-400">
+                Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from text or files.
+              </p>
+            </template>
+            <template #footer>
+              <Button label="Open Tool" icon="pi pi-external-link" class="w-full"
+                @click="router.push('/hash-generator')" />
+            </template>
+          </Card>
+        </div>
       </div>
     </div>
   </div>

@@ -33,6 +33,11 @@ const router = createRouter({
       name: 'json-formatter',
       component: () => import('../views/JSONFormatterView.vue'),
     },
+    {
+      path: '/hash-generator',
+      name: 'hash-generator',
+      component: () => import('../views/HashGeneratorView.vue'),
+    },
   ],
 })
 
