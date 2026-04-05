@@ -98,28 +98,27 @@ const generateHashes = () => {
     return
   }
 
-  algorithms.value[0].hash = CryptoJS.MD5(text).toString()
-  algorithms.value[1].hash = CryptoJS.SHA1(text).toString()
-  algorithms.value[2].hash = CryptoJS.SHA256(text).toString()
-  algorithms.value[3].hash = CryptoJS.SHA512(text).toString()
-}
+  if (algorithms.value[0]) algorithms.value[0].hash = CryptoJS.MD5(text).toString()
+  if (algorithms.value[1]) algorithms.value[1].hash = CryptoJS.SHA1(text).toString()
+  if (algorithms.value[2]) algorithms.value[2].hash = CryptoJS.SHA256(text).toString()
+  if (algorithms.value[3]) algorithms.value[3].hash = CryptoJS.SHA512(text).toString()
+  }
 
-const hashFile = (file: File) => {
+  const hashFile = (file: File) => {
   const reader = new FileReader()
   reader.onload = (e) => {
     const arrayBuffer = e.target?.result as ArrayBuffer
-    const wa = CryptoJS.lib.WordArray.create(new Uint8Array(arrayBuffer))
+    const wa = CryptoJS.lib.WordArray.create(new Uint8Array(arrayBuffer) as any)
 
-    algorithms.value[0].hash = CryptoJS.MD5(wa).toString()
-    algorithms.value[1].hash = CryptoJS.SHA1(wa).toString()
-    algorithms.value[2].hash = CryptoJS.SHA256(wa).toString()
-    algorithms.value[3].hash = CryptoJS.SHA512(wa).toString()
+    if (algorithms.value[0]) algorithms.value[0].hash = CryptoJS.MD5(wa).toString()
+    if (algorithms.value[1]) algorithms.value[1].hash = CryptoJS.SHA1(wa).toString()
+    if (algorithms.value[2]) algorithms.value[2].hash = CryptoJS.SHA256(wa).toString()
+    if (algorithms.value[3]) algorithms.value[3].hash = CryptoJS.SHA512(wa).toString()
 
     toast.add({ severity: 'success', summary: 'File Hashed', detail: `Computed hashes for ${file.name}`, life: 2000 })
   }
   reader.readAsArrayBuffer(file)
-}
-
+  }
 watch(inputText, () => {
   if (!selectedFile.value) {
     generateHashes()
