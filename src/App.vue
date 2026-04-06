@@ -291,10 +291,30 @@ const menuItems = computed<MenuItem[]>(() => {
 
   items.push({
     label: 'RegEx Tester',
-    icon: 'ri-at-line',
+    icon: 'pi pi-filter',
     path: '/regex-tester',
     command: () => {
       router.push('/regex-tester')
+      if (!isLargeScreen.value) sidebarOpen.value = false
+    }
+  })
+
+  items.push({
+    label: 'URL Encoder',
+    icon: 'pi pi-link',
+    path: '/url-encoder',
+    command: () => {
+      router.push('/url-encoder')
+      if (!isLargeScreen.value) sidebarOpen.value = false
+    }
+  })
+
+  items.push({
+    label: 'JWT Debugger',
+    icon: 'pi pi-shield',
+    path: '/jwt-debugger',
+    command: () => {
+      router.push('/jwt-debugger')
       if (!isLargeScreen.value) sidebarOpen.value = false
     }
   })
@@ -322,6 +342,8 @@ const isRouteActive = (item: any) => {
   if (item.path === '/hash-generator' && route.path === '/hash-generator') return true
   if (item.path === '/comparison' && route.path === '/comparison') return true
   if (item.path === '/regex-tester' && route.path === '/regex-tester') return true
+  if (item.path === '/url-encoder' && route.path === '/url-encoder') return true
+  if (item.path === '/jwt-debugger' && route.path === '/jwt-debugger') return true
   return false
 }
 

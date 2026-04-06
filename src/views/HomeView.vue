@@ -126,6 +126,46 @@
             </template>
           </Card>
         </div>
+        <div class="h-full p-1">
+          <Card
+            class="h-full border-none shadow-sm transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border hover:border-2 hover:border-primary hover:border-dashed cursor-pointer">
+            <template #title>
+              <div class="flex items-center gap-2">
+                <i class="pi pi-link text-2xl text-primary"></i>
+                <span>URL Encoder</span>
+              </div>
+            </template>
+            <template #content>
+              <p class="m-0 leading-relaxed text-surface-600 dark:text-surface-400">
+                Safely encode or decode URLs and parameters for web development.
+              </p>
+            </template>
+            <template #footer>
+              <Button label="Open Tool" icon="pi pi-external-link" class="w-full"
+                @click="router.push('/url-encoder')" />
+            </template>
+          </Card>
+        </div>
+        <div class="h-full p-1">
+          <Card
+            class="h-full border-none shadow-sm transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border hover:border-2 hover:border-primary hover:border-dashed cursor-pointer">
+            <template #title>
+              <div class="flex items-center gap-2">
+                <i class="pi pi-shield text-2xl text-primary"></i>
+                <span>JWT Debugger</span>
+              </div>
+            </template>
+            <template #content>
+              <p class="m-0 leading-relaxed text-surface-600 dark:text-surface-400">
+                Decode and inspect JSON Web Tokens instantly to see their content.
+              </p>
+            </template>
+            <template #footer>
+              <Button label="Open Tool" icon="pi pi-external-link" class="w-full"
+                @click="router.push('/jwt-debugger')" />
+            </template>
+          </Card>
+        </div>
       </div>
     </div>
   </div>

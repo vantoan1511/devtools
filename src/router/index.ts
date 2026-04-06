@@ -48,6 +48,16 @@ const router = createRouter({
       name: 'regex-tester',
       component: () => import('../views/RegexTesterView.vue'),
     },
+    {
+      path: '/url-encoder',
+      name: 'url-encoder',
+      component: () => import('../views/URLEncoderView.vue'),
+    },
+    {
+      path: '/jwt-debugger',
+      name: 'jwt-debugger',
+      component: () => import('../views/JWTDebuggerView.vue'),
+    },
   ],
 })
 
