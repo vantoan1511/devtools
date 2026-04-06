@@ -43,6 +43,11 @@ const router = createRouter({
       name: 'comparison',
       component: () => import('../views/ComparisonView.vue'),
     },
+    {
+      path: '/regex-tester',
+      name: 'regex-tester',
+      component: () => import('../views/RegexTesterView.vue'),
+    },
   ],
 })
 

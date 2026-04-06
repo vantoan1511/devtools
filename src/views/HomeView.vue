@@ -102,8 +102,27 @@
               </p>
             </template>
             <template #footer>
+              <Button label="Open Tool" icon="pi pi-external-link" class="w-full" @click="router.push('/comparison')" />
+            </template>
+          </Card>
+        </div>
+        <div class="h-full p-1">
+          <Card
+            class="h-full border-none shadow-sm transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border hover:border-2 hover:border-primary hover:border-dashed cursor-pointer">
+            <template #title>
+              <div class="flex items-center gap-2">
+                <i class="pi pi-filter text-2xl text-primary"></i>
+                <span>RegEx Tester</span>
+              </div>
+            </template>
+            <template #content>
+              <p class="m-0 leading-relaxed text-surface-600 dark:text-surface-400">
+                Test and debug your regular expressions with real-time highlighting and group extraction.
+              </p>
+            </template>
+            <template #footer>
               <Button label="Open Tool" icon="pi pi-external-link" class="w-full"
-                @click="router.push('/comparison')" />
+                @click="router.push('/regex-tester')" />
             </template>
           </Card>
         </div>
@@ -113,9 +132,9 @@
 </template>
 
 <script setup lang="ts">
-import Card from 'primevue/card'
-import Button from 'primevue/button'
-import { useRouter } from 'vue-router'
+import Button from 'primevue/button';
+import Card from 'primevue/card';
+import { useRouter } from 'vue-router';
 
 const router = useRouter()
 </script>
