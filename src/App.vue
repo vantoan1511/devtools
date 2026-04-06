@@ -84,7 +84,7 @@
             <div
               class="p-4 rounded-2xl bg-gradient-to-br from-primary/5 to-primary-emphasis/5 border border-primary/10">
               <p class="text-[10px] font-bold text-primary/60 uppercase tracking-tighter">Current Version</p>
-              <p class="text-xs font-mono text-surface-500">v1.1.0-beta</p>
+              <p class="text-xs font-mono text-surface-500">v1.1.1</p>
             </div>
           </div>
         </div>
