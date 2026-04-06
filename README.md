@@ -14,18 +14,36 @@ A full-featured editor for designing and previewing API specifications.
 - **Monaco Editor**: High-performance editing with syntax highlighting and auto-completion.
 - **Live Preview**: Real-time rendering with Swagger UI.
 - **Drag & Drop**: Import specs instantly by dropping YAML/JSON files.
-- **Resizable Interface**: Adjust the editor and preview panels to your preference.
-- **Toggleable Preview**: Maximize your workspace with a single click.
+
+### 🔍 RegEx Tester
+Real-time regular expression testing with highlighting and group extraction.
+- **Live Match Highlighting**: See matches as you type.
+- **Detailed Group Info**: Inspect captured groups and their indices.
+- **Flag Support**: Global, Case-insensitive, Multiline, etc.
+
+### 🔄 Comparison Tool
+Compare two pieces of text and see the differences side-by-side or inline.
+- **Visual Diff**: Clear highlighting of additions and deletions.
+- **Synced Scrolling**: Easily track changes in large documents.
+
+### 🔢 JSON Formatter
+Validate, format, and minify JSON data.
+- **Beautify**: Make messy JSON readable.
+- **Validation**: Identify syntax errors instantly.
+
+### 🔐 Base64 Tool
+Encode and decode strings and files to/from Base64 format.
+- **File Support**: Drag and drop files to encode.
+- **Data URL**: Generate and decode data URLs for images.
+
+### 🧬 Hash Generator
+Generate MD5, SHA-1, SHA-256, and SHA-512 hashes.
+- **Text & Files**: Generate hashes from strings or uploaded files.
 
 ### 🎨 Modern UI/UX
 - **Glassmorphism Design**: A sleek, frosted-glass aesthetic for a premium feel.
 - **Responsive Sidebar**: Pinned on large screens, overlay on smaller devices.
 - **Dark Mode Support**: Seamless transition between light and dark themes.
-- **Fluid Animations**: High-quality interactions and page transitions.
-
-### 🚀 Upcoming Tools
-- **JSON Formatter**: Validate, format, and minify JSON data.
-- **Base64 Tool**: Quick encoding and decoding of strings and files.
 
 ## 🛠️ Tech Stack
 
@@ -35,7 +53,7 @@ A full-featured editor for designing and previewing API specifications.
 - **Editor Core**: [Monaco Editor](https://microsoft.github.io/monaco-editor/)
 - **API Preview**: [Swagger UI](https://swagger.io/tools/swagger-ui/)
 - **State Management**: [Pinia](https://pinia.vuejs.org/)
-- **Icons**: [PrimeIcons](https://primeicons.org/)
+- **Icons**: [PrimeIcons](https://primeicons.org/) & [Remix Icon](https://remixicon.com/)
 
 ## 🚀 Getting Started
 
