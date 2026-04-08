@@ -17,7 +17,7 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <Button as="a" href="https://github.com/vantoan1511/devtool" target="_blank" rel="noopener noreferrer"
+        <Button as="a" href="https://github.com/vantoan1511/devtools" target="_blank" rel="noopener noreferrer"
           icon="pi pi-github" aria-label="Star on GitHub" rounded severity="secondary" text
           class="hover:bg-primary/10 transition-colors duration-300" v-tooltip.bottom="'Star on GitHub'" />
         <Button :icon="isDarkMode ? 'pi pi-sun' : 'pi pi-moon'" aria-label="Toggle Dark Mode" rounded
