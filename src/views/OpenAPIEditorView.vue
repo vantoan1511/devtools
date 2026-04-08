@@ -2,41 +2,50 @@
   <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-0 dark:bg-surface-950 overflow-hidden">
     <!-- Toolbar -->
     <div
-      class="z-10 flex items-center justify-between border-b border-white/10 bg-white/50 px-4 py-2 backdrop-blur-md dark:bg-surface-900/50">
-      <div class="flex items-center gap-4">
+      class="z-10 flex flex-wrap items-center justify-between border-b border-surface-200 dark:border-white/10 bg-white/70 px-4 py-2 backdrop-blur-md dark:bg-surface-900/70 transition-colors duration-300">
+      <div class="flex flex-wrap items-center gap-3">
         <div
-          class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-100/50 dark:bg-surface-800/50 border border-white/10">
-          <i class="pi pi-file text-primary"></i>
+          class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
+          <i class="pi pi-file text-primary text-sm"></i>
           <div v-if="!isRenaming" @click="startRenaming" class="flex items-center gap-2 cursor-pointer group">
-            <span class="font-mono text-sm font-medium text-surface-700 dark:text-surface-200">
+            <span class="font-bold text-xs uppercase tracking-wider text-primary">
               {{ currentProfile ? currentProfile.name : 'scratchpad.yaml' }}
             </span>
             <i v-if="currentProfile"
               class="pi pi-pencil text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
           </div>
           <div v-else class="flex items-center">
-            <InputText v-model="newName" size="small" class="h-6 font-mono text-xs glass-input-mini"
+            <InputText v-model="newName" size="small" class="h-5 font-mono text-[10px] glass-input-mini"
               @keyup.enter="saveName" @blur="saveName" autofocus />
           </div>
         </div>
 
-        <div class="h-4 w-[1px] bg-surface-200 dark:bg-surface-700"></div>
+        <div class="hidden sm:block h-6 w-[1px] bg-surface-200 dark:bg-surface-700 mx-1"></div>
 
         <div class="flex items-center gap-1">
-          <Button v-tooltip="'Copy Content'" icon="pi pi-copy" size="small" severity="secondary" text rounded
+          <div class="flex items-center bg-surface-100 dark:bg-surface-800 p-1 rounded-xl border border-surface-200 dark:border-surface-700 mr-2">
+            <Button label="Prettify" icon="pi pi-sparkles" size="small" text @click="formatYaml" 
+              class="hover:bg-primary/10 text-xs" v-tooltip.bottom="'Format YAML'"/>
+            <Button label="Export" icon="pi pi-download" size="small" text severity="secondary" @click="downloadSpec" 
+              class="hover:bg-surface-200 dark:hover:bg-surface-700 text-xs" v-tooltip.bottom="'Download YAML'"/>
+          </div>
+
+          <Button v-tooltip.bottom="'Copy Content'" icon="pi pi-copy" size="small" severity="secondary" text rounded
             class="hover:bg-primary/10 transition-all duration-300" @click="copyToClipboard" />
-          <Button v-tooltip="'Reset Spec'" icon="pi pi-refresh" size="small" severity="secondary" text rounded
+          <Button v-tooltip.bottom="'Reset Spec'" icon="pi pi-refresh" size="small" severity="secondary" text rounded
             class="hover:bg-orange-500/10 hover:text-orange-500 transition-all duration-300" @click="resetSpec" />
-          <Button v-if="currentProfile" v-tooltip="'Delete Profile'" icon="pi pi-trash" size="small"
+          <Button v-if="currentProfile" v-tooltip.bottom="'Delete Profile'" icon="pi pi-trash" size="small"
             severity="secondary" text rounded class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300"
             @click="deleteProfile" />
         </div>
       </div>
 
       <div class="flex items-center gap-2">
-        <Button :icon="showPreview ? 'ri-layout-right-2-line' : 'ri-layout-column-line'" size="small"
-          :severity="showPreview ? 'primary' : 'secondary'" class="text-xs transition-all duration-500"
-          @click="showPreview = !showPreview" />
+        <div class="flex items-center gap-2 px-3 py-1 rounded-xl border border-surface-200 dark:border-surface-700 bg-surface-100/50 dark:bg-surface-800/50 mr-2">
+          <span class="text-[10px] font-bold uppercase text-surface-500">Live Preview</span>
+          <ToggleButton v-model="showPreview" onLabel="" offLabel="" onIcon="pi pi-eye" offIcon="pi pi-eye-slash" 
+            class="preview-toggle" />
+        </div>
       </div>
     </div>
 
@@ -58,6 +67,23 @@
       <!-- Full width editor when preview is hidden -->
       <div v-else ref="editorContainer" class="h-full w-full animate-fade-in"></div>
     </div>
+
+    <!-- Status Bar -->
+    <div class="z-10 flex items-center justify-between border-t border-surface-200 dark:border-white/10 bg-white/50 px-4 py-1.5 backdrop-blur-md dark:bg-surface-900/50 text-[11px] font-medium text-surface-500 transition-colors duration-300">
+      <div class="flex items-center gap-4">
+        <span>{{ lineCount }} Lines</span>
+        <div class="h-3 w-[1px] bg-surface-200 dark:bg-surface-700"></div>
+        <span>{{ charCount }} Characters</span>
+        <div class="h-3 w-[1px] bg-surface-200 dark:bg-surface-700"></div>
+        <span class="flex items-center gap-1">
+          <i class="pi pi-code text-[8px]"></i>
+          YAML / OpenAPI
+        </span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="uppercase tracking-widest text-[9px] font-bold opacity-70">Swagger UI Powered</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -78,8 +104,8 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 const profileStore = useProfileStore()
-const confirm = useConfirm();
-const toast = useToast();
+const confirm = useConfirm()
+const toast = useToast()
 
 const STORAGE_KEY = 'devtool_openapi_spec'
 
@@ -110,6 +136,8 @@ const mountError = ref<string | null>(null)
 const isRenaming = ref(false)
 const newName = ref('')
 const showPreview = ref(true)
+const charCount = ref(0)
+const lineCount = ref(0)
 
 let editor: monaco.editor.IStandaloneCodeEditor | null = null
 let ui: any = null
@@ -169,8 +197,20 @@ const initEditor = (content?: string) => {
         fontSize: 14,
         scrollBeyondLastLine: false,
         wordWrap: 'on',
-        padding: { top: 16 }
+        padding: { top: 16 },
+        scrollbar: {
+          verticalScrollbarSize: 8,
+          horizontalScrollbarSize: 8,
+        }
       })
+
+      const updateStats = () => {
+        const val = editor?.getValue() || ''
+        charCount.value = val.length
+        lineCount.value = editor?.getModel()?.getLineCount() || 0
+      }
+
+      updateStats()
 
       if (observer) observer.disconnect()
       observer = new MutationObserver(updateEditorTheme)
@@ -178,6 +218,7 @@ const initEditor = (content?: string) => {
 
       editor.onDidChangeModelContent(() => {
         const content = editor?.getValue() || ''
+        updateStats()
         if (profileId.value) {
           profileStore.updateProfileSpec(profileId.value, content)
         } else {
@@ -249,6 +290,33 @@ onBeforeUnmount(() => {
   if (observer) observer.disconnect()
 })
 
+const formatYaml = () => {
+  if (!editor) return
+  try {
+    const content = editor.getValue()
+    const obj = jsYaml.load(content)
+    const formatted = jsYaml.dump(obj, { indent: 2, lineWidth: -1 })
+    editor.setValue(formatted)
+    toast.add({ severity: 'success', summary: 'Formatted', detail: 'YAML prettified successfully', life: 2000 })
+  } catch (e) {
+    toast.add({ severity: 'error', summary: 'Format Error', detail: 'Invalid YAML structure', life: 3000 })
+  }
+}
+
+const downloadSpec = () => {
+  if (!editor) return
+  const content = editor.getValue()
+  const blob = new Blob([content], { type: 'text/yaml' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  const name = currentProfile.value ? currentProfile.value.name.replace(/\.[^/.]+$/, "") : 'openapi'
+  a.href = url
+  a.download = `${name}.yaml`
+  a.click()
+  URL.revokeObjectURL(url)
+  toast.add({ severity: 'info', summary: 'Downloading', detail: 'Specification exported as YAML', life: 2000 })
+}
+
 const resetSpec = () => {
   const content = defaultSpec
   editor?.setValue(content)
@@ -264,6 +332,7 @@ const copyToClipboard = async () => {
   const content = editor?.getValue() || ''
   try {
     await navigator.clipboard.writeText(content)
+    toast.add({ severity: 'info', summary: 'Copied', detail: 'Content copied to clipboard', life: 2000 })
   } catch (err) {
     console.error('Failed to copy: ', err)
   }
@@ -309,17 +378,32 @@ const deleteProfile = () => {
       },
       reject: () => {
       }
-    });
+    })
   }
 }
 </script>
-
 
 <style scoped>
 @reference "@/assets/main.css";
 
 .glass-input-mini {
-  @apply bg-transparent border-none focus:ring-0 p-0 m-0 w-32;
+  @apply bg-transparent border-none focus:ring-0 p-0 m-0 w-32 text-primary font-bold;
+}
+
+.preview-toggle {
+  @apply w-8 h-5;
+}
+
+:deep(.preview-toggle.p-togglebutton) {
+  @apply bg-surface-200 dark:bg-surface-700 border-none;
+}
+
+:deep(.preview-toggle.p-togglebutton.p-highlight) {
+  @apply bg-primary;
+}
+
+:deep(.preview-toggle .p-button-icon) {
+  @apply text-[8px] text-white;
 }
 
 .animate-fade-in {
@@ -358,62 +442,46 @@ const deleteProfile = () => {
 }
 
 :deep(.swagger-ui .info) {
-  @apply p-4 bg-surface-100/50 dark:bg-surface-800/50 rounded-2xl;
+  @apply p-4 bg-surface-100/50 dark:bg-surface-800/50 rounded-2xl border border-surface-200 dark:border-surface-700 shadow-sm;
 }
 
 :deep(.swagger-ui .info .title) {
-  @apply text-2xl font-bold mb-2 text-primary;
+  @apply text-2xl font-black mb-2 text-primary tracking-tight;
 }
 
 :deep(.swagger-ui .info .description p) {
-  @apply text-sm text-surface-700 dark:text-surface-300;
+  @apply text-sm text-surface-700 dark:text-surface-300 leading-relaxed;
 }
 
 :deep(.swagger-ui .scheme-container) {
-  @apply bg-surface-100/50 dark:bg-surface-800/50 rounded-lg;
+  @apply bg-surface-100/50 dark:bg-surface-800/50 rounded-xl border border-surface-200 dark:border-surface-700 shadow-sm mt-4;
 }
 
-:deep(.swagger-ui .dialog-ux .backdrop-ux) {
-  @apply bg-black/50 backdrop-blur-sm;
+:deep(.swagger-ui .opblock) {
+  @apply rounded-xl border-none shadow-sm overflow-hidden mb-4;
 }
 
-:deep(.swagger-ui .dialog-ux .modal-ux) {
-  @apply bg-surface-100/90 dark:bg-surface-800/90 rounded-lg shadow-lg border border-white/10;
+:deep(.swagger-ui .opblock-summary) {
+  @apply border-none px-4 py-3;
 }
 
-:deep(.swagger-ui .dialog-ux .modal-ux-header) {
-  @apply border-b border-surface-600/10 dark:border-white/10 mb-4;
-}
-
-:deep(.swagger-ui .dialog-ux .modal-ux-header h3) {
-  @apply text-lg font-semibold text-surface-800 dark:text-surface-200;
-}
-
-:deep(.swagger-ui .dialog-ux .modal-ux-content h4) {
-  @apply text-sm font-medium text-surface-700 dark:text-surface-300 mb-2;
-}
-
-:deep(.swagger-ui label) {
-  @apply text-sm text-surface-700 dark:text-surface-300;
-}
-
-:deep(.swagger-ui input[type=text]) {
-  @apply bg-transparent border border-surface-300 dark:border-surface-600 rounded-md px-2 py-1 text-sm text-surface-900 dark:text-surface-100 focus:ring-2 focus:ring-primary focus:outline-none;
-}
-
-:deep(.swagger-ui .btn) {
-  @apply text-white mx-2;
-}
-
-:deep(.swagger-ui .dialog-ux .modal-ux-header .close-modal) {
-  @apply text-surface-500 dark:text-surface-400 hover:text-surface-700 dark:hover:text-surface-200 transition-colors duration-300;
+:deep(.swagger-ui .opblock .opblock-summary-method) {
+  @apply rounded-lg font-black text-[10px] min-w-[60px] text-center shadow-sm;
 }
 
 :deep(.swagger-ui .opblock-tag) {
-  @apply bg-surface-200/50 dark:bg-surface-700/50 text-surface-800 dark:text-surface-200 rounded-tl-lg rounded-tr-lg;
+  @apply border-none bg-surface-100 dark:bg-surface-800 text-surface-900 dark:text-surface-0 rounded-xl px-4 py-3 mb-2 font-bold transition-colors;
 }
 
-:deep(.swagger-ui .opblock-tag small) {
-  @apply text-xs text-surface-600 dark:text-surface-400;
+:deep(.swagger-ui .opblock-tag:hover) {
+  @apply bg-surface-200 dark:bg-surface-700;
+}
+
+:deep(.swagger-ui .btn) {
+  @apply rounded-lg font-bold transition-all shadow-sm;
+}
+
+:deep(.swagger-ui input[type=text]) {
+  @apply bg-surface-50 dark:bg-surface-950 border border-surface-200 dark:border-surface-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all;
 }
 </style>
