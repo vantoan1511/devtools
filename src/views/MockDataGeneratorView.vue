@@ -70,7 +70,9 @@ const generateData = () => {
       if (field.type === 'system.id') {
         item[field.name] = i + 1
       } else {
-        const [category, method] = field.type.split('.')
+        const parts = field.type.split('.')
+        const category = parts[0] || 'lorem'
+        const method = parts[1] || 'word'
         item[field.name] = (faker as any)[category][method]()
       }
     })
