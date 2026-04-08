@@ -1,108 +1,164 @@
 <template>
-  <div class="flex-1 bg-surface-50 p-4 dark:bg-surface-950">
-    <div class="mx-auto max-w-7xl">
-      <div class="mb-6 text-center">
-        <h1 class="mb-2 text-4xl font-bold text-surface-900 dark:text-surface-0">Welcome to DevTool</h1>
-        <p class="text-xl text-surface-600 dark:text-surface-400">Common tools for your everyday development</p>
-      </div>
+  <div class="home-container bg-surface-50 dark:bg-surface-950 min-h-full py-12 px-6 overflow-x-hidden">
+    <div class="max-w-7xl mx-auto">
+      <!-- Hero Section -->
+      <section class="mb-16 text-center animate-in">
+        <h1 class="text-4xl md:text-6xl font-black tracking-tight text-surface-900 dark:text-surface-0 mb-4">
+          Unleash Your <span class="text-primary">Workflow</span>
+        </h1>
+        <p class="text-lg md:text-xl text-surface-600 dark:text-surface-400 max-w-2xl mx-auto leading-relaxed">
+          The all-in-one toolbox for modern developers. Fast, private, and powerful tools at your fingertips.
+        </p>
+      </section>
 
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div v-for="tool in tools" :key="tool.route" class="h-full p-1">
+      <!-- Tool Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div v-for="(tool, index) in tools" :key="tool.route" 
+          class="animate-in" :style="{ animationDelay: `${index * 50}ms` }">
           <Card
-            class="h-full border-none shadow-sm transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:border-2 hover:border-primary hover:border-dashed cursor-pointer"
+            class="tool-card h-full border-none shadow-sm transition-all duration-300 bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm cursor-pointer group"
             @click="router.push(tool.route)">
-            <template #title>
-              <div class="flex items-center gap-2">
-                <i :class="[tool.icon, 'text-2xl text-primary']"></i>
-                <span>{{ tool.title }}</span>
-              </div>
-            </template>
             <template #content>
-              <p class="m-0 leading-relaxed text-surface-600 dark:text-surface-400">
-                {{ tool.description }}
-              </p>
+              <div class="flex flex-col gap-4">
+                <div :class="[tool.color, 'w-12 h-12 rounded-2xl bg-surface-100 dark:bg-surface-800 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ring-1 ring-surface-200/50 dark:ring-surface-700/50']">
+                  <i :class="[tool.icon, 'text-2xl']"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0 mb-2 flex items-center gap-2">
+                    {{ tool.title }}
+                    <i class="pi pi-arrow-up-right text-[10px] opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0"></i>
+                  </h3>
+                  <p class="text-surface-600 dark:text-surface-400 leading-relaxed text-sm">
+                    {{ tool.description }}
+                  </p>
+                </div>
+              </div>
             </template>
           </Card>
         </div>
       </div>
+
+      <!-- Quick Tips / Features -->
+      <section class="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 p-8 rounded-3xl bg-primary/5 border border-primary/10 animate-in">
+        <div class="flex flex-col items-center text-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-white dark:bg-surface-900 flex items-center justify-center shadow-sm">
+            <i class="pi pi-bolt text-primary"></i>
+          </div>
+          <h4 class="font-bold text-surface-900 dark:text-surface-0">Instant Launch</h4>
+          <p class="text-xs text-surface-500">No login required. Tools are ready to use the moment you need them.</p>
+        </div>
+        <div class="flex flex-col items-center text-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-white dark:bg-surface-900 flex items-center justify-center shadow-sm">
+            <i class="pi pi-eye-slash text-primary"></i>
+          </div>
+          <h4 class="font-bold text-surface-900 dark:text-surface-0">Privacy First</h4>
+          <p class="text-xs text-surface-500">All processing happens locally in your browser. Your data never leaves your device.</p>
+        </div>
+        <div class="flex flex-col items-center text-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-white dark:bg-surface-900 flex items-center justify-center shadow-sm">
+            <i class="pi pi-moon text-primary"></i>
+          </div>
+          <h4 class="font-bold text-surface-900 dark:text-surface-0">Full Dark Mode</h4>
+          <p class="text-xs text-surface-500">Designed for night owls. Seamless switching between light and dark themes.</p>
+        </div>
+      </section>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Card from 'primevue/card';
-import { useRouter } from 'vue-router';
+import Card from 'primevue/card'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
 interface Tool {
-  title: string;
-  description: string;
-  icon: string;
-  route: string;
-  buttonLabel: string;
+  title: string
+  description: string
+  icon: string
+  route: string
+  color: string
 }
 
 const tools: Tool[] = [
   {
     title: 'OpenAPI Editor',
-    description: 'Edit and preview your OpenAPI specifications with a VS Code-like editor and live Swagger UI preview.',
+    description: 'Design and preview API specifications with a high-performance editor and live Swagger UI.',
     icon: 'pi pi-code',
     route: '/openapi',
-    buttonLabel: 'Open Editor'
+    color: 'text-blue-500'
   },
   {
     title: 'JSON Formatter',
-    description: 'Format, validate and minify your JSON data with ease.',
+    description: 'Beautify, validate, and minify complex JSON structures with real-time error detection.',
     icon: 'pi pi-database',
     route: '/json-formatter',
-    buttonLabel: 'Open Formatter'
-  },
-  {
-    title: 'Base64 Tool',
-    description: 'Encode and decode strings and files to/from Base64 format.',
-    icon: 'pi pi-lock',
-    route: '/base64',
-    buttonLabel: 'Open Tool'
-  },
-  {
-    title: 'Hash Generator',
-    description: 'Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from text or files.',
-    icon: 'pi pi-fingerprint',
-    route: '/hash-generator',
-    buttonLabel: 'Open Tool'
-  },
-  {
-    title: 'Comparison Tool',
-    description: 'Compare two pieces of text and see the differences side-by-side or inline.',
-    icon: 'pi pi-columns',
-    route: '/comparison',
-    buttonLabel: 'Open Tool'
+    color: 'text-green-500'
   },
   {
     title: 'RegEx Tester',
-    description: 'Test and debug your regular expressions with real-time highlighting and group extraction.',
+    description: 'Debug regular expressions with live match highlighting and detailed capture group info.',
     icon: 'pi pi-filter',
     route: '/regex-tester',
-    buttonLabel: 'Open Tool'
+    color: 'text-purple-500'
   },
   {
-    title: 'URL Encoder',
-    description: 'Safely encode or decode URLs and parameters for web development.',
-    icon: 'pi pi-link',
-    route: '/url-encoder',
-    buttonLabel: 'Open Tool'
+    title: 'Comparison Tool',
+    description: 'Analyze differences between text blocks with synced scrolling and visual diffing.',
+    icon: 'pi pi-objects-column',
+    route: '/comparison',
+    color: 'text-orange-500'
   },
   {
     title: 'JWT Debugger',
-    description: 'Decode and inspect JSON Web Tokens instantly to see their content.',
+    description: 'Instantly decode and inspect JSON Web Tokens to verify claims and signatures.',
     icon: 'pi pi-shield',
     route: '/jwt-debugger',
-    buttonLabel: 'Open Tool'
+    color: 'text-red-500'
+  },
+  {
+    title: 'Base64 Tool',
+    description: 'Securely encode and decode strings or files to and from Base64 format.',
+    icon: 'pi pi-lock',
+    route: '/base64',
+    color: 'text-cyan-500'
+  },
+  {
+    title: 'Hash Generator',
+    description: 'Generate secure MD5, SHA-1, SHA-256, and SHA-512 hashes from any input.',
+    icon: 'ri-fingerprint-line',
+    route: '/hash-generator',
+    color: 'text-indigo-500'
+  },
+  {
+    title: 'URL Encoder',
+    description: 'Safe conversion of special characters in URLs and query parameters.',
+    icon: 'pi pi-link',
+    route: '/url-encoder',
+    color: 'text-teal-500'
   }
 ]
 </script>
 
 <style scoped>
-/* No additional styles needed as Tailwind classes are used */
+@reference "@/assets/main.css";
+
+.tool-card {
+  @apply hover:-translate-y-2 hover:ring-2 hover:ring-primary/20 hover:bg-white dark:hover:bg-surface-900;
+}
+
+@keyframes animate-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: animate-in 0.6s ease-out forwards;
+}
 </style>
