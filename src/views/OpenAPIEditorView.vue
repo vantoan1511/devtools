@@ -1,3 +1,66 @@
+<template>
+  <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-0 dark:bg-surface-950 overflow-hidden">
+    <!-- Toolbar -->
+    <div
+      class="z-10 flex items-center justify-between border-b border-white/10 bg-white/50 px-4 py-2 backdrop-blur-md dark:bg-surface-900/50">
+      <div class="flex items-center gap-4">
+        <div
+          class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-100/50 dark:bg-surface-800/50 border border-white/10">
+          <i class="pi pi-file text-primary"></i>
+          <div v-if="!isRenaming" @click="startRenaming" class="flex items-center gap-2 cursor-pointer group">
+            <span class="font-mono text-sm font-medium text-surface-700 dark:text-surface-200">
+              {{ currentProfile ? currentProfile.name : 'scratchpad.yaml' }}
+            </span>
+            <i v-if="currentProfile"
+              class="pi pi-pencil text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+          </div>
+          <div v-else class="flex items-center">
+            <InputText v-model="newName" size="small" class="h-6 font-mono text-xs glass-input-mini"
+              @keyup.enter="saveName" @blur="saveName" autofocus />
+          </div>
+        </div>
+
+        <div class="h-4 w-[1px] bg-surface-200 dark:bg-surface-700"></div>
+
+        <div class="flex items-center gap-1">
+          <Button v-tooltip="'Copy Content'" icon="pi pi-copy" size="small" severity="secondary" text rounded
+            class="hover:bg-primary/10 transition-all duration-300" @click="copyToClipboard" />
+          <Button v-tooltip="'Reset Spec'" icon="pi pi-refresh" size="small" severity="secondary" text rounded
+            class="hover:bg-orange-500/10 hover:text-orange-500 transition-all duration-300" @click="resetSpec" />
+          <Button v-if="currentProfile" v-tooltip="'Delete Profile'" icon="pi pi-trash" size="small"
+            severity="secondary" text rounded class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300"
+            @click="deleteProfile" />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <Button :icon="showPreview ? 'ri-layout-right-2-line' : 'ri-layout-column-line'" size="small"
+          :severity="showPreview ? 'primary' : 'secondary'" class="text-xs transition-all duration-500"
+          @click="showPreview = !showPreview" />
+      </div>
+    </div>
+
+    <Message v-if="mountError" severity="error" class="m-2 rounded-xl">{{ mountError }}</Message>
+
+    <!-- Editor & Preview -->
+    <div class="flex-1 relative overflow-hidden">
+      <Splitter v-if="showPreview" class="h-full border-none bg-transparent" stateKey="openapi-editor-splitter"
+        stateStorage="local">
+        <SplitterPanel :size="50" :minSize="20">
+          <div ref="editorContainer" class="h-full w-full"></div>
+        </SplitterPanel>
+        <SplitterPanel :size="50" :minSize="20"
+          class="overflow-y-auto bg-white/30 dark:bg-surface-950/30 backdrop-blur-sm">
+          <div id="swagger-ui-mount" class="p-6 swagger-modern shadow-inner"></div>
+        </SplitterPanel>
+      </Splitter>
+
+      <!-- Full width editor when preview is hidden -->
+      <div v-else ref="editorContainer" class="h-full w-full animate-fade-in"></div>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { useProfileStore } from '@/stores/profileStore'
 import jsYaml from 'js-yaml'
@@ -251,68 +314,6 @@ const deleteProfile = () => {
 }
 </script>
 
-<template>
-  <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-0 dark:bg-surface-950 overflow-hidden">
-    <!-- Toolbar -->
-    <div
-      class="z-10 flex items-center justify-between border-b border-white/10 bg-white/50 px-4 py-2 backdrop-blur-md dark:bg-surface-900/50">
-      <div class="flex items-center gap-4">
-        <div
-          class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-100/50 dark:bg-surface-800/50 border border-white/10">
-          <i class="pi pi-file text-primary"></i>
-          <div v-if="!isRenaming" @click="startRenaming" class="flex items-center gap-2 cursor-pointer group">
-            <span class="font-mono text-sm font-medium text-surface-700 dark:text-surface-200">
-              {{ currentProfile ? currentProfile.name : 'scratchpad.yaml' }}
-            </span>
-            <i v-if="currentProfile"
-              class="pi pi-pencil text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
-          </div>
-          <div v-else class="flex items-center">
-            <InputText v-model="newName" size="small" class="h-6 font-mono text-xs glass-input-mini"
-              @keyup.enter="saveName" @blur="saveName" autofocus />
-          </div>
-        </div>
-
-        <div class="h-4 w-[1px] bg-surface-200 dark:bg-surface-700"></div>
-
-        <div class="flex items-center gap-1">
-          <Button v-tooltip="'Copy Content'" icon="pi pi-copy" size="small" severity="secondary" text rounded
-            class="hover:bg-primary/10 transition-all duration-300" @click="copyToClipboard" />
-          <Button v-tooltip="'Reset Spec'" icon="pi pi-refresh" size="small" severity="secondary" text rounded
-            class="hover:bg-orange-500/10 hover:text-orange-500 transition-all duration-300" @click="resetSpec" />
-          <Button v-if="currentProfile" v-tooltip="'Delete Profile'" icon="pi pi-trash" size="small"
-            severity="secondary" text rounded class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300"
-            @click="deleteProfile" />
-        </div>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <Button :icon="showPreview ? 'ri-layout-right-2-line' : 'ri-layout-column-line'" size="small"
-          :severity="showPreview ? 'primary' : 'secondary'" class="text-xs transition-all duration-500"
-          @click="showPreview = !showPreview" />
-      </div>
-    </div>
-
-    <Message v-if="mountError" severity="error" class="m-2 rounded-xl">{{ mountError }}</Message>
-
-    <!-- Editor & Preview -->
-    <div class="flex-1 relative overflow-hidden">
-      <Splitter v-if="showPreview" class="h-full border-none bg-transparent" stateKey="openapi-editor-splitter"
-        stateStorage="local">
-        <SplitterPanel :size="50" :minSize="20">
-          <div ref="editorContainer" class="h-full w-full"></div>
-        </SplitterPanel>
-        <SplitterPanel :size="50" :minSize="20"
-          class="overflow-y-auto bg-white/30 dark:bg-surface-950/30 backdrop-blur-sm">
-          <div id="swagger-ui-mount" class="p-6 swagger-modern shadow-inner"></div>
-        </SplitterPanel>
-      </Splitter>
-
-      <!-- Full width editor when preview is hidden -->
-      <div v-else ref="editorContainer" class="h-full w-full animate-fade-in"></div>
-    </div>
-  </div>
-</template>
 
 <style scoped>
 @reference "@/assets/main.css";
@@ -356,91 +357,63 @@ const deleteProfile = () => {
   font-family: var(--p-font-family);
 }
 
-.swagger-modern {
-  @apply rounded-tl-3xl;
-}
-
-:deep(.swagger-ui .info ) {
-  @apply p-6 bg-surface-100/50 dark:bg-surface-800/50 rounded-3xl border-b border-white/10;
+:deep(.swagger-ui .info) {
+  @apply p-4 bg-surface-100/50 dark:bg-surface-800/50 rounded-2xl;
 }
 
 :deep(.swagger-ui .info .title) {
-  @apply font-black tracking-tight text-primary text-3xl mb-4;
+  @apply text-2xl font-bold mb-2 text-primary;
 }
 
-:deep(.swagger-ui .info p) {
-  @apply text-surface-700 dark:text-surface-300 mb-4;
-}
-
-:deep(.swagger-ui .opblock) {
-  @apply border-none shadow-sm rounded-xl overflow-hidden mb-4 transition-transform hover:scale-[1.01] active:scale-[0.99];
-}
-
-:deep(.swagger-ui .opblock .opblock-summary) {
-  @apply py-3 px-4;
-}
-
-:deep(.swagger-ui .opblock-tag) {
-  @apply bg-primary/10 text-primary rounded-2xl font-medium;
-}
-
-:deep(.swagger-ui .opblock .opblock-section-header) {
-  @apply bg-surface-100/50 dark:bg-surface-800/50 border-b border-white/10 text-lg font-semibold;
-}
-
-:deep(.swagger-ui .opblock-body select) {
-  @apply bg-transparent border border-white/20 rounded-md px-2 py-1 text-sm focus:ring-2 focus:ring-primary focus:border-primary;
+:deep(.swagger-ui .info .description p) {
+  @apply text-sm text-surface-700 dark:text-surface-300;
 }
 
 :deep(.swagger-ui .scheme-container) {
-  @apply bg-transparent shadow-none p-0 mb-6;
+  @apply bg-surface-100/50 dark:bg-surface-800/50 rounded-lg;
 }
 
-:deep(.swagger-ui .model-box) {
-  @apply bg-surface-50 dark:bg-surface-900/50 rounded-xl p-4 border border-white/5;
+:deep(.swagger-ui .dialog-ux .backdrop-ux) {
+  @apply bg-black/50 backdrop-blur-sm;
 }
 
-/* Dark mode specific overrides for Swagger UI */
-:root.p-dark :deep(.swagger-ui .info .title),
-:root.p-dark :deep(.swagger-ui .info li),
-:root.p-dark :deep(.swagger-ui .info p),
-:root.p-dark :deep(.swagger-ui .info table),
-:root.p-dark :deep(.swagger-ui .opblock-tag),
-:root.p-dark :deep(.swagger-ui .opblock .opblock-summary-operation-id),
-:root.p-dark :deep(.swagger-ui .opblock .opblock-summary-path),
-:root.p-dark :deep(.swagger-ui .opblock .opblock-summary-description),
-:root.p-dark :deep(.swagger-ui .tab li),
-:root.p-dark :deep(.swagger-ui .response-col_status),
-:root.p-dark :deep(.swagger-ui .response-col_links),
-:root.p-dark :deep(.swagger-ui .parameter__name),
-:root.p-dark :deep(.swagger-ui .parameter__type),
-:root.p-dark :deep(.swagger-ui .parameter__deprecated),
-:root.p-dark :deep(.swagger-ui .parameter__in),
-:root.p-dark :deep(.swagger-ui table thead tr td),
-:root.p-dark :deep(.swagger-ui table thead tr th),
-:root.p-dark :deep(.swagger-ui .model-box),
-:root.p-dark :deep(.swagger-ui .model),
-:root.p-dark :deep(.swagger-ui .model-title),
-:root.p-dark :root.p-dark :deep(.swagger-ui .opblock-description-wrapper p),
-:root.p-dark :deep(.swagger-ui .responses-inner h4),
-:root.p-dark :deep(.swagger-ui .responses-inner h5) {
-  color: var(--p-text-color);
+:deep(.swagger-ui .dialog-ux .modal-ux) {
+  @apply bg-surface-100/90 dark:bg-surface-800/90 rounded-lg shadow-lg border border-white/10;
 }
 
-:root.p-dark :deep(.swagger-ui .opblock-section-header) {
-  background: var(--p-surface-800);
-  color: var(--p-text-color);
+:deep(.swagger-ui .dialog-ux .modal-ux-header) {
+  @apply border-b border-surface-600/10 dark:border-white/10 mb-4;
 }
 
-:root.p-dark :deep(.swagger-ui .model-container) {
-  background: var(--p-surface-900);
+:deep(.swagger-ui .dialog-ux .modal-ux-header h3) {
+  @apply text-lg font-semibold text-surface-800 dark:text-surface-200;
 }
 
-:root.p-dark :deep(.swagger-ui section.models) {
-  @apply border border-white/5 rounded-2xl overflow-hidden mt-8;
+:deep(.swagger-ui .dialog-ux .modal-ux-content h4) {
+  @apply text-sm font-medium text-surface-700 dark:text-surface-300 mb-2;
 }
 
-:root.p-dark :deep(.swagger-ui section.models h4) {
-  color: var(--p-text-color);
+:deep(.swagger-ui label) {
+  @apply text-sm text-surface-700 dark:text-surface-300;
+}
+
+:deep(.swagger-ui input[type=text]) {
+  @apply bg-transparent border border-surface-300 dark:border-surface-600 rounded-md px-2 py-1 text-sm text-surface-900 dark:text-surface-100 focus:ring-2 focus:ring-primary focus:outline-none;
+}
+
+:deep(.swagger-ui .btn) {
+  @apply text-white mx-2;
+}
+
+:deep(.swagger-ui .dialog-ux .modal-ux-header .close-modal) {
+  @apply text-surface-500 dark:text-surface-400 hover:text-surface-700 dark:hover:text-surface-200 transition-colors duration-300;
+}
+
+:deep(.swagger-ui .opblock-tag) {
+  @apply bg-surface-200/50 dark:bg-surface-700/50 text-surface-800 dark:text-surface-200 rounded-tl-lg rounded-tr-lg;
+}
+
+:deep(.swagger-ui .opblock-tag small) {
+  @apply text-xs text-surface-600 dark:text-surface-400;
 }
 </style>

@@ -33,7 +33,7 @@
       <!-- Sidebar -->
       <aside :class="[
         'z-50 flex flex-col transition-all duration-500 ease-in-out border-r border-white/10 backdrop-blur-xl bg-white/40 dark:bg-surface-900/40',
-        isLargeScreen ? (sidebarOpen ? 'w-72 translate-x-0' : 'w-0 -translate-x-full opacity-0') : (sidebarOpen ? 'fixed inset-y-0 left-0 w-72 translate-x-0' : 'fixed inset-y-0 left-0 w-72 -translate-x-full'),
+        isLargeScreen ? (sidebarOpen ? 'w-72 translate-x-0' : 'w-0 -translate-x-full opacity-0 z-[-1]') : (sidebarOpen ? 'fixed inset-y-0 left-0 w-72 translate-x-0' : 'fixed inset-y-0 left-0 w-72 -translate-x-full'),
       ]">
         <div class="flex h-full flex-col p-4 overflow-y-auto overflow-x-hidden min-w-[18rem]">
           <div class="mb-6 flex items-center justify-between px-2 lg:hidden">
@@ -121,14 +121,19 @@
             'relative overflow-hidden rounded-xl transition-all duration-300',
             isDragging ? 'ring-2 ring-primary bg-primary/5' : 'ring-1 ring-surface-200 dark:ring-surface-700'
           ]">
-            <Textarea v-model="newProfileSpec" rows="12"
-              class="w-full border-none bg-transparent font-mono text-sm focus:ring-0 p-4"
-              :placeholder="isDragging ? 'Drop it here!' : 'Paste your spec or drop a file here...'" />
+            <div ref="createEditorContainer" class="h-80 w-full font-mono text-sm p-0 bg-transparent"></div>
             <div v-if="isDragging"
-              class="absolute inset-0 flex items-center justify-center bg-primary/10 pointer-events-none">
+              class="absolute inset-0 flex items-center justify-center bg-primary/10 pointer-events-none z-10">
               <div class="flex flex-col items-center gap-2 animate-bounce">
                 <i class="pi pi-cloud-upload text-4xl text-primary"></i>
                 <span class="font-bold text-primary">Drop to Import</span>
+              </div>
+            </div>
+            <div v-if="!newProfileSpec && !isDragging" 
+              class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
+              <div class="flex flex-col items-center gap-2">
+                <i class="pi pi-pencil text-2xl"></i>
+                <span class="text-sm">Paste your spec or drop a file here...</span>
               </div>
             </div>
           </div>
@@ -147,13 +152,13 @@
 
 <script setup lang="ts">
 import { useProfileStore } from '@/stores/profileStore'
+import * as monaco from 'monaco-editor'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
 import type { MenuItem } from 'primevue/menuitem'
 import PanelMenu from 'primevue/panelmenu'
-import Textarea from 'primevue/textarea'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { RouterView, useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -167,21 +172,10 @@ const newProfileSpec = ref('')
 const newProfileName = ref('')
 const isDragging = ref(false)
 
-const checkScreenSize = () => {
-  isLargeScreen.value = window.innerWidth >= 1024
-  if (!isLargeScreen.value) {
-    sidebarOpen.value = false
-  }
-}
+const isDarkMode = ref(document.documentElement.classList.contains('p-dark'))
 
-onMounted(() => {
-  checkScreenSize()
-  window.addEventListener('resize', checkScreenSize)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', checkScreenSize)
-})
+const createEditorContainer = ref<HTMLElement | null>(null)
+let createEditor: monaco.editor.IStandaloneCodeEditor | null = null
 
 const toggleSidebar = () => {
   sidebarOpen.value = !sidebarOpen.value
@@ -347,8 +341,6 @@ const isRouteActive = (item: any) => {
   return false
 }
 
-const isDarkMode = ref(document.documentElement.classList.contains('p-dark'))
-
 const toggleDarkMode = () => {
   const dark = document.documentElement.classList.toggle('p-dark')
   isDarkMode.value = dark
@@ -361,7 +353,11 @@ const handleDrop = (e: DragEvent) => {
   if (file) {
     const reader = new FileReader()
     reader.onload = (event) => {
-      newProfileSpec.value = event.target?.result as string
+      const content = event.target?.result as string
+      newProfileSpec.value = content
+      if (createEditor) {
+        createEditor.setValue(content)
+      }
     }
     reader.readAsText(file)
   }
@@ -378,6 +374,64 @@ const saveNewProfile = () => {
     alert(e.message)
   }
 }
+
+watch(createDialogVisible, async (visible) => {
+  if (visible) {
+    await nextTick()
+    if (createEditorContainer.value) {
+      if (createEditor) {
+        createEditor.dispose()
+      }
+      createEditor = monaco.editor.create(createEditorContainer.value, {
+        value: newProfileSpec.value || '',
+        language: 'yaml',
+        theme: isDarkMode.value ? 'vs-dark' : 'vs',
+        automaticLayout: true,
+        minimap: { enabled: false },
+        fontSize: 13,
+        scrollBeyondLastLine: false,
+        wordWrap: 'on',
+        padding: { top: 12 },
+        scrollbar: {
+          verticalScrollbarSize: 8,
+          horizontalScrollbarSize: 8,
+        }
+      })
+
+      createEditor.onDidChangeModelContent(() => {
+        newProfileSpec.value = createEditor?.getValue() || ''
+      })
+    }
+  } else {
+    if (createEditor) {
+      createEditor.dispose()
+      createEditor = null
+    }
+  }
+})
+
+watch(isDarkMode, (dark) => {
+  if (createEditor) {
+    monaco.editor.setTheme(dark ? 'vs-dark' : 'vs')
+  }
+})
+
+const checkScreenSize = () => {
+  isLargeScreen.value = window.innerWidth >= 1024
+  if (!isLargeScreen.value) {
+    sidebarOpen.value = false
+  }
+}
+
+onMounted(() => {
+  checkScreenSize()
+  window.addEventListener('resize', checkScreenSize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkScreenSize)
+})
+
 </script>
 
 <style scoped>
