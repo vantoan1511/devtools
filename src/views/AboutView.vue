@@ -105,6 +105,12 @@ const features = [
     color: 'text-red-500'
   },
   {
+    title: 'Mock Data Generator',
+    description: 'Generate realistic test data using Faker.js and export to JSON, CSV, or SQL formats.',
+    icon: 'pi pi-database',
+    color: 'text-amber-500'
+  },
+  {
     title: 'Modern UI/UX',
     description: 'Built with a glassmorphism design, supporting both light and dark modes seamlessly.',
     icon: 'pi pi-desktop',

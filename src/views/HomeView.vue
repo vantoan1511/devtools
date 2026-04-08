@@ -143,6 +143,13 @@ const tools: Tool[] = [
     icon: 'pi pi-id-card',
     route: '/uuid-generator',
     color: 'text-pink-500'
+  },
+  {
+    title: 'Mock Generator',
+    description: 'Generate realistic mock data for testing and development in JSON, CSV, or SQL.',
+    icon: 'pi pi-database',
+    route: '/mock-generator',
+    color: 'text-amber-500'
   }
 ]
 </script>

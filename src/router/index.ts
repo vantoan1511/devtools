@@ -63,6 +63,11 @@ const router = createRouter({
       name: 'uuid-generator',
       component: () => import('../views/UUIDGeneratorView.vue'),
     },
+    {
+      path: '/mock-generator',
+      name: 'mock-generator',
+      component: () => import('../views/MockDataGeneratorView.vue'),
+    },
   ],
 })
 

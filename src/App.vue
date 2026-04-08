@@ -269,6 +269,15 @@ const menuItems = computed<MenuItem[]>(() => {
         if (!isLargeScreen.value) sidebarOpen.value = false
       }
     },
+    {
+      label: 'Mock Generator',
+      icon: 'pi pi-database',
+      path: '/mock-generator',
+      command: () => {
+        router.push('/mock-generator')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    },
 
     // ENCODING & SECURITY
     { label: 'Security & Encoding', type: 'header' },
