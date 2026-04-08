@@ -188,12 +188,12 @@ const decodeToken = () => {
       return Buffer.from(base64, 'base64').toString('utf8')
     }
 
-    const headerJson = base64UrlDecode(parts[0])
-    const payloadJson = base64UrlDecode(parts[1])
+    const headerJson = base64UrlDecode(parts[0] || '')
+    const payloadJson = base64UrlDecode(parts[1] || '')
     
     headerObj.value = JSON.parse(headerJson)
     payloadObj.value = JSON.parse(payloadJson)
-    signatureHex.value = parts[2]
+    signatureHex.value = parts[2] || ''
 
   } catch (e) {
     error.value = 'Decoding failed: ' + (e as Error).message

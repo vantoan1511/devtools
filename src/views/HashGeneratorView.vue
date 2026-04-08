@@ -295,6 +295,6 @@ onMounted(() => {
 }
 
 :deep(.p-card-body) {
-  @apply p-4 !;
+  @apply p-4!;
 }
 </style>

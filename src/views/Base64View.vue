@@ -349,11 +349,11 @@ const formatSize = (bytes: number) => {
 }
 
 :deep(.p-card-body) {
-  @apply flex-1 flex flex-col p-4 ! h-full;
+  @apply flex-1 flex flex-col p-4! h-full;
 }
 
 :deep(.p-card-content) {
-  @apply flex-1 flex flex-col p-0 ! h-full min-h-0;
+  @apply flex-1 flex flex-col p-0! h-full min-h-0;
 }
 
 .p-button-xs {
