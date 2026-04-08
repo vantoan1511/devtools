@@ -100,7 +100,7 @@ const features = [
   },
   {
     title: 'Security Tools',
-    description: 'Generate hashes (MD5, SHA) and encode/decode Base64 or URLs securely.',
+    description: 'Generate hashes (MD5, SHA), UUIDs (v4, v7), and encode/decode Base64 or URLs securely.',
     icon: 'pi pi-shield',
     color: 'text-red-500'
   },

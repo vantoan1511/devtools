@@ -136,6 +136,13 @@ const tools: Tool[] = [
     icon: 'pi pi-link',
     route: '/url-encoder',
     color: 'text-teal-500'
+  },
+  {
+    title: 'UUID Generator',
+    description: 'Generate RFC 4122 compliant UUIDs (v1, v4, v7) with custom formatting.',
+    icon: 'pi pi-id-card',
+    route: '/uuid-generator',
+    color: 'text-pink-500'
   }
 ]
 </script>

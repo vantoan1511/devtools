@@ -317,6 +317,16 @@ const menuItems = computed<MenuItem[]>(() => {
   })
 
   items.push({
+    label: 'UUID Generator',
+    icon: 'pi pi-id-card',
+    path: '/uuid-generator',
+    command: () => {
+      router.push('/uuid-generator')
+      if (!isLargeScreen.value) sidebarOpen.value = false
+    }
+  })
+
+  items.push({
     label: 'About',
     icon: 'pi pi-info-circle',
     path: '/about',

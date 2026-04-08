@@ -58,6 +58,11 @@ const router = createRouter({
       name: 'jwt-debugger',
       component: () => import('../views/JWTDebuggerView.vue'),
     },
+    {
+      path: '/uuid-generator',
+      name: 'uuid-generator',
+      component: () => import('../views/UUIDGeneratorView.vue'),
+    },
   ],
 })
 
