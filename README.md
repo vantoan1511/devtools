@@ -1,86 +1,93 @@
 # DevTool+ 🛠️
 
-**DevTool+** is a modern, high-performance web-based suite of development utilities designed to streamline your daily workflow. Built with **Vue 3**, **Vite**, and **Tailwind CSS**, it offers a polished, responsive, and blazing-fast experience for developers.
+**DevTool+** is a high-performance, professional-grade suite of web-based development utilities designed to streamline your daily workflow. Built with **Vue 3**, **Vite**, and **Tailwind CSS v4**, it offers a polished, responsive, and blazing-fast experience for modern developers.
 
-![DevTool+ Banner](https://img.shields.io/badge/DevTool+-Modern_Developer_Utilities-6366f1?style=for-the-badge)
+[![DevTool+ Banner](https://img.shields.io/badge/DevTool+-Modern_Developer_Utilities-6366f1?style=for-the-badge)](https://devtoo1s.vercel.app/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Vue 3](https://img.shields.io/badge/Vue-3.5-42b883?style=flat-square&logo=vue.js)](https://vuejs.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.0-646cff?style=flat-square&logo=vite)](https://vitejs.dev/)
 
 **🚀 Live Demo**: [https://devtoo1s.vercel.app/](https://devtoo1s.vercel.app/)
 
-## ✨ Features
+---
 
-### 📝 OpenAPI Editor
-A full-featured editor for designing and previewing API specifications.
-- **Profiles**: Manage up to 5 named profiles for different projects.
-- **Monaco Editor**: High-performance editing with syntax highlighting and auto-completion.
-- **Live Preview**: Real-time rendering with Swagger UI.
-- **Drag & Drop**: Import specs instantly by dropping YAML/JSON files.
+## 🛡️ Privacy First
+We believe your data is your own. **DevTool+ processes everything locally in your browser.** No data is ever sent to a server, making it safe to process sensitive logs, keys, or proprietary code.
 
-### 🔍 RegEx Tester
-Real-time regular expression testing with highlighting and group extraction.
-- **Live Match Highlighting**: See matches as you type.
-- **Detailed Group Info**: Inspect captured groups and their indices.
-- **Flag Support**: Global, Case-insensitive, Multiline, etc.
+---
 
-### 🔄 Comparison Tool
-Compare two pieces of text and see the differences side-by-side or inline.
-- **Visual Diff**: Clear highlighting of additions and deletions.
-- **Synced Scrolling**: Easily track changes in large documents.
+## ✨ Features & Tools
 
-### 🔢 JSON Formatter
-Validate, format, and minify JSON data.
-- **Beautify**: Make messy JSON readable.
-- **Validation**: Identify syntax errors instantly.
+### 🌐 API Development
+*   **OpenAPI Editor**: A full-featured editor for designing API specifications with live Swagger UI rendering and multi-profile support.
+*   **JWT Debugger**: Instantly decode and inspect JSON Web Tokens with automated claim analysis and expiration monitoring.
 
-### 🔐 Base64 Tool
-Encode and decode strings and files to/from Base64 format.
-- **File Support**: Drag and drop files to encode.
-- **Data URL**: Generate and decode data URLs for images.
+### 📝 Data & Text
+*   **JSON Formatter**: Beautify, minify, and validate JSON structures with real-time error detection and key sorting.
+*   **Comparison Tool**: Advanced side-by-side or unified diffing for text and files with ignore-whitespace support.
+*   **RegEx Tester**: Real-time regular expression debugging with match highlighting, capture group extraction, and a pattern library.
+*   **Mock Generator**: Generate realistic test data (JSON, CSV, SQL) powered by Faker.js.
 
-### 🧬 Hash Generator
-Generate MD5, SHA-1, SHA-256, and SHA-512 hashes.
-- **Text & Files**: Generate hashes from strings or uploaded files.
+### 🔐 Security & Encoding
+*   **Base64 Tool**: Securely encode and decode strings and files to/from Base64/DataURL formats.
+*   **URL Encoder**: Component and Full URI encoding modes with a detailed URL structural inspector.
+*   **Hash Generator**: Compute secure hashes (MD5, SHA-1, SHA-256, SHA-512, SHA-3, RIPEMD-160) for text and files.
+*   **UUID Generator**: Bulk generate RFC 4122 compliant UUIDs (v1, v4, v7) with custom formatting options.
 
-### 🎨 Modern UI/UX
-- **Glassmorphism Design**: A sleek, frosted-glass aesthetic for a premium feel.
-- **Responsive Sidebar**: Pinned on large screens, overlay on smaller devices.
-- **Dark Mode Support**: Seamless transition between light and dark themes.
+---
+
+## 🎨 Design Philosophy
+*   **Glassmorphism**: A sleek, frosted-glass aesthetic for a premium, modern feel.
+*   **Intuitive Navigation**: Grouped sidebar for logical tool discovery and a high-impact dashboard.
+*   **Performance**: Leverages **Monaco Editor** (the engine behind VS Code) for heavy-duty text manipulation.
+*   **Dark Mode**: Native, high-contrast dark theme optimized for developer eye comfort.
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Vue 3](https://vuejs.org/) (Composition API)
-- **Build Tool**: [Vite](https://vite.dev/)
-- **UI System**: [PrimeVue v4](https://primevue.org/) & [Tailwind CSS v4](https://tailwindcss.com/)
-- **Editor Core**: [Monaco Editor](https://microsoft.github.io/monaco-editor/)
-- **API Preview**: [Swagger UI](https://swagger.io/tools/swagger-ui/)
-- **State Management**: [Pinia](https://pinia.vuejs.org/)
-- **Icons**: [PrimeIcons](https://primeicons.org/) & [Remix Icon](https://remixicon.com/)
+| Category | Technology |
+| :--- | :--- |
+| **Framework** | [Vue 3](https://vuejs.org/) (Composition API) |
+| **Build Tool** | [Vite 7](https://vite.dev/) |
+| **UI Components** | [PrimeVue v4](https://primevue.org/) (Aura Preset) |
+| **Styling** | [Tailwind CSS v4](https://tailwindcss.com/) |
+| **Editor** | [Monaco Editor](https://microsoft.github.io/monaco-editor/) |
+| **Mocking** | [Faker.js](https://fakerjs.dev/) |
+| **Crypto** | [CryptoJS](https://cryptojs.gitbook.io/docs/) & [Buffer](https://github.com/feross/buffer) |
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v20.19.0 or higher recommended)
-- npm (v10 or higher)
+- **Node.js**: v20.19.0 or higher
+- **npm**: v10.0.0 or higher
 
 ### Installation
 ```bash
+# Clone the repository
 git clone https://github.com/vantoan1511/devtool.git
+
+# Enter the directory
 cd devtool
+
+# Install dependencies
 npm install
 ```
 
-### Development
-```bash
-npm run dev
-```
+### Commands
+| Command | Description |
+| :--- | :--- |
+| `npm run dev` | Start development server with hot-reload |
+| `npm run build` | Build the application for production |
+| `npm run preview` | Locally preview the production build |
+| `npm run type-check` | Run TypeScript validation |
 
-### Production Build
-```bash
-npm run build
-```
+---
 
 ## 📜 License
-
 This project is licensed under the [MIT License](LICENSE).
 
 ---
-Built with ❤️ for developers by the DevTool+ team.
+Built with ❤️ for developers by **Toan Nguyen**.
