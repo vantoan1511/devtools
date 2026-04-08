@@ -17,7 +17,7 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <Button as="a" href="https://github.com/vantoan1511/devtools" target="_blank" rel="noopener noreferrer"
+        <Button as="a" href="https://github.com/vantoan1511/devtool" target="_blank" rel="noopener noreferrer"
           icon="pi pi-github" aria-label="Star on GitHub" rounded severity="secondary" text
           class="hover:bg-primary/10 transition-colors duration-300" v-tooltip.bottom="'Star on GitHub'" />
         <Button :icon="isDarkMode ? 'pi pi-sun' : 'pi pi-moon'" aria-label="Toggle Dark Mode" rounded
@@ -47,8 +47,14 @@
           <nav class="flex-1">
             <PanelMenu :model="menuItems" class="w-full border-none bg-transparent">
               <template #item="{ item, props, hasSubmenu, active }">
+                <!-- Group Header -->
+                <div v-if="item.type === 'header'" 
+                  class="px-4 pt-6 pb-2 text-[10px] font-black uppercase tracking-[0.2em] text-surface-400 dark:text-surface-500 select-none">
+                  {{ item.label }}
+                </div>
+
                 <!-- Header Item (Branch with Submenu) -->
-                <div v-if="hasSubmenu"
+                <div v-else-if="hasSubmenu"
                   class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 cursor-pointer mb-1 mx-1 text-surface-600 dark:text-surface-400 hover:text-primary hover:bg-primary/10 select-none group"
                   v-bind="props.action">
                   <i :class="[item.icon, 'text-lg transition-transform duration-300 group-hover:scale-110']"></i>
@@ -73,10 +79,11 @@
 
                 <!-- Generic Action Item -->
                 <a v-else @click="item.command?.({ item, originalEvent: $event })" :class="[
-                  'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 cursor-pointer mb-1 mx-1',
-                  'hover:bg-primary/10 hover:translate-x-1 text-surface-600 dark:text-surface-400 hover:text-primary'
+                  'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-300 cursor-pointer mb-1 mx-1 text-surface-600 dark:text-surface-400',
+                  item.label === 'About' ? 'mt-4 border-t border-surface-200/10 pt-4' : '',
+                  'hover:bg-primary/10 hover:translate-x-1 hover:text-primary'
                 ]" v-ripple>
-                  <i :class="[item.icon, 'text-lg transition-transform duration-300 group-hover:scale-110']"></i>
+                  <i v-if="item.icon" :class="[item.icon, 'text-lg transition-transform duration-300 group-hover:scale-110']"></i>
                   <span>{{ item.label }}</span>
                 </a>
               </template>
@@ -87,7 +94,7 @@
             <div
               class="p-4 rounded-2xl bg-gradient-to-br from-primary/5 to-primary-emphasis/5 border border-primary/10">
               <p class="text-[10px] font-bold text-primary/60 uppercase tracking-tighter">Current Version</p>
-              <p class="text-xs font-mono text-surface-500">v1.1.1</p>
+              <p class="text-xs font-mono text-surface-500">v1.1.2</p>
             </div>
           </div>
         </div>
@@ -185,7 +192,7 @@ const toggleSidebar = () => {
 }
 
 const menuItems = computed<MenuItem[]>(() => {
-  const items: MenuItem[] = [
+  const items: any[] = [
     {
       label: 'Home',
       icon: 'pi pi-home',
@@ -194,32 +201,11 @@ const menuItems = computed<MenuItem[]>(() => {
         router.push('/')
         if (!isLargeScreen.value) sidebarOpen.value = false
       }
-    }
-  ]
-
-  if (profileStore.profiles.length === 0) {
-    items.push({
-      label: 'OpenAPI Editor',
-      icon: 'pi pi-pencil',
-      path: '/openapi',
-      command: () => {
-        router.push('/openapi')
-        if (!isLargeScreen.value) sidebarOpen.value = false
-      },
-      items: [
-        {
-          label: 'New Profile',
-          icon: 'pi pi-plus',
-          visible: () => profileStore.profiles.length < 5,
-          command: () => {
-            createDialogVisible.value = true
-            if (!isLargeScreen.value) sidebarOpen.value = false
-          }
-        }
-      ]
-    })
-  } else {
-    items.push({
+    },
+    
+    // API TOOLS
+    { label: 'API Development', type: 'header' },
+    {
       label: 'OpenAPI Editor',
       icon: 'pi pi-pencil',
       expanded: true,
@@ -243,98 +229,97 @@ const menuItems = computed<MenuItem[]>(() => {
           }
         }
       ]
-    })
-  }
+    },
+    {
+      label: 'JWT Debugger',
+      icon: 'pi pi-shield',
+      path: '/jwt-debugger',
+      command: () => {
+        router.push('/jwt-debugger')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    },
 
-  items.push({
-    label: 'JSON Formatter',
-    icon: 'pi pi-database',
-    path: '/json-formatter',
-    command: () => {
-      router.push('/json-formatter')
-      if (!isLargeScreen.value) sidebarOpen.value = false
-    }
-  })
+    // DATA & TEXT
+    { label: 'Data & Text', type: 'header' },
+    {
+      label: 'JSON Formatter',
+      icon: 'pi pi-database',
+      path: '/json-formatter',
+      command: () => {
+        router.push('/json-formatter')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    },
+    {
+      label: 'Comparison Tool',
+      icon: 'pi pi-objects-column',
+      path: '/comparison',
+      command: () => {
+        router.push('/comparison')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    },
+    {
+      label: 'RegEx Tester',
+      icon: 'pi pi-filter',
+      path: '/regex-tester',
+      command: () => {
+        router.push('/regex-tester')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    },
 
-  items.push({
-    label: 'Base64 Tool',
-    icon: 'pi pi-lock',
-    path: '/base64',
-    command: () => {
-      router.push('/base64')
-      if (!isLargeScreen.value) sidebarOpen.value = false
-    }
-  })
+    // ENCODING & SECURITY
+    { label: 'Security & Encoding', type: 'header' },
+    {
+      label: 'Base64 Tool',
+      icon: 'pi pi-lock',
+      path: '/base64',
+      command: () => {
+        router.push('/base64')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    },
+    {
+      label: 'URL Encoder',
+      icon: 'pi pi-link',
+      path: '/url-encoder',
+      command: () => {
+        router.push('/url-encoder')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    },
+    {
+      label: 'Hash Generator',
+      icon: 'ri-fingerprint-line',
+      path: '/hash-generator',
+      command: () => {
+        router.push('/hash-generator')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    },
+    {
+      label: 'UUID Generator',
+      icon: 'pi pi-id-card',
+      path: '/uuid-generator',
+      command: () => {
+        router.push('/uuid-generator')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    },
 
-  items.push({
-    label: 'Hash Generator',
-    icon: 'ri-fingerprint-line',
-    path: '/hash-generator',
-    command: () => {
-      router.push('/hash-generator')
-      if (!isLargeScreen.value) sidebarOpen.value = false
+    // SYSTEM
+    {
+      label: 'About',
+      icon: 'pi pi-info-circle',
+      path: '/about',
+      command: () => {
+        router.push('/about')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
     }
-  })
-
-  items.push({
-    label: 'Comparison Tool',
-    icon: 'pi pi-objects-column',
-    path: '/comparison',
-    command: () => {
-      router.push('/comparison')
-      if (!isLargeScreen.value) sidebarOpen.value = false
-    }
-  })
-
-  items.push({
-    label: 'RegEx Tester',
-    icon: 'pi pi-filter',
-    path: '/regex-tester',
-    command: () => {
-      router.push('/regex-tester')
-      if (!isLargeScreen.value) sidebarOpen.value = false
-    }
-  })
-
-  items.push({
-    label: 'URL Encoder',
-    icon: 'pi pi-link',
-    path: '/url-encoder',
-    command: () => {
-      router.push('/url-encoder')
-      if (!isLargeScreen.value) sidebarOpen.value = false
-    }
-  })
-
-  items.push({
-    label: 'JWT Debugger',
-    icon: 'pi pi-shield',
-    path: '/jwt-debugger',
-    command: () => {
-      router.push('/jwt-debugger')
-      if (!isLargeScreen.value) sidebarOpen.value = false
-    }
-  })
-
-  items.push({
-    label: 'UUID Generator',
-    icon: 'pi pi-id-card',
-    path: '/uuid-generator',
-    command: () => {
-      router.push('/uuid-generator')
-      if (!isLargeScreen.value) sidebarOpen.value = false
-    }
-  })
-
-  items.push({
-    label: 'About',
-    icon: 'pi pi-info-circle',
-    path: '/about',
-    command: () => {
-      router.push('/about')
-      if (!isLargeScreen.value) sidebarOpen.value = false
-    }
-  })
+  ]
 
   return items
 })
