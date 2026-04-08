@@ -67,7 +67,7 @@ We believe your data is your own. **DevTool+ processes everything locally in you
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/vantoan1511/devtool.git
+git clone https://github.com/vantoan1511/devtools.git
 
 # Enter the directory
 cd devtool
