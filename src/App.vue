@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen flex-col bg-surface-50 dark:bg-surface-950 transition-colors duration-500">
+  <div class="flex h-screen flex-col bg-surface-50 dark:bg-surface-950 transition-colors duration-500 overflow-hidden">
     <Toast />
     <ConfirmDialog></ConfirmDialog>
     <!-- Top Header -->
@@ -105,7 +105,7 @@
         'flex-1 flex flex-col overflow-auto transition-all duration-500 ease-in-out',
         isLargeScreen && sidebarOpen ? 'ml-0' : ''
       ]">
-        <div class="flex-1 relative">
+        <div class="flex-1 relative flex flex-col">
           <RouterView v-slot="{ Component }">
             <Transition name="page" mode="out-in">
               <component :is="Component" />
