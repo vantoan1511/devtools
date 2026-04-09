@@ -14,10 +14,10 @@
         <div class="hidden sm:block h-6 w-[1px] bg-surface-200 dark:bg-surface-700 mx-1"></div>
 
         <div class="flex items-center gap-2">
-          <SelectButton v-model="separator" :options="separatorOptions" optionLabel="label" optionValue="value" 
+          <SelectButton v-model="separator" :options="separatorOptions" optionLabel="label" optionValue="value"
             :allowEmpty="false" class="custom-selectbutton" />
-          
-          <SelectButton v-model="casing" :options="casingOptions" optionLabel="label" optionValue="value" 
+
+          <SelectButton v-model="casing" :options="casingOptions" optionLabel="label" optionValue="value"
             :allowEmpty="false" class="custom-selectbutton" />
         </div>
       </div>
@@ -34,9 +34,10 @@
     <div class="flex-1 overflow-auto p-4 md:p-6">
       <div class="max-w-7xl mx-auto h-full flex flex-col gap-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-0">
-          
+
           <!-- Configuration Panel -->
-          <Card class="lg:col-span-1 border-none shadow-sm bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm overflow-hidden">
+          <Card
+            class="lg:col-span-1 border-none shadow-sm bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm overflow-hidden">
             <template #title>
               <div class="flex items-center gap-2 text-base px-2">
                 <i class="pi pi-cog text-primary"></i>
@@ -47,7 +48,8 @@
               <div class="flex flex-col gap-6 p-2">
                 <!-- Advanced Toggles -->
                 <div class="flex flex-col gap-3">
-                  <div class="flex items-center justify-between p-3 rounded-xl bg-surface-100/50 dark:bg-surface-800/50 border border-surface-200 dark:border-surface-700">
+                  <div
+                    class="flex items-center justify-between p-3 rounded-xl bg-surface-100/50 dark:bg-surface-800/50 border border-surface-200 dark:border-surface-700">
                     <div class="flex flex-col">
                       <span class="text-xs font-bold uppercase text-surface-600 dark:text-surface-300">Stop Words</span>
                       <span class="text-[10px] text-surface-500">Remove 'the', 'a', 'is', etc.</span>
@@ -55,7 +57,8 @@
                     <Checkbox v-model="removeStopWords" :binary="true" />
                   </div>
 
-                  <div class="flex items-center justify-between p-3 rounded-xl bg-surface-100/50 dark:bg-surface-800/50 border border-surface-200 dark:border-surface-700">
+                  <div
+                    class="flex items-center justify-between p-3 rounded-xl bg-surface-100/50 dark:bg-surface-800/50 border border-surface-200 dark:border-surface-700">
                     <div class="flex flex-col">
                       <span class="text-xs font-bold uppercase text-surface-600 dark:text-surface-300">No Numbers</span>
                       <span class="text-[10px] text-surface-500">Remove all numeric digits</span>
@@ -67,21 +70,24 @@
                 <!-- Trim Length -->
                 <div class="flex flex-col gap-2">
                   <label class="text-xs font-bold uppercase text-surface-500">Max Length (0 = Unlimited)</label>
-                  <InputNumber v-model="trimLength" :min="0" placeholder="e.g. 50" class="glass-input-number w-full" fluid />
+                  <InputNumber v-model="trimLength" :min="0" placeholder="e.g. 50" class="glass-input-number w-full"
+                    fluid />
                 </div>
 
                 <!-- Custom Replacements -->
                 <div class="flex flex-col gap-3 mt-2">
                   <label class="text-xs font-bold uppercase text-surface-500">Custom Replacements</label>
                   <div class="flex gap-2">
-                    <InputText v-model="newReplacement.from" placeholder="From" size="small" class="flex-1 glass-input-mini" />
-                    <InputText v-model="newReplacement.to" placeholder="To" size="small" class="flex-1 glass-input-mini" />
-                    <Button icon="pi pi-plus" size="small" severity="primary" @click="addReplacement" rounded />
+                    <InputText v-model="newReplacement.from" placeholder="From" size="small" class="glass-input-mini" />
+                    <InputText v-model="newReplacement.to" placeholder="To" size="small" class="glass-input-mini" />
+                    <!-- <Button icon="pi pi-plus" severity="primary" @click="addReplacement" rounded /> -->
                   </div>
                   <div class="flex flex-wrap gap-2 mt-2">
-                    <Tag v-for="(rep, index) in customReplacements" :key="index" severity="secondary" rounded class="px-3 py-1 bg-primary/10 border border-primary/20 text-primary">
+                    <Tag v-for="(rep, index) in customReplacements" :key="index" severity="secondary" rounded
+                      class="px-3 py-1 bg-primary/10 border border-primary/20 text-primary">
                       <span class="font-mono text-[10px]">{{ rep.from }} → {{ rep.to }}</span>
-                      <i class="pi pi-times ml-2 cursor-pointer hover:text-red-500" @click="removeReplacement(index)"></i>
+                      <i class="pi pi-times ml-2 cursor-pointer hover:text-red-500"
+                        @click="removeReplacement(index)"></i>
                     </Tag>
                   </div>
                 </div>
@@ -92,7 +98,8 @@
           <!-- Input/Output Panel -->
           <div class="lg:col-span-2 flex flex-col gap-6 h-full min-h-0">
             <!-- Input -->
-            <Card class="flex-1 border-none shadow-sm bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm overflow-hidden group">
+            <Card
+              class="flex-1 border-none shadow-sm bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm overflow-hidden group">
               <template #title>
                 <div class="flex items-center gap-2 text-base px-2">
                   <i class="pi pi-align-left text-primary"></i>
@@ -108,7 +115,8 @@
             </Card>
 
             <!-- Output -->
-            <Card class="flex-1 border-none shadow-sm bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm overflow-hidden">
+            <Card
+              class="flex-1 border-none shadow-sm bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm overflow-hidden">
               <template #title>
                 <div class="flex items-center justify-between text-base px-2">
                   <div class="flex items-center gap-2">
@@ -230,7 +238,7 @@ const slugify = (text: string) => {
 
   // 7. Title Case (Special handling because we need to uppercase after separators)
   if (casing.value === 'titlecase') {
-    result = result.split(sep).map(word => 
+    result = result.split(sep).map(word =>
       word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
     ).join(sep)
   }
@@ -261,7 +269,7 @@ const copyToClipboard = async () => {
   if (!outputText.value) return
   try {
     await navigator.clipboard.writeText(outputText.value)
-    toast.add({ severity: 'info', summary: 'Copied', detail: 'Slugs copied to clipboard', life: 2000 })
+    toast.add({ severity: 'info',summary: 'Copied', detail: 'Slugs copied to clipboard', closable: true, styleClass: 'bg-primary/10 text-primary dark:bg-primary/20 bg-opacity-10 backdrop-blur-sm border-none shadow-sm'})
   } catch (err) {
     console.error('Failed to copy: ', err)
   }
