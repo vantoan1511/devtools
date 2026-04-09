@@ -278,6 +278,15 @@ const menuItems = computed<MenuItem[]>(() => {
         if (!isLargeScreen.value) sidebarOpen.value = false
       }
     },
+    {
+      label: 'Slug Generator',
+      icon: 'pi pi-link',
+      path: '/slug-generator',
+      command: () => {
+        router.push('/slug-generator')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    },
 
     // ENCODING & SECURITY
     { label: 'Security & Encoding', type: 'header' },
@@ -345,6 +354,9 @@ const isRouteActive = (item: any) => {
   if (item.path === '/regex-tester' && route.path === '/regex-tester') return true
   if (item.path === '/url-encoder' && route.path === '/url-encoder') return true
   if (item.path === '/jwt-debugger' && route.path === '/jwt-debugger') return true
+  if (item.path === '/slug-generator' && route.path === '/slug-generator') return true
+  if (item.path === '/uuid-generator' && route.path === '/uuid-generator') return true
+  if (item.path === '/mock-generator' && route.path === '/mock-generator') return true
   return false
 }
 

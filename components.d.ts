@@ -11,9 +11,17 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Button: typeof import('primevue/button')['default']
+    Card: typeof import('primevue/card')['default']
+    Checkbox: typeof import('primevue/checkbox')['default']
     ConfirmDialog: typeof import('primevue/confirmdialog')['default']
+    InputNumber: typeof import('primevue/inputnumber')['default']
+    InputText: typeof import('primevue/inputtext')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SelectButton: typeof import('primevue/selectbutton')['default']
+    Tag: typeof import('primevue/tag')['default']
+    Textarea: typeof import('primevue/textarea')['default']
     Toast: typeof import('primevue/toast')['default']
     ToggleButton: typeof import('primevue/togglebutton')['default']
   }

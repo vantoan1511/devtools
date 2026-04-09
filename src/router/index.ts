@@ -66,9 +66,14 @@ const router = createRouter({
     {
       path: '/mock-generator',
       name: 'mock-generator',
-      component: () => import('../views/MockDataGeneratorView.vue'),
+      component: () => import('../views/MockDataGeneratorView.vue')
     },
-  ],
+    {
+      path: '/slug-generator',
+      name: 'slug-generator',
+      component: () => import('../views/SlugGeneratorView.vue')
+    }
+  ]
 })
 
 export default router

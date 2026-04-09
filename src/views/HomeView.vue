@@ -150,6 +150,13 @@ const tools: Tool[] = [
     icon: 'pi pi-database',
     route: '/mock-generator',
     color: 'text-amber-500'
+  },
+  {
+    title: 'Slug Generator',
+    description: 'Create SEO-friendly, URL-safe slugs with transliteration and bulk generation support.',
+    icon: 'pi pi-link',
+    route: '/slug-generator',
+    color: 'text-blue-400'
   }
 ]
 </script>
