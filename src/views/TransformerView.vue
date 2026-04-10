@@ -23,8 +23,10 @@ const onDragOver = (index: number) => {
   if (draggedIndex.value === null || draggedIndex.value === index) return
 
   const item = selectedSteps.value.splice(draggedIndex.value, 1)[0]
-  selectedSteps.value.splice(index, 0, item)
-  draggedIndex.value = index
+  if (item !== undefined) {
+    selectedSteps.value.splice(index, 0, item)
+    draggedIndex.value = index
+  }
 }
 
 const onDragEnd = () => {
@@ -107,9 +109,12 @@ const removeStep = (index: number) => {
 const moveStep = (index: number, direction: 'up' | 'down') => {
   const newIndex = direction === 'up' ? index - 1 : index + 1
   if (newIndex >= 0 && newIndex < selectedSteps.value.length) {
-    const temp = selectedSteps.value[index]
-    selectedSteps.value[index] = selectedSteps.value[newIndex]
-    selectedSteps.value[newIndex] = temp
+    const currentItem = selectedSteps.value[index]
+    const nextItem = selectedSteps.value[newIndex]
+    if (currentItem !== undefined && nextItem !== undefined) {
+      selectedSteps.value[index] = nextItem
+      selectedSteps.value[newIndex] = currentItem
+    }
   }
 }
 
