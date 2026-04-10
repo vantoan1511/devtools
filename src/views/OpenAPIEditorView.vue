@@ -30,6 +30,8 @@
               class="hover:bg-surface-200 dark:hover:bg-surface-700 text-xs" v-tooltip.bottom="'Download YAML'"/>
           </div>
 
+          <Button v-tooltip.bottom="'Toggle Editor Theme'" :icon="editorTheme === 'vs-dark' ? 'pi pi-moon' : 'pi pi-sun'" size="small" severity="secondary" text rounded
+            class="hover:bg-primary/10 transition-all duration-300" @click="toggleEditorTheme" />
           <Button v-tooltip.bottom="'Copy Content'" icon="pi pi-copy" size="small" severity="secondary" text rounded
             class="hover:bg-primary/10 transition-all duration-300" @click="copyToClipboard" />
           <Button v-tooltip.bottom="'Reset Spec'" icon="pi pi-refresh" size="small" severity="secondary" text rounded
@@ -138,6 +140,7 @@ const newName = ref('')
 const showPreview = ref(true)
 const charCount = ref(0)
 const lineCount = ref(0)
+const editorTheme = ref<'vs-dark' | 'vs'>('vs-dark')        
 
 let editor: monaco.editor.IStandaloneCodeEditor | null = null
 let ui: any = null
@@ -168,14 +171,21 @@ const updatePreview = (content: string) => {
   }
 }
 
-const isDark = ref(document.documentElement.classList.contains('p-dark'))
-
 const updateEditorTheme = () => {
-  const dark = document.documentElement.classList.contains('p-dark')
-  isDark.value = dark
   if (editor) {
-    monaco.editor.setTheme(dark ? 'vs-dark' : 'vs')
+    monaco.editor.setTheme(editorTheme.value)
   }
+}
+
+const syncEditorThemeWithSystem = () => {
+  const isDarkMode = document.documentElement.classList.contains('p-dark')
+  editorTheme.value = isDarkMode ? 'vs-dark' : 'vs'
+  updateEditorTheme()
+}
+
+const toggleEditorTheme = () => {
+  editorTheme.value = editorTheme.value === 'vs-dark' ? 'vs' : 'vs-dark'
+  updateEditorTheme()
 }
 
 let observer: MutationObserver | null = null
@@ -191,9 +201,9 @@ const initEditor = (content?: string) => {
       editor = monaco.editor.create(editorContainer.value, {
         value: content || initialSpec.value,
         language: 'yaml',
-        theme: isDark.value ? 'vs-dark' : 'vs',
+        theme: editorTheme.value,
         automaticLayout: true,
-        minimap: { enabled: false },
+        minimap: { enabled: true, scale: 1, showSlider: 'mouseover' },   
         fontSize: 14,
         scrollBeyondLastLine: false,
         wordWrap: 'on',
@@ -213,7 +223,7 @@ const initEditor = (content?: string) => {
       updateStats()
 
       if (observer) observer.disconnect()
-      observer = new MutationObserver(updateEditorTheme)
+      observer = new MutationObserver(syncEditorThemeWithSystem)
       observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
 
       editor.onDidChangeModelContent(() => {
@@ -256,6 +266,7 @@ const initSwaggerUI = (specContent: string) => {
 }
 
 onMounted(() => {
+  editorTheme.value = document.documentElement.classList.contains('p-dark') ? 'vs-dark' : 'vs'
   initEditor()
   if (showPreview.value) {
     initSwaggerUI(initialSpec.value)
