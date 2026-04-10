@@ -454,7 +454,7 @@ const deleteProfile = () => {
 }
 
 :deep(.swagger-ui .info) {
-  @apply p-6 bg-white/40 dark:bg-surface-900/40 backdrop-blur-md rounded-3xl border border-white/20 dark:border-white/10 shadow-xl mb-8;
+  @apply p-6 bg-white/40 dark:bg-surface-900/40 backdrop-blur-md rounded-3xl border border-white/20 dark:border-white/10 shadow-md mb-8;
 }
 
 :deep(.swagger-ui .info .title) {
@@ -466,7 +466,7 @@ const deleteProfile = () => {
 }
 
 :deep(.swagger-ui .scheme-container) {
-  @apply bg-white/40 dark:bg-surface-900/40 backdrop-blur-md rounded-2xl border border-white/20 dark:border-white/10 shadow-lg mt-6 p-4 mb-8;
+  @apply bg-white/40 dark:bg-surface-900/40 backdrop-blur-md rounded-2xl border border-white/20 dark:border-white/10 shadow-md mt-6 p-4 mb-8;
 }
 
 /* Operation Blocks */
@@ -605,7 +605,7 @@ const deleteProfile = () => {
 }
 
 :deep(.swagger-ui section.models h4 span) {
-  @apply flex items-center justify-center w-6 h-6 rounded-lg bg-surface-200/50 dark:bg-surface-700/50 transition-colors;
+  @apply bg-transparent text-surface-500 dark:text-surface-400 text-[10px] font-bold uppercase tracking-widest;
 }
 
 :deep(.swagger-ui .model-box) {
