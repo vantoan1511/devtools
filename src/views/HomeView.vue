@@ -96,6 +96,13 @@ const tools: Tool[] = [
     color: 'text-green-500'
   },
   {
+    title: 'Transformer Chain',
+    description: 'The ultimate power tool: chain multiple operations like Base64, JSON, and Hashing.',
+    icon: 'pi pi-link',
+    route: '/transformer',
+    color: 'text-primary'
+  },
+  {
     title: 'RegEx Tester',
     description: 'Debug regular expressions with live match highlighting and detailed capture group info.',
     icon: 'pi pi-filter',

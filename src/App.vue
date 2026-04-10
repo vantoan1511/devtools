@@ -252,7 +252,16 @@ const menuItems = computed<MenuItem[]>(() => {
       }
     },
     {
-      label: 'Comparison Tool',
+      label: 'Transformer Chain',
+      icon: 'pi pi-link',
+      path: '/transformer',
+      command: () => {
+        router.push('/transformer')
+        if (!isLargeScreen.value) sidebarOpen.value = false
+      }
+    },
+    {
+      label: 'Text Comparison',
       icon: 'pi pi-objects-column',
       path: '/comparison',
       command: () => {
@@ -357,6 +366,7 @@ const isRouteActive = (item: any) => {
   if (item.path === '/slug-generator' && route.path === '/slug-generator') return true
   if (item.path === '/uuid-generator' && route.path === '/uuid-generator') return true
   if (item.path === '/mock-generator' && route.path === '/mock-generator') return true
+  if (item.path === '/transformer' && route.path === '/transformer') return true
   return false
 }
 

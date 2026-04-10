@@ -72,6 +72,11 @@ const router = createRouter({
       path: '/slug-generator',
       name: 'slug-generator',
       component: () => import('../views/SlugGeneratorView.vue')
+    },
+    {
+      path: '/transformer',
+      name: 'transformer',
+      component: () => import('../views/TransformerView.vue')
     }
   ]
 })
