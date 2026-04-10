@@ -12,6 +12,25 @@ const toast = useToast()
 const inputText = ref('')
 const selectedSteps = ref<string[]>([])
 
+// Drag and Drop State
+const draggedIndex = ref<number | null>(null)
+
+const onDragStart = (index: number) => {
+  draggedIndex.value = index
+}
+
+const onDragOver = (index: number) => {
+  if (draggedIndex.value === null || draggedIndex.value === index) return
+
+  const item = selectedSteps.value.splice(draggedIndex.value, 1)[0]
+  selectedSteps.value.splice(index, 0, item)
+  draggedIndex.value = index
+}
+
+const onDragEnd = () => {
+  draggedIndex.value = null
+}
+
 // Category Icon Mapping
 const getCategoryIcon = (category: string) => {
   switch (category) {
@@ -184,7 +203,14 @@ const getStepTransformer = (id: string) => transformers.find(t => t.id === id)
 
             <TransitionGroup name="pipeline" tag="div" class="flex flex-col gap-3 relative z-10">
               <div v-for="(stepId, index) in selectedSteps" :key="index + stepId"
-                class="group flex items-center gap-4 p-3.5 rounded-2xl bg-white/80 dark:bg-surface-900/80 border border-surface-200 dark:border-white/5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-0.5 backdrop-blur-md">
+                draggable="true"
+                @dragstart="onDragStart(index)"
+                @dragover.prevent="onDragOver(index)"
+                @dragend="onDragEnd"
+                :class="[
+                  'group flex items-center gap-4 p-3.5 rounded-2xl bg-white/80 dark:bg-surface-900/80 border border-surface-200 dark:border-white/5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-0.5 backdrop-blur-md cursor-grab active:cursor-grabbing',
+                  draggedIndex === index ? 'opacity-40 border-primary shadow-inner scale-95' : ''
+                ]">
                 
                 <!-- Order & Move -->
                 <div class="flex flex-col items-center gap-1 shrink-0">
@@ -372,5 +398,9 @@ const getStepTransformer = (id: string) => transformers.find(t => t.id === id)
 }
 .overflow-y-auto::-webkit-scrollbar-thumb {
   @apply bg-surface-300/30 dark:bg-surface-700/30 rounded-full;
+}
+
+[draggable="true"] {
+  user-select: none;
 }
 </style>
