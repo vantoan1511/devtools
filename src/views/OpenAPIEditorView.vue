@@ -434,54 +434,221 @@ const deleteProfile = () => {
   @apply bg-primary/50 w-1 rounded-full;
 }
 
-/* Custom overrides for Swagger UI Modern */
+/* Custom overrides for Swagger UI Modern & Glassmorphism */
 :deep(.swagger-ui) {
-  @apply transition-all duration-500;
+  @apply transition-all duration-500 antialiased;
   color: var(--p-text-color);
   font-family: var(--p-font-family);
+  background-color: transparent !important;
 }
 
 :deep(.swagger-ui .info) {
-  @apply p-4 bg-surface-100/50 dark:bg-surface-800/50 rounded-2xl border border-surface-200 dark:border-surface-700 shadow-sm;
+  @apply p-6 bg-white/40 dark:bg-surface-900/40 backdrop-blur-md rounded-3xl border border-white/20 dark:border-white/10 shadow-xl mb-8;
 }
 
 :deep(.swagger-ui .info .title) {
-  @apply text-2xl font-black mb-2 text-primary tracking-tight;
+  @apply text-3xl font-black mb-2 text-primary tracking-tight;
 }
 
 :deep(.swagger-ui .info .description p) {
-  @apply text-sm text-surface-700 dark:text-surface-300 leading-relaxed;
+  @apply text-sm text-surface-700 dark:text-surface-300 leading-relaxed font-medium;
 }
 
 :deep(.swagger-ui .scheme-container) {
-  @apply bg-surface-100/50 dark:bg-surface-800/50 rounded-xl border border-surface-200 dark:border-surface-700 shadow-sm mt-4;
+  @apply bg-white/40 dark:bg-surface-900/40 backdrop-blur-md rounded-2xl border border-white/20 dark:border-white/10 shadow-lg mt-6 p-4 mb-8;
 }
 
+/* Operation Blocks */
 :deep(.swagger-ui .opblock) {
-  @apply rounded-xl border-none shadow-sm overflow-hidden mb-4;
+  @apply rounded-2xl border-none shadow-md overflow-hidden mb-5 bg-white/30 dark:bg-surface-900/30 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:scale-[1.005];
 }
 
 :deep(.swagger-ui .opblock-summary) {
-  @apply border-none px-4 py-3;
+  @apply border-none px-5 py-4 flex items-center gap-3;
 }
 
 :deep(.swagger-ui .opblock .opblock-summary-method) {
-  @apply rounded-lg font-black text-[10px] min-w-[60px] text-center shadow-sm;
+  @apply rounded-xl font-black text-[11px] min-w-[70px] px-3 py-1.5 text-center shadow-sm uppercase tracking-wider;
 }
 
+:deep(.swagger-ui .opblock-summary-path) {
+  @apply font-mono font-bold text-sm text-surface-900 dark:text-surface-0;
+}
+
+:deep(.swagger-ui .opblock-summary-description) {
+  @apply text-xs font-medium text-surface-600 dark:text-surface-400;
+}
+
+/* Specific Method Colors with Glassmorphism */
+:deep(.swagger-ui .opblock-get) { @apply bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 dark:border-blue-500/30; }
+:deep(.swagger-ui .opblock-get .opblock-summary-method) { @apply bg-blue-500 text-white shadow-blue-500/20; }
+
+:deep(.swagger-ui .opblock-post) { @apply bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 dark:border-emerald-500/30; }
+:deep(.swagger-ui .opblock-post .opblock-summary-method) { @apply bg-emerald-500 text-white shadow-emerald-500/20; }
+
+:deep(.swagger-ui .opblock-put) { @apply bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/20 dark:border-amber-500/30; }
+:deep(.swagger-ui .opblock-put .opblock-summary-method) { @apply bg-amber-500 text-white shadow-amber-500/20; }
+
+:deep(.swagger-ui .opblock-delete) { @apply bg-rose-500/10 dark:bg-rose-500/15 border border-rose-500/20 dark:border-rose-500/30; }
+:deep(.swagger-ui .opblock-delete .opblock-summary-method) { @apply bg-rose-500 text-white shadow-rose-500/20; }
+
+:deep(.swagger-ui .opblock-patch) { @apply bg-cyan-500/10 dark:bg-cyan-500/15 border border-cyan-500/20 dark:border-cyan-500/30; }
+:deep(.swagger-ui .opblock-patch .opblock-summary-method) { @apply bg-cyan-500 text-white shadow-cyan-500/20; }
+
+/* Tags/Groups */
 :deep(.swagger-ui .opblock-tag) {
-  @apply border-none bg-surface-100 dark:bg-surface-800 text-surface-900 dark:text-surface-0 rounded-xl px-4 py-3 mb-2 font-bold transition-colors;
+  @apply border-none bg-surface-100/60 dark:bg-surface-800/60 backdrop-blur-md text-surface-900 dark:text-surface-0 rounded-2xl px-6 py-4 mb-4 font-black text-lg tracking-tight transition-all flex items-center gap-3 border border-white/20 dark:border-white/10 shadow-sm;
 }
 
 :deep(.swagger-ui .opblock-tag:hover) {
-  @apply bg-surface-200 dark:bg-surface-700;
+  @apply bg-surface-200/70 dark:bg-surface-700/70 shadow-md;
 }
 
+:deep(.swagger-ui .opblock-tag small) {
+  @apply text-xs font-medium text-surface-500 dark:text-surface-400 ml-2 lowercase tracking-normal opacity-80;
+}
+
+/* Sections inside Opblock */
+:deep(.swagger-ui .opblock-section-header) {
+  @apply bg-transparent px-5 py-4 border-b border-surface-200/50 dark:border-surface-700/50;
+}
+
+:deep(.swagger-ui .opblock-section-header h4) {
+  @apply font-bold text-surface-800 dark:text-surface-200 uppercase tracking-widest text-[10px];
+}
+
+/* Forms & Inputs */
 :deep(.swagger-ui .btn) {
-  @apply rounded-lg font-bold transition-all shadow-sm;
+  @apply rounded-xl font-bold transition-all shadow-md px-4 py-2 border-none active:scale-95;
 }
 
-:deep(.swagger-ui input[type=text]) {
-  @apply bg-surface-50 dark:bg-surface-950 border border-surface-200 dark:border-surface-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all;
+:deep(.swagger-ui .btn.execute) {
+  @apply bg-primary hover:bg-primary-emphasis text-white shadow-primary/20;
+}
+
+:deep(.swagger-ui .tab li button.tablinks) {
+  @apply font-bold text-surface-500 dark:text-surface-400 border-none px-4 py-2 transition-all hover:text-primary dark:hover:text-primary;
+}
+
+:deep(.swagger-ui .tab li.active button.tablinks) {
+  @apply text-primary border-b-2 border-primary;
+}
+
+:deep(.swagger-ui input[type=text]), 
+:deep(.swagger-ui textarea),
+:deep(.swagger-ui select) {
+  @apply bg-surface-50 dark:bg-surface-950 border border-surface-200 dark:border-surface-700 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition-all placeholder:text-surface-400 text-surface-900 dark:text-surface-0;
+}
+
+:deep(.swagger-ui select) {
+  @apply cursor-pointer pr-10;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  appearance: none;
+}
+
+/* Neutralize internal backgrounds for glassmorphism */
+:deep(.swagger-ui .opblock-body),
+:deep(.swagger-ui .responses-table),
+:deep(.swagger-ui .parameters-container),
+:deep(.swagger-ui .parameters-table),
+:deep(.swagger-ui .table-container) {
+  @apply !bg-transparent;
+}
+
+/* Responses */
+:deep(.swagger-ui .responses-inner) {
+  @apply p-0 bg-transparent;
+}
+
+:deep(.swagger-ui .responses-inner h4),
+:deep(.swagger-ui .responses-inner h5) {
+  @apply font-bold text-surface-800 dark:text-surface-200 uppercase tracking-widest text-[10px] mb-3 mt-6;
+}
+
+:deep(.swagger-ui .response-col_status) {
+  @apply font-mono font-black text-sm text-surface-900 dark:text-surface-0 p-4;
+}
+
+:deep(.swagger-ui .response-col_description) {
+  @apply text-sm text-surface-700 dark:text-surface-300 p-4;
+}
+
+:deep(.swagger-ui .response-col_links) {
+  @apply text-sm text-surface-700 dark:text-surface-300 p-4;
+}
+
+:deep(.swagger-ui table.headers td) {
+  @apply text-sm text-surface-700 dark:text-surface-300 p-4 font-medium;
+}
+
+/* Schemas / Models */
+:deep(.swagger-ui section.models) {
+  @apply border border-surface-200 dark:border-surface-700 rounded-3xl overflow-hidden mt-12 shadow-sm bg-white/20 dark:bg-surface-900/20 backdrop-blur-sm;
+}
+
+:deep(.swagger-ui section.models h4) {
+  @apply bg-surface-100/60 dark:bg-surface-800/60 backdrop-blur-md px-6 py-4 border-b border-surface-200/50 dark:border-surface-700/50 font-black uppercase tracking-wider text-xs flex items-center justify-between text-surface-600 dark:text-surface-400;
+}
+
+:deep(.swagger-ui section.models h4 span) {
+  @apply flex items-center justify-center w-6 h-6 rounded-lg bg-surface-200/50 dark:bg-surface-700/50 transition-colors;
+}
+
+:deep(.swagger-ui .model-box) {
+  @apply bg-transparent p-4;
+}
+
+:deep(.swagger-ui .model-title) {
+  @apply font-bold text-primary;
+}
+
+:deep(.swagger-ui .model) {
+  @apply font-mono text-sm text-surface-900 dark:text-surface-0;
+}
+
+:deep(.swagger-ui .prop-name) {
+  @apply font-bold text-surface-800 dark:text-surface-200;
+}
+
+:deep(.swagger-ui .prop-type) {
+  @apply text-primary font-medium;
+}
+
+:deep(.swagger-ui .model-hint) {
+  @apply text-surface-500 dark:text-surface-400 text-xs italic;
+}
+
+/* Markdown and other text */
+:deep(.swagger-ui .markdown p), 
+:deep(.swagger-ui .markdown li),
+:deep(.swagger-ui .opblock-description-wrapper p), 
+:deep(.swagger-ui .opblock-external-docs-wrapper p), 
+:deep(.swagger-ui .opblock-title_normal p) {
+  @apply text-sm leading-relaxed text-surface-700 dark:text-surface-300 font-medium;
+}
+
+/* Dark mode specific tweaks for visibility */
+:where(.p-dark) :deep(.swagger-ui) {
+  --p-text-color: #f1f5f9; /* Slate 100 */
+}
+
+:deep(.swagger-ui table thead tr td), 
+:deep(.swagger-ui table thead tr th) {
+  @apply border-b border-surface-200 dark:border-surface-700 text-surface-500 dark:text-surface-400 font-bold uppercase text-[10px] tracking-widest p-4;
+}
+
+:deep(.swagger-ui .parameters-col_name) {
+  @apply font-bold text-surface-900 dark:text-surface-0;
+}
+
+:deep(.swagger-ui .parameter__name) {
+  @apply font-mono text-primary font-bold;
+}
+
+:deep(.swagger-ui .parameter__type) {
+  @apply font-mono text-[10px] text-surface-500 dark:text-surface-400;
 }
 </style>
