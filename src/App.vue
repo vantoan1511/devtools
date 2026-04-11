@@ -3,8 +3,7 @@
     <Toast />
     <ConfirmDialog></ConfirmDialog>
     <!-- Top Header -->
-    <header
-      v-spotlight
+    <header v-spotlight
       class="sticky top-0 z-[60] flex h-[60px] items-center justify-between border-b border-white/10 px-6 backdrop-blur-md bg-white/70 dark:bg-surface-950/70 transition-all duration-300">
       <div class="flex items-center gap-4">
         <Button icon="pi pi-bars" severity="secondary" text rounded
@@ -39,7 +38,8 @@
         'z-50 flex flex-col transition-all duration-500 ease-in-out border-r border-white/10 backdrop-blur-xl bg-white opacity-75 dark:bg-surface-900/40',
         isLargeScreen ? (sidebarOpen ? 'w-72 translate-x-0' : 'w-0 -translate-x-full opacity-0 z-[-1]') : (sidebarOpen ? 'fixed inset-y-0 left-0 w-72 translate-x-0' : 'fixed inset-y-0 left-0 w-72 -translate-x-full'),
       ]">
-        <div v-spotlight  class="flex h-full flex-col p-4 overflow-y-auto overflow-x-hidden min-w-[18rem] custom-scrollbar">
+        <div v-spotlight
+          class="flex h-full flex-col p-4 overflow-y-auto overflow-x-hidden min-w-[18rem] custom-scrollbar">
           <div class="mb-6 flex items-center justify-between px-2 lg:hidden">
             <span class="font-bold text-surface-500 uppercase text-xs tracking-widest">Menu</span>
             <Button icon="pi pi-times" severity="secondary" text rounded size="small" @click="sidebarOpen = false" />
@@ -49,7 +49,7 @@
             <PanelMenu :model="menuItems" class="w-full border-none bg-transparent">
               <template #item="{ item, props, hasSubmenu, active }">
                 <!-- Group Header -->
-                <div v-if="item.type === 'header'" 
+                <div v-if="item.type === 'header'"
                   class="px-4 pt-6 pb-2 text-[10px] font-black uppercase tracking-[0.2em] text-surface-400 dark:text-surface-500 select-none">
                   {{ item.label }}
                 </div>
@@ -84,7 +84,8 @@
                   item.label === 'About' ? 'mt-4 border-t border-surface-200/10 pt-4' : '',
                   'hover:bg-primary/10 hover:translate-x-1 hover:text-primary'
                 ]" v-ripple>
-                  <i v-if="item.icon" :class="[item.icon, 'text-lg transition-transform duration-300 group-hover:scale-110']"></i>
+                  <i v-if="item.icon"
+                    :class="[item.icon, 'text-lg transition-transform duration-300 group-hover:scale-110']"></i>
                   <span>{{ item.label }}</span>
                 </a>
               </template>
@@ -140,7 +141,7 @@
                 <span class="font-bold text-primary">Drop to Import</span>
               </div>
             </div>
-            <div v-if="!newProfileSpec && !isDragging" 
+            <div v-if="!newProfileSpec && !isDragging"
               class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
               <div class="flex flex-col items-center gap-2">
                 <i class="pi pi-pencil text-2xl"></i>
@@ -203,7 +204,7 @@ const menuItems = computed<MenuItem[]>(() => {
         if (!isLargeScreen.value) sidebarOpen.value = false
       }
     },
-    
+
     // API TOOLS
     { label: 'API Development', type: 'header' },
     {

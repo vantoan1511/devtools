@@ -1,38 +1,42 @@
 <template>
-  <div class="home-container bg-surface-50 dark:bg-surface-950 min-h-full py-12 px-6 overflow-x-hidden custom-scrollbar">
+  <div
+    class="home-container bg-surface-50 dark:bg-surface-950 min-h-full py-12 px-6 overflow-x-hidden custom-scrollbar">
     <div class="max-w-7xl mx-auto">
       <!-- Hero Section -->
       <section class="text-center mb-16 animate-in">
-        <Headline/>
+        <Headline />
         <p class="text-lg md:text-xl text-surface-600 dark:text-surface-400 max-w-2xl mx-auto leading-relaxed">
-          The all-in-one toolbox for modern developers. Fast, private, and powerful tools designed to streamline your daily workflow.
+          The all-in-one toolbox for modern developers. Fast, private, and powerful tools designed to streamline your
+          daily workflow.
         </p>
         <div class="flex justify-center gap-4 mt-8">
-          <Button label="Explore Tools" icon="pi pi-th-large" rounded raised @click="scrollToTools" />
+          <Button label="Explore Tools" icon="pi pi-arrow-right" icon-pos="right" @click="scrollToTools" />
           <Button as="a" href="https://github.com/vantoan1511/devtools" target="_blank" label="Star on GitHub"
             icon="pi pi-github" severity="secondary" rounded text />
         </div>
+
       </section>
 
       <!-- Tool Grid -->
       <section id="tools-grid" class="mb-24">
         <h2 class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-10 text-center">Available Tools</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          <div v-for="(tool, index) in tools" :key="tool.route" 
-            class="animate-in" :style="{ animationDelay: `${index * 50}ms` }">
-            <Card
-              v-spotlight
+          <div v-for="(tool, index) in tools" :key="tool.route" class="animate-in"
+            :style="{ animationDelay: `${index * 50}ms` }">
+            <Card v-spotlight
               class="tool-card h-full border-none shadow-sm transition-all duration-300 bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm cursor-pointer group"
               @click="router.push(tool.route)">
               <template #content>
                 <div class="flex flex-col gap-4">
-                  <div :class="[tool.color, 'w-12 h-12 rounded-2xl bg-surface-100 dark:bg-surface-800 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ring-1 ring-surface-200/50 dark:ring-surface-700/50']">
+                  <div
+                    :class="[tool.color, 'w-12 h-12 rounded-2xl bg-surface-100 dark:bg-surface-800 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ring-1 ring-surface-200/50 dark:ring-surface-700/50']">
                     <i :class="[tool.icon, 'text-2xl']"></i>
                   </div>
                   <div>
                     <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0 mb-2 flex items-center gap-2">
                       {{ tool.title }}
-                      <i class="pi pi-arrow-up-right text-[10px] opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0"></i>
+                      <i
+                        class="pi pi-arrow-up-right text-[10px] opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0"></i>
                     </h3>
                     <p class="text-surface-600 dark:text-surface-400 leading-relaxed text-sm">
                       {{ tool.description }}
@@ -51,8 +55,7 @@
       <section class="mb-24">
         <h2 class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-10 text-center">Core Capabilities</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card v-for="feature in features" :key="feature.title"
-            v-spotlight
+          <Card v-for="feature in features" :key="feature.title" v-spotlight
             class="feature-card border-none shadow-sm transition-all duration-300 bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm">
             <template #content>
               <div class="flex flex-col gap-4">
@@ -71,7 +74,8 @@
       </section>
 
       <!-- Quick Tips -->
-      <section class="mb-24 grid grid-cols-1 md:grid-cols-3 gap-8 p-8 rounded-3xl bg-primary/5 border border-primary/10 animate-in">
+      <section
+        class="mb-24 grid grid-cols-1 md:grid-cols-3 gap-8 p-8 rounded-3xl bg-primary/5 border border-primary/10 animate-in">
         <div class="flex flex-col items-center text-center gap-3">
           <div class="w-10 h-10 rounded-full bg-white dark:bg-surface-900 flex items-center justify-center shadow-sm">
             <i class="pi pi-bolt text-primary"></i>
@@ -84,14 +88,17 @@
             <i class="pi pi-eye-slash text-primary"></i>
           </div>
           <h4 class="font-bold text-surface-900 dark:text-surface-0">Privacy First</h4>
-          <p class="text-xs text-surface-500">All processing happens locally in your browser. Your data never leaves your device.</p>
+          <p class="text-xs text-surface-500">All processing happens locally in your browser. Your data never leaves
+            your
+            device.</p>
         </div>
         <div class="flex flex-col items-center text-center gap-3">
           <div class="w-10 h-10 rounded-full bg-white dark:bg-surface-900 flex items-center justify-center shadow-sm">
             <i class="pi pi-moon text-primary"></i>
           </div>
           <h4 class="font-bold text-surface-900 dark:text-surface-0">Full Dark Mode</h4>
-          <p class="text-xs text-surface-500">Designed for night owls. Seamless switching between light and dark themes.</p>
+          <p class="text-xs text-surface-500">Designed for night owls. Seamless switching between light and dark themes.
+          </p>
         </div>
       </section>
 
@@ -289,7 +296,8 @@ const techStack = [
 <style scoped>
 @reference "@/assets/main.css";
 
-.tool-card, .feature-card {
+.tool-card,
+.feature-card {
   @apply hover:-translate-y-2 transition-all duration-300;
 }
 
@@ -298,6 +306,7 @@ const techStack = [
     opacity: 0;
     transform: translateY(1rem);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

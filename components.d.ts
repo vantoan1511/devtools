@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BorderGlow: typeof import('./src/components/BorderGlow.vue')['default']
     Button: typeof import('primevue/button')['default']
     Card: typeof import('primevue/card')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
@@ -19,6 +20,7 @@ declare module 'vue' {
     Headline: typeof import('./src/components/Headline.vue')['default']
     InputNumber: typeof import('primevue/inputnumber')['default']
     InputText: typeof import('primevue/inputtext')['default']
+    Magnet: typeof import('./src/components/Magnet.vue')['default']
     RotatingText: typeof import('./src/components/RotatingText.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
