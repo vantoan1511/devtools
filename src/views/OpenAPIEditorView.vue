@@ -122,6 +122,7 @@ const sidebarOpen = inject<Ref<boolean>>('sidebarOpen', ref(false))
 const isLargeScreen = inject<Ref<boolean>>('isLargeScreen', ref(true))
 
 const sidebarWidth = computed(() => {
+  console.log('Sidebar state changed:', { sidebarOpen: sidebarOpen.value, isLargeScreen: isLargeScreen.value })
   // Mirror exactly what App.vue does — sidebar is w-72 (288px) only when
   // large screen + open. On mobile it overlays (doesn't push content).
   return isLargeScreen.value && sidebarOpen.value ? 288 : 0

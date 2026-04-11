@@ -502,14 +502,14 @@ onUnmounted(() => {
 }
 
 :deep(.p-panelmenu-header-content) {
-  @apply border-none bg-transparent ! p-0 !;
+  @apply border-none bg-transparent! p-0!;
 }
 
 :deep(.p-panelmenu-content) {
-  @apply border-none bg-transparent ! p-0 ! mt-1;
+  @apply border-none bg-transparent! p-0! mt-1;
 }
 
 :deep(.p-panelmenu-item-content) {
-  @apply border-none bg-transparent !;
+  @apply border-none bg-transparent!;
 }
 </style>
