@@ -195,8 +195,8 @@ const toggleSidebar = () => {
 const menuItems = computed<MenuItem[]>(() => {
   const items: any[] = [
     {
-      label: 'Home',
-      icon: 'pi pi-home',
+      label: 'Getting Started',
+      icon: 'ri-space-ship-2-line',
       path: '/',
       command: () => {
         router.push('/')
