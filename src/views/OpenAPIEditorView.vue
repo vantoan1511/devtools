@@ -1,62 +1,68 @@
 <template>
   <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-0 dark:bg-surface-950 overflow-hidden">
     <!-- Toolbar -->
-    <div
-      class="fixed w-full z-10 flex flex-wrap justify-between items-center border-b border-surface-200 dark:border-white/10  px-4 py-2 bg-white/20 dark:bg-surface-950/20 backdrop-blur-md transition-colors duration-300">
-      <div class="flex flex-wrap items-center gap-3">
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
-          <i class="pi pi-file text-primary text-sm"></i>
-          <div v-if="!isRenaming" @click="startRenaming" class="flex items-center gap-2 cursor-pointer group">
-            <span class="font-bold text-xs uppercase tracking-wider text-primary">
-              {{ currentProfile ? currentProfile.name : 'scratchpad.yaml' }}
-            </span>
-            <i v-if="currentProfile"
-              class="pi pi-pencil text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
-          </div>
-          <div v-else class="flex items-center">
-            <InputText v-model="newName" size="small" class="h-5 font-mono text-sm glass-input-mini"
-              @keyup.enter="saveName" @blur="saveName" autofocus />
-          </div>
-        </div>
-
-        <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
-
-        <div class="flex items-center gap-1">
-          <div class="flex items-center p-1 rounded-xl mr-2">
-            <Button icon="pi pi-sparkles" rounded text @click="formatYaml" v-tooltip.bottom="'Beautify'" />
-            <Button v-tooltip.bottom="'Copy Content'" icon="pi pi-copy" severity="secondary" text rounded
-              @click="copyToClipboard" />
-            <Button icon="pi pi-download" rounded text severity="secondary" @click="downloadSpec"
-              v-tooltip.bottom="'Export'" />
-
+    <div ref="toolbarRef" class="fixed top-15 z-10 transition-all duration-500" :style="{
+      left: `${sidebarWidth}px`,
+      width: `calc(100% - ${sidebarWidth}px)`,
+    }">
+      <div v-liquid-glass="glassOpts"
+        class="flex flex-wrap justify-between items-center border-b border-white/10 px-4 py-2 transition-colors duration-300">
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
+            <i class="pi pi-file text-primary text-sm"></i>
+            <div v-if="!isRenaming" @click="startRenaming" class="flex items-center gap-2 cursor-pointer group">
+              <span class="font-bold text-xs uppercase tracking-wider text-primary">
+                {{ currentProfile ? currentProfile.name : 'scratchpad.yaml' }}
+              </span>
+              <i v-if="currentProfile"
+                class="pi pi-pencil text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+            </div>
+            <div v-else class="flex items-center">
+              <InputText v-model="newName" size="small" class="h-5 font-mono text-sm glass-input-mini"
+                @keyup.enter="saveName" @blur="saveName" autofocus />
+            </div>
           </div>
 
           <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
 
-          <Button v-tooltip.bottom="'Toggle Editor Theme'"
-            :icon="editorTheme === 'vs-dark' ? 'pi pi-moon' : 'pi pi-sun'" size="small" severity="secondary" text
-            rounded class="hover:bg-primary/10 transition-all duration-300" @click="toggleEditorTheme" />
-          <Button v-if="currentProfile?.name === 'scratchpad.yaml'" icon="pi pi-refresh" size="small"
-            severity="secondary" text rounded
-            class="hover:bg-orange-500/10 hover:text-orange-500 transition-all duration-300" @click="resetSpec" />
-          <Button v-if="currentProfile" v-tooltip.bottom="'Delete Profile'" icon="pi pi-trash" size="small"
-            severity="secondary" text rounded class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300"
-            @click="deleteProfile" />
-        </div>
-      </div>
+          <div class="flex items-center gap-1">
+            <div class="flex items-center p-1 rounded-xl mr-2">
+              <Button icon="pi pi-sparkles" rounded text @click="formatYaml" v-tooltip.bottom="'Beautify'" />
+              <Button v-tooltip.bottom="'Copy Content'" icon="pi pi-copy" severity="secondary" text rounded
+                @click="copyToClipboard" />
+              <Button icon="pi pi-download" rounded text severity="secondary" @click="downloadSpec"
+                v-tooltip.bottom="'Export'" />
 
-      <div class="flex items-center gap-2">
-        <div
-          class="flex items-center gap-2 px-3 py-1 rounded-xl border border-surface-200 dark:border-surface-700 bg-surface-100/50 dark:bg-surface-800/50 mr-2">
-          <span class="text-[10px] font-bold uppercase text-surface-500">Live Preview</span>
-          <ToggleSwitch v-model="showPreview" class="preview-toggle">
-            <template #handle="{ checked }">
-              <i :class="['text-xs! pi', { 'pi-eye': checked, 'pi-eye-slash': !checked }]" />
-            </template>
-          </ToggleSwitch>
+            </div>
+
+            <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
+
+            <Button v-tooltip.bottom="'Toggle Editor Theme'"
+              :icon="editorTheme === 'vs-dark' ? 'pi pi-moon' : 'pi pi-sun'" size="small" severity="secondary" text
+              rounded class="hover:bg-primary/10 transition-all duration-300" @click="toggleEditorTheme" />
+            <Button v-if="currentProfile?.name === 'scratchpad.yaml'" icon="pi pi-refresh" size="small"
+              severity="secondary" text rounded
+              class="hover:bg-orange-500/10 hover:text-orange-500 transition-all duration-300" @click="resetSpec" />
+            <Button v-if="currentProfile" v-tooltip.bottom="'Delete Profile'" icon="pi pi-trash" size="small"
+              severity="secondary" text rounded
+              class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300" @click="deleteProfile" />
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <div
+            class="flex items-center gap-2 px-3 py-1 rounded-xl border border-surface-200 dark:border-surface-700 bg-surface-100/50 dark:bg-surface-800/50 mr-2">
+            <span class="text-[10px] font-bold uppercase text-surface-500">Live Preview</span>
+            <ToggleSwitch v-model="showPreview" class="preview-toggle">
+              <template #handle="{ checked }">
+                <i :class="['text-xs! pi', { 'pi-eye': checked, 'pi-eye-slash': !checked }]" />
+              </template>
+            </ToggleSwitch>
+          </div>
         </div>
       </div>
     </div>
+
 
     <Message v-if="mountError" severity="error" class="m-2 rounded-xl">{{ mountError }}</Message>
 
@@ -99,6 +105,7 @@
 
 <script setup lang="ts">
 import { useProfileStore } from '@/stores/profileStore'
+import { useToolbarGlass } from '@/useLiquidGlass'
 import jsYaml from 'js-yaml'
 import * as monaco from 'monaco-editor'
 import { useConfirm, useToast } from 'primevue'
@@ -108,8 +115,19 @@ import Message from 'primevue/message'
 import Splitter from 'primevue/splitter'
 import SplitterPanel from 'primevue/splitterpanel'
 import { SwaggerUIBundle, SwaggerUIStandalonePreset } from 'swagger-ui-dist'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+
+const sidebarOpen = inject<Ref<boolean>>('sidebarOpen', ref(false))
+const isLargeScreen = inject<Ref<boolean>>('isLargeScreen', ref(true))
+
+const sidebarWidth = computed(() => {
+  // Mirror exactly what App.vue does — sidebar is w-72 (288px) only when
+  // large screen + open. On mobile it overlays (doesn't push content).
+  return isLargeScreen.value && sidebarOpen.value ? 288 : 0
+})
+
+const { glassOpts } = useToolbarGlass()
 
 const route = useRoute()
 const router = useRouter()
