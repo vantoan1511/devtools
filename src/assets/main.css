@@ -23,3 +23,31 @@
         min-height: 100vh;
     }
 }
+
+@layer components {
+    /* Spotlight Directive Styles */
+    .spotlight-container {
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    .spotlight-glow {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        background: radial-gradient(600px circle at var(--x) var(--y), color-mix(in srgb, var(--p-primary-500), transparent 85%), transparent 40%);
+        z-index: 0;
+    }
+
+    .spotlight-container:hover .spotlight-glow {
+        opacity: 1;
+    }
+
+    /* Ensure card content stays above the glow if needed */
+    .spotlight-container > *:not(.spotlight-glow) {
+        position: relative;
+        z-index: 1;
+    }
+}

@@ -16,11 +16,11 @@
         <div v-for="(tool, index) in tools" :key="tool.route" 
           class="animate-in" :style="{ animationDelay: `${index * 50}ms` }">
           <Card
-            class="tool-card h-full border-none shadow-sm transition-all duration-300 bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm cursor-pointer group relative overflow-hidden"
-            @click="router.push(tool.route)"
-            @mousemove="handleMouseMove">
+            v-spotlight
+            class="tool-card h-full border-none shadow-sm transition-all duration-300 bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm cursor-pointer group"
+            @click="router.push(tool.route)">
             <template #content>
-              <div class="flex flex-col gap-4 relative z-10">
+              <div class="flex flex-col gap-4">
                 <div :class="[tool.color, 'w-12 h-12 rounded-2xl bg-surface-100 dark:bg-surface-800 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ring-1 ring-surface-200/50 dark:ring-surface-700/50']">
                   <i :class="[tool.icon, 'text-2xl']"></i>
                 </div>
@@ -33,12 +33,6 @@
                     {{ tool.description }}
                   </p>
                 </div>
-              </div>
-              <!-- Spotlight Glow -->
-              <div class="spotlight pointer-events-none absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-                :style="{
-                  background: `radial-gradient(600px circle at var(--x) var(--y), color-mix(in srgb, var(--p-primary-500), transparent 85%), transparent 40%)`
-                }">
               </div>
             </template>
           </Card>
@@ -78,16 +72,6 @@ import Card from 'primevue/card'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-
-const handleMouseMove = (e: MouseEvent) => {
-  const target = e.currentTarget as HTMLElement
-  const rect = target.getBoundingClientRect()
-  const x = e.clientX - rect.left
-  const y = e.clientY - rect.top
-
-  target.style.setProperty('--x', `${x}px`)
-  target.style.setProperty('--y', `${y}px`)
-}
 
 interface Tool {
   title: string
@@ -189,7 +173,7 @@ const tools: Tool[] = [
 @reference "@/assets/main.css";
 
 .tool-card {
-  @apply hover:-translate-y-2 hover:ring-2 hover:ring-primary/20 hover:bg-white dark:hover:bg-surface-900 transition-all duration-300;
+  @apply hover:-translate-y-2 hover:ring-2 hover:ring-primary/20 transition-all duration-300;
 }
 
 @keyframes animate-in {

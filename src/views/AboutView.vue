@@ -27,7 +27,8 @@
         <h2 class="text-3xl font-bold text-surface-900 dark:text-surface-0 mb-10 text-center">Core Capabilities</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card v-for="feature in features" :key="feature.title"
-            class="feature-card border-none shadow-sm hover:shadow-xl transition-all duration-300 bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm">
+            v-spotlight
+            class="feature-card border-none shadow-sm transition-all duration-300 bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm">
             <template #content>
               <div class="flex flex-col gap-4">
                 <div
