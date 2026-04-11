@@ -28,7 +28,6 @@
     /* Spotlight Directive Styles */
     .spotlight-container {
         position: relative;
-        overflow: hidden;
     }
 
     .spotlight-glow {
@@ -39,6 +38,9 @@
         transition: opacity 0.5s ease;
         background: radial-gradient(600px circle at var(--x) var(--y), color-mix(in srgb, var(--p-primary-500), transparent 85%), transparent 40%);
         z-index: 0;
+        width: 100%;
+        height: 100%;
+        will-change: transform;
     }
 
     :where(.p-dark) .spotlight-glow {
@@ -49,7 +51,7 @@
         opacity: 1;
     }
 
-    /* Ensure card content stays above the glow if needed */
+    /* Ensure card content stays above the glow */
     .spotlight-container > *:not(.spotlight-glow) {
         position: relative;
         z-index: 1;

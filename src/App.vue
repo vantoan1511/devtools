@@ -39,7 +39,7 @@
         'z-50 flex flex-col transition-all duration-500 ease-in-out border-r border-white/10 backdrop-blur-xl bg-white opacity-75 dark:bg-surface-900/40',
         isLargeScreen ? (sidebarOpen ? 'w-72 translate-x-0' : 'w-0 -translate-x-full opacity-0 z-[-1]') : (sidebarOpen ? 'fixed inset-y-0 left-0 w-72 translate-x-0' : 'fixed inset-y-0 left-0 w-72 -translate-x-full'),
       ]">
-        <div class="flex h-full flex-col p-4 overflow-y-auto overflow-x-hidden min-w-[18rem] custom-scrollbar">
+        <div v-spotlight  class="flex h-full flex-col p-4 overflow-y-auto overflow-x-hidden min-w-[18rem] custom-scrollbar">
           <div class="mb-6 flex items-center justify-between px-2 lg:hidden">
             <span class="font-bold text-surface-500 uppercase text-xs tracking-widest">Menu</span>
             <Button icon="pi pi-times" severity="secondary" text rounded size="small" @click="sidebarOpen = false" />
