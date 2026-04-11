@@ -55,3 +55,37 @@
         z-index: 1;
     }
 }
+
+@layer utilities {
+    /* Custom Scrollbar */
+    .custom-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: var(--p-surface-300) transparent;
+    }
+
+    :where(.p-dark) .custom-scrollbar {
+        scrollbar-color: var(--p-surface-700) transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: var(--p-surface-300);
+        border-radius: 20px;
+    }
+
+    :where(.p-dark) .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: var(--p-surface-700);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: var(--p-primary-500);
+    }
+}
