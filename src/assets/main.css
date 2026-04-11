@@ -27,8 +27,8 @@
 @layer components {
     /* Spotlight Directive Styles */
     .spotlight-container {
-        position: relative !important;
-        overflow: hidden !important;
+        position: relative;
+        overflow: hidden;
     }
 
     .spotlight-glow {
@@ -39,6 +39,10 @@
         transition: opacity 0.5s ease;
         background: radial-gradient(600px circle at var(--x) var(--y), color-mix(in srgb, var(--p-primary-500), transparent 85%), transparent 40%);
         z-index: 0;
+    }
+
+    :where(.p-dark) .spotlight-glow {
+        background: radial-gradient(600px circle at var(--x) var(--y), color-mix(in srgb, var(--p-primary-400), transparent 70%), transparent 40%);
     }
 
     .spotlight-container:hover .spotlight-glow {

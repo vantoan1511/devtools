@@ -4,6 +4,7 @@
     <ConfirmDialog></ConfirmDialog>
     <!-- Top Header -->
     <header
+      v-spotlight
       class="sticky top-0 z-[60] flex h-[60px] items-center justify-between border-b border-white/10 px-6 backdrop-blur-md bg-white/70 dark:bg-surface-950/70 transition-all duration-300">
       <div class="flex items-center gap-4">
         <Button icon="pi pi-bars" severity="secondary" text rounded
