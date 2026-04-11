@@ -337,16 +337,6 @@ const menuItems = computed<MenuItem[]>(() => {
       }
     },
 
-    // SYSTEM
-    {
-      label: 'About',
-      icon: 'pi pi-info-circle',
-      path: '/about',
-      command: () => {
-        router.push('/about')
-        if (!isLargeScreen.value) sidebarOpen.value = false
-      }
-    }
   ]
 
   return items
@@ -356,7 +346,6 @@ const isRouteActive = (item: any) => {
   if (item.path === '/openapi' && route.path === '/openapi') return true
   if (item.path === '/' && route.path === '/') return true
   if (item.path?.startsWith('/openapi/') && route.path === item.path) return true
-  if (item.path === '/about' && route.path === '/about') return true
   if (item.path === '/base64' && route.path === '/base64') return true
   if (item.path === '/json-formatter' && route.path === '/json-formatter') return true
   if (item.path === '/hash-generator' && route.path === '/hash-generator') return true
