@@ -98,6 +98,7 @@
 </template>
 
 <script setup lang="ts">
+import GlassSurface from '@/components/GlassSurface.vue'
 import { useProfileStore } from '@/stores/profileStore'
 import jsYaml from 'js-yaml'
 import * as monaco from 'monaco-editor'

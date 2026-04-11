@@ -120,18 +120,24 @@
           Open source and free to use forever.
         </p>
         <div class="flex items-center justify-center gap-2 text-surface-400">
-          <span class="text-xs uppercase tracking-widest font-bold">Built with ❤️ for developers</span>
+          <span class="text-xs uppercase tracking-widest font-bold">Built with ❤️ for developers by</span>
+          <Button label="Toan Nguyen" icon="pi pi-github" variant="text" @click="handleAboutMeClick" />
         </div>
       </footer>
+    </div>
+    <div class="z-100 fixed top-0 left-0 w-full h-full pointer-events-none">
+      <AboutMe :display="isShowAboutMe" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import AboutMe from '@/components/AboutMe.vue'
 import Headline from '@/components/Headline.vue'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import Divider from 'primevue/divider'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -291,6 +297,15 @@ const techStack = [
   { name: 'Tailwind CSS', icon: 'pi pi-box' },
   { name: 'Monaco Editor', icon: 'pi pi-file-edit' }
 ]
+
+const isShowAboutMe = ref(false)
+
+const handleAboutMeClick = () => {
+  isShowAboutMe.value = !isShowAboutMe.value
+  setTimeout(() => {
+    isShowAboutMe.value = false
+  }, 3000)
+}
 </script>
 
 <style scoped>

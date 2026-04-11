@@ -69,6 +69,11 @@ const router = createRouter({
       path: '/transformer',
       name: 'transformer',
       component: () => import('../views/TransformerView.vue')
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: () => import('../views/AboutView.vue')
     }
   ]
 })

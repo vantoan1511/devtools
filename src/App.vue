@@ -3,7 +3,7 @@
     <Toast />
     <ConfirmDialog></ConfirmDialog>
     <!-- Top Header -->
-    <header v-spotlight
+    <header
       class="sticky top-0 z-[60] flex h-[60px] items-center justify-between border-b border-white/10 px-6 backdrop-blur-md bg-white/70 dark:bg-surface-950/70 transition-all duration-300">
       <div class="flex items-center gap-4">
         <Button icon="pi pi-bars" severity="secondary" text rounded
@@ -38,7 +38,7 @@
         'z-50 flex flex-col transition-all duration-500 ease-in-out border-r border-white/10 backdrop-blur-xl bg-white opacity-75 dark:bg-surface-900/40',
         isLargeScreen ? (sidebarOpen ? 'w-72 translate-x-0' : 'w-0 -translate-x-full opacity-0 z-[-1]') : (sidebarOpen ? 'fixed inset-y-0 left-0 w-72 translate-x-0' : 'fixed inset-y-0 left-0 w-72 -translate-x-full'),
       ]">
-        <div v-spotlight
+        <div
           class="flex h-full flex-col p-4 overflow-y-auto overflow-x-hidden min-w-[18rem] custom-scrollbar">
           <div class="mb-6 flex items-center justify-between px-2 lg:hidden">
             <span class="font-bold text-surface-500 uppercase text-xs tracking-widest">Menu</span>
