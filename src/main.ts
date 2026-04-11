@@ -1,25 +1,26 @@
-import './assets/main.css'
-import 'swagger-ui-dist/swagger-ui.css'
 import 'primeicons/primeicons.css'
 import 'remixicon/fonts/remixicon.css'
+import 'swagger-ui-dist/swagger-ui.css'
+import './assets/main.css'
 
-import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
+import ConfirmationService from 'primevue/confirmationservice'
+import ToastService from 'primevue/toastservice'
+import Tooltip from 'primevue/tooltip'
+import { createApp } from 'vue'
 import { MyPreset } from './assets/theme'
-import ConfirmationService from 'primevue/confirmationservice';
-import ToastService from 'primevue/toastservice';
-import Tooltip from 'primevue/tooltip';
 import { vSpotlight } from './directives/vSpotlight'
 
 import App from './App.vue'
 import router from './router'
 
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
-import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
 import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
+import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
+import { LiquidGlassPlugin } from './directives/vLiquidGlass'
 
 // Monaco worker configuration for Vite
 // @ts-ignore: Internal Monaco property
@@ -61,6 +62,7 @@ app.use(PrimeVue, {
 
 app.use(ConfirmationService);
 app.use(ToastService);
+app.use(LiquidGlassPlugin);
 app.directive('tooltip', Tooltip);
 app.directive('spotlight', vSpotlight);
 

@@ -19,7 +19,7 @@
           </div>
         </div>
 
-        <div class="hidden sm:block h-6 w-[1px] bg-surface-200 dark:bg-surface-700 mx-1"></div>
+        <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
 
         <div class="flex items-center gap-1">
           <div class="flex items-center p-1 rounded-xl mr-2">
@@ -31,7 +31,7 @@
 
           </div>
 
-          <div class="hidden sm:block h-6 w-[1px] bg-surface-200 dark:bg-surface-700 mx-1"></div>
+          <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
 
           <Button v-tooltip.bottom="'Toggle Editor Theme'"
             :icon="editorTheme === 'vs-dark' ? 'pi pi-moon' : 'pi pi-sun'" size="small" severity="secondary" text
@@ -51,7 +51,7 @@
           <span class="text-[10px] font-bold uppercase text-surface-500">Live Preview</span>
           <ToggleSwitch v-model="showPreview" class="preview-toggle">
             <template #handle="{ checked }">
-              <i :class="['!text-xs pi', { 'pi-eye': checked, 'pi-eye-slash': !checked }]" />
+              <i :class="['text-xs! pi', { 'pi-eye': checked, 'pi-eye-slash': !checked }]" />
             </template>
           </ToggleSwitch>
         </div>
@@ -82,9 +82,9 @@
       class="z-10 flex items-center justify-between border-t border-surface-200 dark:border-white/10 bg-white/50 px-4 py-1.5 backdrop-blur-md dark:bg-surface-900/50 text-[11px] font-medium text-surface-500 transition-colors duration-300">
       <div class="flex items-center gap-4">
         <span>{{ lineCount }} Lines</span>
-        <div class="h-3 w-[1px] bg-surface-200 dark:bg-surface-700"></div>
+        <div class="h-3 w-px bg-surface-200 dark:bg-surface-700"></div>
         <span>{{ charCount }} Characters</span>
-        <div class="h-3 w-[1px] bg-surface-200 dark:bg-surface-700"></div>
+        <div class="h-3 w-px bg-surface-200 dark:bg-surface-700"></div>
         <span class="flex items-center gap-1">
           <i class="pi pi-code text-[8px]"></i>
           YAML / OpenAPI
@@ -98,7 +98,6 @@
 </template>
 
 <script setup lang="ts">
-import GlassSurface from '@/components/GlassSurface.vue'
 import { useProfileStore } from '@/stores/profileStore'
 import jsYaml from 'js-yaml'
 import * as monaco from 'monaco-editor'
