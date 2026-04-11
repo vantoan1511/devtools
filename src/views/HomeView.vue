@@ -173,7 +173,7 @@ const tools: Tool[] = [
 @reference "@/assets/main.css";
 
 .tool-card {
-  @apply hover:-translate-y-2 hover:ring-2 hover:ring-primary/20 transition-all duration-300;
+  @apply hover:-translate-y-2 transition-all duration-300;
 }
 
 @keyframes animate-in {

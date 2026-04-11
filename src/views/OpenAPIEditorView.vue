@@ -2,10 +2,9 @@
   <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-0 dark:bg-surface-950 overflow-hidden">
     <!-- Toolbar -->
     <div
-      class="z-10 flex flex-wrap items-center justify-between border-b border-surface-200 dark:border-white/10 bg-white/70 px-4 py-2 backdrop-blur-md dark:bg-surface-900/70 transition-colors duration-300">
+      class="fixed w-full z-10 flex flex-wrap justify-between items-center border-b border-surface-200 dark:border-white/10  px-4 py-2 bg-white/20 dark:bg-surface-950/20 backdrop-blur-md transition-colors duration-300">
       <div class="flex flex-wrap items-center gap-3">
-        <div
-          class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
           <i class="pi pi-file text-primary text-sm"></i>
           <div v-if="!isRenaming" @click="startRenaming" class="flex items-center gap-2 cursor-pointer group">
             <span class="font-bold text-xs uppercase tracking-wider text-primary">
@@ -15,7 +14,7 @@
               class="pi pi-pencil text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
           </div>
           <div v-else class="flex items-center">
-            <InputText v-model="newName" size="small" class="h-5 font-mono text-[10px] glass-input-mini"
+            <InputText v-model="newName" size="small" class="h-5 font-mono text-sm glass-input-mini"
               @keyup.enter="saveName" @blur="saveName" autofocus />
           </div>
         </div>
@@ -23,18 +22,22 @@
         <div class="hidden sm:block h-6 w-[1px] bg-surface-200 dark:bg-surface-700 mx-1"></div>
 
         <div class="flex items-center gap-1">
-          <div class="flex items-center bg-surface-100 dark:bg-surface-800 p-1 rounded-xl border border-surface-200 dark:border-surface-700 mr-2">
-            <Button label="Prettify" icon="pi pi-sparkles" size="small" text @click="formatYaml" 
-              class="hover:bg-primary/10 text-xs" v-tooltip.bottom="'Format YAML'"/>
-            <Button label="Export" icon="pi pi-download" size="small" text severity="secondary" @click="downloadSpec" 
-              class="hover:bg-surface-200 dark:hover:bg-surface-700 text-xs" v-tooltip.bottom="'Download YAML'"/>
+          <div class="flex items-center p-1 rounded-xl mr-2">
+            <Button icon="pi pi-sparkles" rounded text @click="formatYaml" v-tooltip.bottom="'Beautify'" />
+            <Button v-tooltip.bottom="'Copy Content'" icon="pi pi-copy" severity="secondary" text rounded
+              @click="copyToClipboard" />
+            <Button icon="pi pi-download" rounded text severity="secondary" @click="downloadSpec"
+              v-tooltip.bottom="'Export'" />
+
           </div>
 
-          <Button v-tooltip.bottom="'Toggle Editor Theme'" :icon="editorTheme === 'vs-dark' ? 'pi pi-moon' : 'pi pi-sun'" size="small" severity="secondary" text rounded
-            class="hover:bg-primary/10 transition-all duration-300" @click="toggleEditorTheme" />
-          <Button v-tooltip.bottom="'Copy Content'" icon="pi pi-copy" size="small" severity="secondary" text rounded
-            class="hover:bg-primary/10 transition-all duration-300" @click="copyToClipboard" />
-          <Button v-tooltip.bottom="'Reset Spec'" icon="pi pi-refresh" size="small" severity="secondary" text rounded
+          <div class="hidden sm:block h-6 w-[1px] bg-surface-200 dark:bg-surface-700 mx-1"></div>
+
+          <Button v-tooltip.bottom="'Toggle Editor Theme'"
+            :icon="editorTheme === 'vs-dark' ? 'pi pi-moon' : 'pi pi-sun'" size="small" severity="secondary" text
+            rounded class="hover:bg-primary/10 transition-all duration-300" @click="toggleEditorTheme" />
+          <Button v-if="currentProfile?.name === 'scratchpad.yaml'" icon="pi pi-refresh" size="small"
+            severity="secondary" text rounded
             class="hover:bg-orange-500/10 hover:text-orange-500 transition-all duration-300" @click="resetSpec" />
           <Button v-if="currentProfile" v-tooltip.bottom="'Delete Profile'" icon="pi pi-trash" size="small"
             severity="secondary" text rounded class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300"
@@ -43,10 +46,14 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <div class="flex items-center gap-2 px-3 py-1 rounded-xl border border-surface-200 dark:border-surface-700 bg-surface-100/50 dark:bg-surface-800/50 mr-2">
+        <div
+          class="flex items-center gap-2 px-3 py-1 rounded-xl border border-surface-200 dark:border-surface-700 bg-surface-100/50 dark:bg-surface-800/50 mr-2">
           <span class="text-[10px] font-bold uppercase text-surface-500">Live Preview</span>
-          <ToggleButton v-model="showPreview" onLabel="" offLabel="" onIcon="pi pi-eye" offIcon="pi pi-eye-slash" 
-            class="preview-toggle" />
+          <ToggleSwitch v-model="showPreview" class="preview-toggle">
+            <template #handle="{ checked }">
+              <i :class="['!text-xs pi', { 'pi-eye': checked, 'pi-eye-slash': !checked }]" />
+            </template>
+          </ToggleSwitch>
         </div>
       </div>
     </div>
@@ -71,7 +78,8 @@
     </div>
 
     <!-- Status Bar -->
-    <div class="z-10 flex items-center justify-between border-t border-surface-200 dark:border-white/10 bg-white/50 px-4 py-1.5 backdrop-blur-md dark:bg-surface-900/50 text-[11px] font-medium text-surface-500 transition-colors duration-300">
+    <div
+      class="z-10 flex items-center justify-between border-t border-surface-200 dark:border-white/10 bg-white/50 px-4 py-1.5 backdrop-blur-md dark:bg-surface-900/50 text-[11px] font-medium text-surface-500 transition-colors duration-300">
       <div class="flex items-center gap-4">
         <span>{{ lineCount }} Lines</span>
         <div class="h-3 w-[1px] bg-surface-200 dark:bg-surface-700"></div>
@@ -140,7 +148,7 @@ const newName = ref('')
 const showPreview = ref(true)
 const charCount = ref(0)
 const lineCount = ref(0)
-const editorTheme = ref<'vs-dark' | 'vs'>('vs-dark')        
+const editorTheme = ref<'vs-dark' | 'vs'>('vs-dark')
 
 let editor: monaco.editor.IStandaloneCodeEditor | null = null
 let ui: any = null
@@ -203,7 +211,7 @@ const initEditor = (content?: string) => {
         language: 'yaml',
         theme: editorTheme.value,
         automaticLayout: true,
-        minimap: { enabled: true, scale: 1, showSlider: 'mouseover' },   
+        minimap: { enabled: true, scale: 1, showSlider: 'mouseover' },
         fontSize: 14,
         scrollBeyondLastLine: false,
         wordWrap: 'on',
@@ -402,7 +410,7 @@ const deleteProfile = () => {
 }
 
 .preview-toggle {
-  @apply w-8 h-5;
+  @apply w-10 h-6;
 }
 
 :deep(.preview-toggle.p-togglebutton) {
@@ -491,20 +499,45 @@ const deleteProfile = () => {
 }
 
 /* Specific Method Colors with Glassmorphism */
-:deep(.swagger-ui .opblock-get) { @apply bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 dark:border-blue-500/30; }
-:deep(.swagger-ui .opblock-get .opblock-summary-method) { @apply bg-blue-500 text-white shadow-blue-500/20; }
+:deep(.swagger-ui .opblock-get) {
+  @apply bg-blue-500/10 dark:bg-blue-500/15 border border-blue-500/20 dark:border-blue-500/30;
+}
 
-:deep(.swagger-ui .opblock-post) { @apply bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 dark:border-emerald-500/30; }
-:deep(.swagger-ui .opblock-post .opblock-summary-method) { @apply bg-emerald-500 text-white shadow-emerald-500/20; }
+:deep(.swagger-ui .opblock-get .opblock-summary-method) {
+  @apply bg-blue-500 text-white shadow-blue-500/20;
+}
 
-:deep(.swagger-ui .opblock-put) { @apply bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/20 dark:border-amber-500/30; }
-:deep(.swagger-ui .opblock-put .opblock-summary-method) { @apply bg-amber-500 text-white shadow-amber-500/20; }
+:deep(.swagger-ui .opblock-post) {
+  @apply bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 dark:border-emerald-500/30;
+}
 
-:deep(.swagger-ui .opblock-delete) { @apply bg-rose-500/10 dark:bg-rose-500/15 border border-rose-500/20 dark:border-rose-500/30; }
-:deep(.swagger-ui .opblock-delete .opblock-summary-method) { @apply bg-rose-500 text-white shadow-rose-500/20; }
+:deep(.swagger-ui .opblock-post .opblock-summary-method) {
+  @apply bg-emerald-500 text-white shadow-emerald-500/20;
+}
 
-:deep(.swagger-ui .opblock-patch) { @apply bg-cyan-500/10 dark:bg-cyan-500/15 border border-cyan-500/20 dark:border-cyan-500/30; }
-:deep(.swagger-ui .opblock-patch .opblock-summary-method) { @apply bg-cyan-500 text-white shadow-cyan-500/20; }
+:deep(.swagger-ui .opblock-put) {
+  @apply bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/20 dark:border-amber-500/30;
+}
+
+:deep(.swagger-ui .opblock-put .opblock-summary-method) {
+  @apply bg-amber-500 text-white shadow-amber-500/20;
+}
+
+:deep(.swagger-ui .opblock-delete) {
+  @apply bg-rose-500/10 dark:bg-rose-500/15 border border-rose-500/20 dark:border-rose-500/30;
+}
+
+:deep(.swagger-ui .opblock-delete .opblock-summary-method) {
+  @apply bg-rose-500 text-white shadow-rose-500/20;
+}
+
+:deep(.swagger-ui .opblock-patch) {
+  @apply bg-cyan-500/10 dark:bg-cyan-500/15 border border-cyan-500/20 dark:border-cyan-500/30;
+}
+
+:deep(.swagger-ui .opblock-patch .opblock-summary-method) {
+  @apply bg-cyan-500 text-white shadow-cyan-500/20;
+}
 
 /* Tags/Groups */
 :deep(.swagger-ui .opblock-tag) {
@@ -545,7 +578,7 @@ const deleteProfile = () => {
   @apply text-primary border-b-2 border-primary;
 }
 
-:deep(.swagger-ui input[type=text]), 
+:deep(.swagger-ui input[type=text]),
 :deep(.swagger-ui textarea),
 :deep(.swagger-ui select) {
   @apply bg-surface-50 dark:bg-surface-950 border border-surface-200 dark:border-surface-700 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition-all placeholder:text-surface-400 text-surface-900 dark:text-surface-0;
@@ -633,20 +666,21 @@ const deleteProfile = () => {
 }
 
 /* Markdown and other text */
-:deep(.swagger-ui .markdown p), 
+:deep(.swagger-ui .markdown p),
 :deep(.swagger-ui .markdown li),
-:deep(.swagger-ui .opblock-description-wrapper p), 
-:deep(.swagger-ui .opblock-external-docs-wrapper p), 
+:deep(.swagger-ui .opblock-description-wrapper p),
+:deep(.swagger-ui .opblock-external-docs-wrapper p),
 :deep(.swagger-ui .opblock-title_normal p) {
   @apply text-sm leading-relaxed text-surface-700 dark:text-surface-300 font-medium;
 }
 
 /* Dark mode specific tweaks for visibility */
 :where(.p-dark) :deep(.swagger-ui) {
-  --p-text-color: #f1f5f9; /* Slate 100 */
+  --p-text-color: #f1f5f9;
+  /* Slate 100 */
 }
 
-:deep(.swagger-ui table thead tr td), 
+:deep(.swagger-ui table thead tr td),
 :deep(.swagger-ui table thead tr th) {
   @apply border-b border-surface-200 dark:border-surface-700 text-surface-500 dark:text-surface-400 font-bold uppercase text-[10px] tracking-widest p-4;
 }
