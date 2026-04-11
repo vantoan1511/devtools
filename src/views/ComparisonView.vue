@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import * as monaco from 'monaco-editor'
-import { useToast } from 'primevue/usetoast'
 import Button from 'primevue/button'
-import SelectButton from 'primevue/selectbutton'
-import Message from 'primevue/message'
 import FileUpload from 'primevue/fileupload'
+import Message from 'primevue/message'
+import SelectButton from 'primevue/selectbutton'
 import ToggleButton from 'primevue/togglebutton'
-import Tag from 'primevue/tag'
-import { onBeforeUnmount, onMounted, ref, watch, computed } from 'vue'
+import { useToast } from 'primevue/usetoast'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const toast = useToast()
 const diffContainer = ref<HTMLElement | null>(null)
