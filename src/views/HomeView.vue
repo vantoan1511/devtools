@@ -3,12 +3,7 @@
     <div class="max-w-7xl mx-auto">
       <!-- Hero Section -->
       <section class="text-center mb-16 animate-in">
-        <div class="inline-block p-3 rounded-2xl bg-primary/10 mb-6 ring-1 ring-primary/20">
-          <i class="pi pi-bolt text-4xl text-primary"></i>
-        </div>
-        <h1 class="text-4xl md:text-6xl font-black tracking-tight text-surface-900 dark:text-surface-0 mb-4">
-          DevTool<span class="text-primary">+</span>
-        </h1>
+        <Headline/>
         <p class="text-lg md:text-xl text-surface-600 dark:text-surface-400 max-w-2xl mx-auto leading-relaxed">
           The all-in-one toolbox for modern developers. Fast, private, and powerful tools designed to streamline your daily workflow.
         </p>
