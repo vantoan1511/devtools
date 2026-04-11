@@ -121,6 +121,7 @@
 </template>
 
 <script setup lang="ts">
+import Headline from '@/components/Headline.vue'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import Divider from 'primevue/divider'
