@@ -4,6 +4,7 @@
     <DToolbar :pill="true">
       <template #start>
         <div class="flex items-center gap-2">
+          <i class="pi pi-code text-primary font-bold"/>
           <Inplace @click="startRenaming">
             <template #display>
               <span class="font-bold uppercase tracking-wider text-primary">
@@ -12,9 +13,8 @@
             </template>
             <template #content="{closeCallback}">
               <div v-focustrap class="flex items-center w-fit">
-                <InputText v-model="newName" autofocus
-                           class="font-bold tracking-wider text-primary glass-input-mini"
-                           fluid size="small" @blur="closeCallback" @keyup.enter="saveName"/>
+                <InputText v-model="newName" autofocus class="font-bold tracking-wider text-primary glass-input-mini"
+                           fluid size="small" @blur="saveName(closeCallback)" @keyup.enter="saveName(closeCallback)"/>
               </div>
             </template>
           </Inplace>
@@ -55,61 +55,6 @@
         </div>
       </template>
     </DToolbar>
-    <!-- <DToolbar>
-      <template #start>
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg">
-          <i class="pi pi-file text-primary text-sm"></i>
-          <div v-if="!isRenaming" @click="startRenaming" class="flex items-center gap-2 cursor-pointer group">
-            <span class="font-bold text-xs uppercase tracking-wider text-primary">
-              {{ currentProfile ? currentProfile.name : 'scratchpad.yaml' }}
-            </span>
-            <i v-if="currentProfile"
-              class="pi pi-pencil text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
-          </div>
-          <div v-else v-focustrap class="flex items-center">
-            <InputText v-model="newName" size="small" class="h-5 font-mono text-sm glass-input-mini"
-              @keyup.enter="saveName" @blur="saveName" autofocus />
-          </div>
-        </div>
-
-        <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
-
-        <div class="flex items-center gap-1">
-          <div class="flex items-center p-1 rounded-xl mr-2">
-            <Button icon="pi pi-sparkles" rounded text @click="formatYaml" v-tooltip.bottom="'Beautify'" />
-            <Button v-tooltip.bottom="'Copy Content'" icon="pi pi-copy" severity="secondary" text rounded
-              @click="copyToClipboard" />
-            <Button icon="pi pi-download" rounded text severity="secondary" @click="downloadSpec"
-              v-tooltip.bottom="'Export'" />
-          </div>
-
-          <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
-
-          <Button v-tooltip.bottom="'Toggle Editor Theme'"
-            :icon="editorTheme === 'vs-dark' ? 'pi pi-moon' : 'pi pi-sun'" size="small" severity="secondary" text
-            rounded class="hover:bg-primary/10 transition-all duration-300" @click="toggleEditorTheme" />
-          <Button v-if="currentProfile?.name === 'scratchpad.yaml'" icon="pi pi-refresh" size="small"
-            severity="secondary" text rounded
-            class="hover:bg-orange-500/10 hover:text-orange-500 transition-all duration-300" @click="resetSpec" />
-          <Button v-if="currentProfile" v-tooltip.bottom="'Delete Profile'" icon="pi pi-trash" size="small"
-            severity="secondary" text rounded class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300"
-            @click="deleteProfile" />
-        </div>
-      </template>
-
-      <template #end>
-        <div
-          class="flex items-center gap-2 px-3 py-1 rounded-xl border border-surface-200 dark:border-surface-700 bg-surface-100/50 dark:bg-surface-800/50 mr-2">
-          <span class="text-[10px] font-bold uppercase text-surface-500">Live Preview</span>
-          <ToggleSwitch v-model="showPreview" class="preview-toggle">
-            <template #handle="{ checked }">
-              <i :class="['text-xs! pi', { 'pi-eye': checked, 'pi-eye-slash': !checked }]" />
-            </template>
-          </ToggleSwitch>
-        </div>
-      </template>
-    </DToolbar> -->
-
 
     <Message v-if="mountError" severity="error" class="m-2 rounded-xl">{{ mountError }}</Message>
 
@@ -417,7 +362,8 @@ const startRenaming = () => {
   }
 }
 
-const saveName = () => {
+const saveName = (callback: () => void) => {
+  callback()
   if (profileId.value && newName.value.trim()) {
     profileStore.renameProfile(profileId.value, newName.value.trim())
   }
