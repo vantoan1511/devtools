@@ -20,6 +20,7 @@ declare module 'vue' {
     Galaxy: typeof import('./src/components/Galaxy.vue')['default']
     GlassSurface: typeof import('./src/components/GlassSurface.vue')['default']
     Headline: typeof import('./src/components/Headline.vue')['default']
+    Inplace: typeof import('primevue/inplace')['default']
     Magnet: typeof import('./src/components/Magnet.vue')['default']
     ProfileCard: typeof import('./src/components/ProfileCard.vue')['default']
     RotatingText: typeof import('./src/components/RotatingText.vue')['default']

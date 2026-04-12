@@ -1,21 +1,24 @@
 <template>
   <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-0 dark:bg-surface-950 overflow-y-scroll">
     <!-- Toolbar -->
-    <DToolbar>
+    <DToolbar :pill="true">
       <template #start>
         <div class="flex items-center gap-2">
           <i class="pi pi-file text-primary text-sm"></i>
-          <div v-if="!isRenaming" @click="startRenaming" class="flex items-center gap-2 cursor-pointer group">
-            <span class="font-bold text-xs uppercase tracking-wider text-primary">
+          <Inplace @click="startRenaming">
+            <template #display>
+              <span class="font-bold uppercase tracking-wider text-primary">
               {{ currentProfile ? currentProfile.name : 'scratchpad.yaml' }}
             </span>
-            <i v-if="currentProfile"
-               class="pi pi-pencil text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
-          </div>
-          <div v-else v-focustrap class="flex items-center w-fit">
-            <InputText v-model="newName" size="small" class="h-5 font-mono text-sm glass-input-mini"
-                       @keyup.enter="saveName" @blur="saveName" autofocus fluid/>
-          </div>
+            </template>
+            <template #content="{closeCallback}">
+              <div v-focustrap class="flex items-center w-fit">
+                <InputText v-model="newName" autofocus
+                           class="font-bold tracking-wider text-primary glass-input-mini"
+                           fluid size="small" @blur="closeCallback" @keyup.enter="saveName"/>
+              </div>
+            </template>
+          </Inplace>
 
           <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
 
