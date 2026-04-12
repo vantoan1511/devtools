@@ -1,9 +1,8 @@
 <template>
   <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-50 dark:bg-surface-950 overflow-hidden">
     <!-- Toolbar -->
-    <div
-      class="z-10 flex flex-wrap items-center justify-between border-b border-surface-200 dark:border-white/10 bg-white/70 px-4 py-2 backdrop-blur-md dark:bg-surface-900/70">
-      <div class="flex flex-wrap items-center gap-3">
+    <DToolbar>
+      <template #start>
         <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
           <i class="pi pi-lock text-primary text-sm"></i>
           <span class="font-bold text-xs uppercase tracking-wider text-primary">
@@ -32,13 +31,13 @@
               class="url-safe-toggle" />
           </div>
         </div>
-      </div>
+      </template>
 
-      <div class="flex items-center gap-2">
+      <template #end>
         <Button v-tooltip.bottom="'Clear All'" icon="pi pi-trash" size="small" severity="secondary" text rounded
           class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300" @click="clearAll" />
-      </div>
-    </div>
+      </template>
+    </DToolbar>
 
     <!-- Main Content -->
     <div class="flex-1 overflow-auto p-4 md:p-6">
@@ -144,6 +143,7 @@
 </template>
 
 <script setup lang="ts">
+import DToolbar from '@/components/DToolbar.vue'
 import { Buffer } from 'buffer'
 import Button from 'primevue/button'
 import Card from 'primevue/card'

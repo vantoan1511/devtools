@@ -11,7 +11,8 @@ import Tooltip from 'primevue/tooltip'
 import { createApp } from 'vue'
 import { MyPreset } from './assets/theme'
 import { vSpotlight } from './directives/vSpotlight'
-
+import { vHeight } from './directives/vHeight'
+import FocusTrap from 'primevue/focustrap';
 import App from './App.vue'
 import router from './router'
 
@@ -65,5 +66,7 @@ app.use(ToastService);
 app.use(LiquidGlassPlugin);
 app.directive('tooltip', Tooltip);
 app.directive('spotlight', vSpotlight);
+app.directive('height', vHeight);
+app.directive('focustrap', FocusTrap);
 
 app.mount('#app')

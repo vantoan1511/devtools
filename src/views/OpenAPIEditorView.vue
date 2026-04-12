@@ -1,80 +1,102 @@
 <template>
-  <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-0 dark:bg-surface-950 overflow-hidden">
+  <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-0 dark:bg-surface-950 overflow-y-scroll">
     <!-- Toolbar -->
-    <div ref="toolbarRef" class="fixed top-15 z-10 transition-all duration-500" :style="{
-      left: `${sidebarWidth}px`,
-      width: `calc(100% - ${sidebarWidth}px)`,
-    }">
-      <div v-liquid-glass="glassOpts"
-        class="flex flex-wrap justify-between items-center border-b border-white/10 px-4 py-2 transition-colors duration-300">
-        <div class="flex flex-wrap items-center gap-3">
-          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
-            <i class="pi pi-file text-primary text-sm"></i>
-            <div v-if="!isRenaming" @click="startRenaming" class="flex items-center gap-2 cursor-pointer group">
-              <span class="font-bold text-xs uppercase tracking-wider text-primary">
-                {{ currentProfile ? currentProfile.name : 'scratchpad.yaml' }}
-              </span>
-              <i v-if="currentProfile"
-                class="pi pi-pencil text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
-            </div>
-            <div v-else class="flex items-center">
-              <InputText v-model="newName" size="small" class="h-5 font-mono text-sm glass-input-mini"
-                @keyup.enter="saveName" @blur="saveName" autofocus />
-            </div>
+    <DToolbar>
+      <template #start>
+        <div class="flex items-center gap-2">
+          <i class="pi pi-file text-primary text-sm"></i>
+          <div v-if="!isRenaming" @click="startRenaming" class="flex items-center gap-2 cursor-pointer group">
+            <span class="font-bold text-xs uppercase tracking-wider text-primary">
+              {{ currentProfile ? currentProfile.name : 'scratchpad.yaml' }}
+            </span>
+            <i v-if="currentProfile"
+               class="pi pi-pencil text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+          </div>
+          <div v-else v-focustrap class="flex items-center w-fit">
+            <InputText v-model="newName" size="small" class="h-5 font-mono text-sm glass-input-mini"
+                       @keyup.enter="saveName" @blur="saveName" autofocus fluid/>
+          </div>
+        </div>
+      </template>
+      <template #end>
+        <div
+            class="flex items-center gap-2">
+          <span class="text-[10px] font-bold uppercase text-surface-500">Live Preview</span>
+          <ToggleSwitch v-model="showPreview" class="preview-toggle">
+            <template #handle="{ checked }">
+              <i :class="['text-xs! pi', { 'pi-eye': checked, 'pi-eye-slash': !checked }]"/>
+            </template>
+          </ToggleSwitch>
+        </div>
+      </template>
+    </DToolbar>
+    <!-- <DToolbar>
+      <template #start>
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg">
+          <i class="pi pi-file text-primary text-sm"></i>
+          <div v-if="!isRenaming" @click="startRenaming" class="flex items-center gap-2 cursor-pointer group">
+            <span class="font-bold text-xs uppercase tracking-wider text-primary">
+              {{ currentProfile ? currentProfile.name : 'scratchpad.yaml' }}
+            </span>
+            <i v-if="currentProfile"
+              class="pi pi-pencil text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+          </div>
+          <div v-else v-focustrap class="flex items-center">
+            <InputText v-model="newName" size="small" class="h-5 font-mono text-sm glass-input-mini"
+              @keyup.enter="saveName" @blur="saveName" autofocus />
+          </div>
+        </div>
+
+        <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
+
+        <div class="flex items-center gap-1">
+          <div class="flex items-center p-1 rounded-xl mr-2">
+            <Button icon="pi pi-sparkles" rounded text @click="formatYaml" v-tooltip.bottom="'Beautify'" />
+            <Button v-tooltip.bottom="'Copy Content'" icon="pi pi-copy" severity="secondary" text rounded
+              @click="copyToClipboard" />
+            <Button icon="pi pi-download" rounded text severity="secondary" @click="downloadSpec"
+              v-tooltip.bottom="'Export'" />
           </div>
 
           <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
 
-          <div class="flex items-center gap-1">
-            <div class="flex items-center p-1 rounded-xl mr-2">
-              <Button icon="pi pi-sparkles" rounded text @click="formatYaml" v-tooltip.bottom="'Beautify'" />
-              <Button v-tooltip.bottom="'Copy Content'" icon="pi pi-copy" severity="secondary" text rounded
-                @click="copyToClipboard" />
-              <Button icon="pi pi-download" rounded text severity="secondary" @click="downloadSpec"
-                v-tooltip.bottom="'Export'" />
-
-            </div>
-
-            <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
-
-            <Button v-tooltip.bottom="'Toggle Editor Theme'"
-              :icon="editorTheme === 'vs-dark' ? 'pi pi-moon' : 'pi pi-sun'" size="small" severity="secondary" text
-              rounded class="hover:bg-primary/10 transition-all duration-300" @click="toggleEditorTheme" />
-            <Button v-if="currentProfile?.name === 'scratchpad.yaml'" icon="pi pi-refresh" size="small"
-              severity="secondary" text rounded
-              class="hover:bg-orange-500/10 hover:text-orange-500 transition-all duration-300" @click="resetSpec" />
-            <Button v-if="currentProfile" v-tooltip.bottom="'Delete Profile'" icon="pi pi-trash" size="small"
-              severity="secondary" text rounded
-              class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300" @click="deleteProfile" />
-          </div>
+          <Button v-tooltip.bottom="'Toggle Editor Theme'"
+            :icon="editorTheme === 'vs-dark' ? 'pi pi-moon' : 'pi pi-sun'" size="small" severity="secondary" text
+            rounded class="hover:bg-primary/10 transition-all duration-300" @click="toggleEditorTheme" />
+          <Button v-if="currentProfile?.name === 'scratchpad.yaml'" icon="pi pi-refresh" size="small"
+            severity="secondary" text rounded
+            class="hover:bg-orange-500/10 hover:text-orange-500 transition-all duration-300" @click="resetSpec" />
+          <Button v-if="currentProfile" v-tooltip.bottom="'Delete Profile'" icon="pi pi-trash" size="small"
+            severity="secondary" text rounded class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300"
+            @click="deleteProfile" />
         </div>
+      </template>
 
-        <div class="flex items-center gap-2">
-          <div
-            class="flex items-center gap-2 px-3 py-1 rounded-xl border border-surface-200 dark:border-surface-700 bg-surface-100/50 dark:bg-surface-800/50 mr-2">
-            <span class="text-[10px] font-bold uppercase text-surface-500">Live Preview</span>
-            <ToggleSwitch v-model="showPreview" class="preview-toggle">
-              <template #handle="{ checked }">
-                <i :class="['text-xs! pi', { 'pi-eye': checked, 'pi-eye-slash': !checked }]" />
-              </template>
-            </ToggleSwitch>
-          </div>
+      <template #end>
+        <div
+          class="flex items-center gap-2 px-3 py-1 rounded-xl border border-surface-200 dark:border-surface-700 bg-surface-100/50 dark:bg-surface-800/50 mr-2">
+          <span class="text-[10px] font-bold uppercase text-surface-500">Live Preview</span>
+          <ToggleSwitch v-model="showPreview" class="preview-toggle">
+            <template #handle="{ checked }">
+              <i :class="['text-xs! pi', { 'pi-eye': checked, 'pi-eye-slash': !checked }]" />
+            </template>
+          </ToggleSwitch>
         </div>
-      </div>
-    </div>
+      </template>
+    </DToolbar> -->
 
 
     <Message v-if="mountError" severity="error" class="m-2 rounded-xl">{{ mountError }}</Message>
 
     <!-- Editor & Preview -->
-    <div class="flex-1 relative overflow-hidden">
+    <div class="flex-1 relative">
       <Splitter v-if="showPreview" class="h-full border-none bg-transparent" stateKey="openapi-editor-splitter"
-        stateStorage="local">
+                stateStorage="local">
         <SplitterPanel :size="50" :minSize="20">
           <div ref="editorContainer" class="h-full w-full"></div>
         </SplitterPanel>
         <SplitterPanel :size="50" :minSize="20"
-          class="overflow-y-auto bg-white/30 dark:bg-surface-950/30 backdrop-blur-sm">
+                       class="overflow-y-auto bg-white/30 dark:bg-surface-950/30 backdrop-blur-sm">
           <div id="swagger-ui-mount" class="p-6 swagger-modern shadow-inner"></div>
         </SplitterPanel>
       </Splitter>
@@ -85,7 +107,7 @@
 
     <!-- Status Bar -->
     <div
-      class="z-10 flex items-center justify-between border-t border-surface-200 dark:border-white/10 bg-white/50 px-4 py-1.5 backdrop-blur-md dark:bg-surface-900/50 text-[11px] font-medium text-surface-500 transition-colors duration-300">
+        class="sticky bottom-0 z-10 flex items-center justify-between border-t  px-4 py-1.5 text-[11px] font-medium text-surface-500 transition-colors duration-300 backdrop-grayscale-25 backdrop-blur-xs border border-surface-200/25 dark:border-surface-800 bg-surface-50 dark:bg-surface-950">
       <div class="flex items-center gap-4">
         <span>{{ lineCount }} Lines</span>
         <div class="h-3 w-px bg-surface-200 dark:bg-surface-700"></div>
@@ -104,31 +126,18 @@
 </template>
 
 <script setup lang="ts">
-import { useProfileStore } from '@/stores/profileStore'
-import { useToolbarGlass } from '@/useLiquidGlass'
+import {useProfileStore} from '@/stores/profileStore'
 import jsYaml from 'js-yaml'
 import * as monaco from 'monaco-editor'
-import { useConfirm, useToast } from 'primevue'
-import Button from 'primevue/button'
+import {useConfirm, useToast} from 'primevue'
 import InputText from 'primevue/inputtext'
 import Message from 'primevue/message'
 import Splitter from 'primevue/splitter'
 import SplitterPanel from 'primevue/splitterpanel'
-import { SwaggerUIBundle, SwaggerUIStandalonePreset } from 'swagger-ui-dist'
-import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-
-const sidebarOpen = inject<Ref<boolean>>('sidebarOpen', ref(false))
-const isLargeScreen = inject<Ref<boolean>>('isLargeScreen', ref(true))
-
-const sidebarWidth = computed(() => {
-  console.log('Sidebar state changed:', { sidebarOpen: sidebarOpen.value, isLargeScreen: isLargeScreen.value })
-  // Mirror exactly what App.vue does — sidebar is w-72 (288px) only when
-  // large screen + open. On mobile it overlays (doesn't push content).
-  return isLargeScreen.value && sidebarOpen.value ? 288 : 0
-})
-
-const { glassOpts } = useToolbarGlass()
+import {SwaggerUIBundle, SwaggerUIStandalonePreset} from 'swagger-ui-dist'
+import {computed, nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
+import DToolbar from "@/components/DToolbar.vue";
 
 const route = useRoute()
 const router = useRouter()
@@ -175,7 +184,7 @@ let debounceTimer: number | null = null
 
 const profileId = computed(() => route.params.id as string | undefined)
 const currentProfile = computed(() =>
-  profileId.value ? profileStore.profiles.find(p => p.id === profileId.value) : null
+    profileId.value ? profileStore.profiles.find(p => p.id === profileId.value) : null
 )
 
 const initialSpec = computed(() => {
@@ -230,11 +239,11 @@ const initEditor = (content?: string) => {
         language: 'yaml',
         theme: editorTheme.value,
         automaticLayout: true,
-        minimap: { enabled: true, scale: 1, showSlider: 'mouseover' },
+        minimap: {enabled: true, scale: 1, showSlider: 'mouseover'},
         fontSize: 14,
         scrollBeyondLastLine: false,
         wordWrap: 'on',
-        padding: { top: 16 },
+        padding: {top: 16},
         scrollbar: {
           verticalScrollbarSize: 8,
           horizontalScrollbarSize: 8,
@@ -251,7 +260,7 @@ const initEditor = (content?: string) => {
 
       if (observer) observer.disconnect()
       observer = new MutationObserver(syncEditorThemeWithSystem)
-      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+      observer.observe(document.documentElement, {attributes: true, attributeFilter: ['class']})
 
       editor.onDidChangeModelContent(() => {
         const content = editor?.getValue() || ''
@@ -333,18 +342,18 @@ const formatYaml = () => {
   try {
     const content = editor.getValue()
     const obj = jsYaml.load(content)
-    const formatted = jsYaml.dump(obj, { indent: 2, lineWidth: -1 })
+    const formatted = jsYaml.dump(obj, {indent: 2, lineWidth: -1})
     editor.setValue(formatted)
-    toast.add({ severity: 'success', summary: 'Formatted', detail: 'YAML prettified successfully', life: 2000 })
+    toast.add({severity: 'success', summary: 'Formatted', detail: 'YAML prettified successfully', life: 2000})
   } catch (e) {
-    toast.add({ severity: 'error', summary: 'Format Error', detail: 'Invalid YAML structure', life: 3000 })
+    toast.add({severity: 'error', summary: 'Format Error', detail: 'Invalid YAML structure', life: 3000})
   }
 }
 
 const downloadSpec = () => {
   if (!editor) return
   const content = editor.getValue()
-  const blob = new Blob([content], { type: 'text/yaml' })
+  const blob = new Blob([content], {type: 'text/yaml'})
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   const name = currentProfile.value ? currentProfile.value.name.replace(/\.[^/.]+$/, "") : 'openapi'
@@ -352,7 +361,7 @@ const downloadSpec = () => {
   a.download = `${name}.yaml`
   a.click()
   URL.revokeObjectURL(url)
-  toast.add({ severity: 'info', summary: 'Downloading', detail: 'Specification exported as YAML', life: 2000 })
+  toast.add({severity: 'info', summary: 'Downloading', detail: 'Specification exported as YAML', life: 2000})
 }
 
 const resetSpec = () => {
@@ -370,7 +379,7 @@ const copyToClipboard = async () => {
   const content = editor?.getValue() || ''
   try {
     await navigator.clipboard.writeText(content)
-    toast.add({ severity: 'info', summary: 'Copied', detail: 'Content copied to clipboard', life: 2000 })
+    toast.add({severity: 'info', summary: 'Copied', detail: 'Content copied to clipboard', life: 2000})
   } catch (err) {
     console.error('Failed to copy: ', err)
   }
@@ -411,7 +420,12 @@ const deleteProfile = () => {
         if (idToDelete) {
           profileStore.removeProfile(idToDelete)
           router.push('/openapi')
-          toast.add({ severity: 'success', summary: 'Profile Deleted', detail: 'The OpenAPI spec profile has been deleted.', life: 3000 })
+          toast.add({
+            severity: 'success',
+            summary: 'Profile Deleted',
+            detail: 'The OpenAPI spec profile has been deleted.',
+            life: 3000
+          })
         }
       },
       reject: () => {

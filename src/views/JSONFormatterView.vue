@@ -1,9 +1,8 @@
 <template>
   <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-0 dark:bg-surface-950 overflow-hidden">
     <!-- Toolbar -->
-    <div
-      class="z-10 flex flex-wrap items-center justify-between border-b border-surface-200 dark:border-white/10 bg-white/70 px-4 py-2 backdrop-blur-md dark:bg-surface-900/70 transition-colors duration-300">
-      <div class="flex flex-wrap items-center gap-3">
+    <DToolbar>
+      <template #start>
         <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
           <i class="pi pi-database text-primary text-sm"></i>
           <span class="font-bold text-xs uppercase tracking-wider text-primary">
@@ -36,17 +35,17 @@
               v-tooltip.bottom="'Unescape String'" />
           </div>
         </div>
-      </div>
+      </template>
 
-      <div class="flex items-center gap-2">
+      <template #end>
         <Button v-if="!charCount" label="Sample" icon="pi pi-info-circle" size="small" severity="secondary" text rounded
           @click="insertSample" class="text-xs" />
         <Button v-tooltip.bottom="'Copy Content'" icon="pi pi-copy" size="small" severity="secondary" text rounded
           class="hover:bg-primary/10 transition-all duration-300" @click="copyToClipboard" />
         <Button v-tooltip.bottom="'Clear Editor'" icon="pi pi-trash" size="small" severity="secondary" text rounded
           class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300" @click="clearEditor" />
-      </div>
-    </div>
+      </template>
+    </DToolbar>
 
     <Message v-if="mountError" severity="error" class="m-2 rounded-xl">{{ mountError }}</Message>
 
@@ -80,6 +79,7 @@
 </template>
 
 <script setup lang="ts">
+import DToolbar from '@/components/DToolbar.vue'
 import * as monaco from 'monaco-editor'
 import Button from 'primevue/button'
 import Message from 'primevue/message'

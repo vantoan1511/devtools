@@ -15,6 +15,7 @@ declare module 'vue' {
     BorderGlow: typeof import('./src/components/BorderGlow.vue')['default']
     ConfirmDialog: typeof import('primevue/confirmdialog')['default']
     DotGrid: typeof import('./src/components/DotGrid.vue')['default']
+    DToolbar: typeof import('./src/components/DToolbar.vue')['default']
     Galaxy: typeof import('./src/components/Galaxy.vue')['default']
     GlassSurface: typeof import('./src/components/GlassSurface.vue')['default']
     Headline: typeof import('./src/components/Headline.vue')['default']
@@ -25,8 +26,10 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Toast: typeof import('primevue/toast')['default']
     ToggleSwitch: typeof import('primevue/toggleswitch')['default']
+    Toolbar: typeof import('primevue/toolbar')['default']
   }
   export interface GlobalDirectives {
+    FocusTrap: typeof import('primevue/focustrap')['default']
     Ripple: typeof import('primevue/ripple')['default']
     Tooltip: typeof import('primevue/tooltip')['default']
   }
