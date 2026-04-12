@@ -5,7 +5,7 @@
       <template #start>
         <div class="flex items-center gap-2">
           <i class="pi pi-code text-primary font-bold"/>
-          <Inplace @click="startRenaming">
+          <Inplace v-if="currentProfile?.name" @click="startRenaming">
             <template #display>
               <span class="font-bold uppercase tracking-wider text-primary">
               {{ currentProfile ? currentProfile.name : 'scratchpad.yaml' }}
@@ -18,6 +18,7 @@
               </div>
             </template>
           </Inplace>
+          <span v-else class="font-bold uppercase tracking-wider text-primary">scratchpad.yaml</span>
 
           <Divider layout="vertical"/>
 
