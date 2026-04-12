@@ -154,7 +154,7 @@
 
     <!-- Status Bar -->
     <div
-        class="z-10 flex items-center justify-between border-t border-surface-200 dark:border-white/10 bg-white/50 px-4 py-1.5 backdrop-blur-md dark:bg-surface-900/50 text-[11px] font-medium text-surface-500">
+        class="sticky bottom-0 z-10 flex items-center justify-between border-t border-surface-200 dark:border-white/10 bg-white/50 px-4 py-1.5 backdrop-blur-md dark:bg-surface-900/50 text-[11px] font-medium text-surface-500">
       <div class="flex items-center gap-4">
         <span>Token Length: {{ charCount }}</span>
         <div class="h-3 w-[1px] bg-surface-200 dark:bg-surface-700"></div>
