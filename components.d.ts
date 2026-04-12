@@ -15,6 +15,7 @@ declare module 'vue' {
     BorderGlow: typeof import('./src/components/BorderGlow.vue')['default']
     Button: typeof import('primevue/button')['default']
     ConfirmDialog: typeof import('primevue/confirmdialog')['default']
+    Divider: typeof import('primevue/divider')['default']
     DotGrid: typeof import('./src/components/DotGrid.vue')['default']
     DToolbar: typeof import('./src/components/DToolbar.vue')['default']
     Galaxy: typeof import('./src/components/Galaxy.vue')['default']
