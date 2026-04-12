@@ -8,7 +8,7 @@
     </template>
 
     <template #center>
-      <div class="flex items-center gap-2">
+      <div class="__toolbar-center">
         <slot name="center"></slot>
       </div>
     </template>
@@ -31,8 +31,8 @@
   @apply sticky top-0 w-full h-fit z-10 bg-transparent border-none;
 }
 
-.__toolbar-start, .__toolbar-end {
-  @apply flex flex-wrap items-center gap-3 px-2 py-4 rounded-md bg-primary-300/10 backdrop-grayscale-25 backdrop-blur-xs border border-surface-200/25 dark:border-surface-800;
+.__toolbar-start, .__toolbar-center, .__toolbar-end {
+  @apply flex flex-wrap items-center gap-3 p-2 rounded-full bg-primary-300/10 backdrop-grayscale-25 backdrop-blur-xs border border-surface-200/25 dark:border-surface-800;
 }
 
 </style>

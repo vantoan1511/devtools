@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AboutMe: typeof import('./src/components/AboutMe.vue')['default']
     BorderGlow: typeof import('./src/components/BorderGlow.vue')['default']
+    Button: typeof import('primevue/button')['default']
     ConfirmDialog: typeof import('primevue/confirmdialog')['default']
     DotGrid: typeof import('./src/components/DotGrid.vue')['default']
     DToolbar: typeof import('./src/components/DToolbar.vue')['default']

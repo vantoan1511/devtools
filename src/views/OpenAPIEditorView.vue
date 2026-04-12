@@ -16,6 +16,27 @@
             <InputText v-model="newName" size="small" class="h-5 font-mono text-sm glass-input-mini"
                        @keyup.enter="saveName" @blur="saveName" autofocus fluid/>
           </div>
+
+          <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
+
+          <Button v-tooltip.bottom="'Beautify'" icon="pi pi-sparkles" rounded text @click="formatYaml"/>
+          <Button v-tooltip.bottom="'Copy Content'" icon="pi pi-copy" severity="secondary" text rounded
+                  @click="copyToClipboard"/>
+          <Button icon="pi pi-download" rounded text severity="secondary" @click="downloadSpec"
+                  v-tooltip.bottom="'Export'"/>
+          <Button v-tooltip.bottom="'Toggle Editor Theme'"
+                  :icon="editorTheme === 'vs-dark' ? 'pi pi-moon' : 'pi pi-sun'" size="small" severity="secondary" text
+                  rounded class="hover:bg-primary/10 transition-all duration-300" @click="toggleEditorTheme"/>
+          <Button v-if="currentProfile?.name === 'scratchpad.yaml'" icon="pi pi-refresh" size="small"
+                  severity="secondary" text rounded
+                  class="hover:bg-orange-500/10 hover:text-orange-500 transition-all duration-300" @click="resetSpec"/>
+
+          <div class="hidden sm:block h-6 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
+
+          <Button v-if="currentProfile" v-tooltip.bottom="'Delete Profile'" icon="pi pi-trash" size="small"
+                  severity="secondary" text rounded
+                  class="hover:bg-red-500/10 hover:text-red-500 transition-all duration-300"
+                  @click="deleteProfile"/>
         </div>
       </template>
       <template #end>
