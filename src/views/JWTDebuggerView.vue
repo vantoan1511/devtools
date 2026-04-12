@@ -1,30 +1,33 @@
 <template>
-  <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-50 dark:bg-surface-950 overflow-hidden">
+  <div class="flex h-[calc(100vh-60px)] flex-col bg-surface-50 dark:bg-surface-950 overflow-auto">
     <!-- Toolbar -->
-    <div class="z-10 flex flex-wrap items-center justify-between border-b border-surface-200 dark:border-white/10 bg-white/70 px-4 py-2 backdrop-blur-md dark:bg-surface-900/70">
-      <div class="flex items-center gap-3">
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
-          <i class="pi pi-shield text-primary text-sm"></i>
-          <span class="font-bold text-xs uppercase tracking-wider text-primary">JWT Debugger</span>
-        </div>
-        <div class="hidden sm:block h-6 w-[1px] bg-surface-200 dark:bg-surface-700 mx-1"></div>
-        <Button v-if="!token" label="Insert Sample" icon="pi pi-info-circle" size="small" text @click="insertSample" class="text-xs" />
-      </div>
+    <DToolbar :pill="true">
+      <template #start>
+        <div class="flex items-center gap-2">
+          <i class="pi pi-shield text-primary"></i>
+          <span class="font-bold uppercase tracking-wider text-primary">JWT Debugger</span>
 
-      <div class="flex items-center gap-2">
-        <Button v-tooltip.bottom="'Clear All'" icon="pi pi-trash" size="small" severity="secondary" text rounded
-          class="hover:bg-red-500/10 hover:text-red-500" @click="clearAll" />
-      </div>
-    </div>
+          <Divider v-if="!token" layout="vertical"/>
+
+          <Button v-if="!token" label="Insert Sample" icon="pi pi-info-circle" text @click="insertSample"
+                  class="text-xs"/>
+        </div>
+      </template>
+      <template #end>
+        <Button v-tooltip.bottom="'Clear All'" icon="pi pi-trash" severity="secondary" text rounded
+                @click="clearAll"/>
+      </template>
+    </DToolbar>
 
     <!-- Main Content -->
-    <div class="flex-1 overflow-auto p-4 md:p-6">
+    <div class="flex-1 p-4 md:p-6">
       <div class="max-w-7xl mx-auto flex flex-col gap-6 h-full">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
-          
+
           <!-- Encoded Token Input -->
           <div class="lg:col-span-5 flex flex-col gap-4">
-            <Card class="flex-1 border-none shadow-sm bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm overflow-hidden flex flex-col">
+            <Card
+                class="flex-1 border-none shadow-sm bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm overflow-hidden flex flex-col">
               <template #title>
                 <div class="flex items-center gap-2 text-base px-2">
                   <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -35,12 +38,13 @@
               </template>
               <template #content>
                 <div class="flex-1 flex flex-col h-full min-h-0 pt-2">
-                  <Textarea v-model="token" 
-                    class="flex-1 w-full font-mono text-xs p-4 rounded-2xl bg-surface-50 dark:bg-surface-950 border-none focus:ring-2 focus:ring-primary/20 resize-none break-all"
-                    placeholder="Paste your JWT (Encoded) here..." />
-                  
+                  <Textarea v-model="token"
+                            class="flex-1 w-full font-mono text-xs p-4 rounded-2xl bg-surface-50 dark:bg-surface-950 border-none focus:ring-2 focus:ring-primary/20 resize-none break-all"
+                            placeholder="Paste your JWT (Encoded) here..."/>
+
                   <div v-if="error" class="mt-4 animate-in slide-in-from-top-2">
-                    <Message severity="error" icon="pi pi-exclamation-triangle" class="m-0 border-none bg-red-500/10 text-red-500 text-[10px] font-bold uppercase rounded-xl">
+                    <Message severity="error" icon="pi pi-exclamation-triangle"
+                             class="m-0 border-none bg-red-500/10 text-red-500 text-[10px] font-bold uppercase rounded-xl">
                       {{ error }}
                     </Message>
                   </div>
@@ -58,20 +62,26 @@
                   <div class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-surface-400">
                     <i class="pi pi-cog text-primary"></i>
                     <span>Header</span>
-                    <span class="ml-2 font-mono text-[10px] text-surface-300 normal-case">JOSE Algorithm & Token Type</span>
+                    <span
+                        class="ml-2 font-mono text-[10px] text-surface-300 normal-case">JOSE Algorithm & Token Type</span>
                   </div>
-                  <Button icon="pi pi-copy" size="small" severity="secondary" text rounded @click="copy(headerObj)" v-tooltip.bottom="'Copy Header'" />
+                  <Button icon="pi pi-copy" size="small" severity="secondary" text rounded @click="copy(headerObj)"
+                          v-tooltip.bottom="'Copy Header'"/>
                 </div>
               </template>
               <template #content>
                 <div class="relative group">
-                  <pre class="font-mono text-xs p-4 rounded-2xl bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 overflow-auto max-h-[150px] leading-relaxed text-surface-700 dark:text-surface-300">{{ headerObj ? JSON.stringify(headerObj, null, 2) : 'Waiting for token...' }}</pre>
+                  <pre
+                      class="font-mono text-xs p-4 rounded-2xl bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 overflow-auto max-h-[150px] leading-relaxed text-surface-700 dark:text-surface-300">{{
+                      headerObj ? JSON.stringify(headerObj, null, 2) : 'Waiting for token...'
+                    }}</pre>
                 </div>
               </template>
             </Card>
 
             <!-- Payload Section -->
-            <Card class="flex-1 border-none shadow-sm bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm overflow-hidden flex flex-col">
+            <Card
+                class="flex-1 border-none shadow-sm bg-white/50 dark:bg-surface-900/50 backdrop-blur-sm overflow-hidden flex flex-col">
               <template #title>
                 <div class="flex items-center justify-between px-2">
                   <div class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-surface-400">
@@ -80,24 +90,35 @@
                     <span class="ml-2 font-mono text-[10px] text-surface-300 normal-case">Data & Claims</span>
                   </div>
                   <div class="flex items-center gap-2">
-                    <Tag v-if="payloadObj?.exp" :value="isExpired ? 'Expired' : 'Valid'" :severity="isExpired ? 'danger' : 'success'" rounded class="text-[9px]" />
-                    <Button icon="pi pi-copy" size="small" severity="secondary" text rounded @click="copy(payloadObj)" v-tooltip.bottom="'Copy Payload'" />
+                    <Tag v-if="payloadObj?.exp" :value="isExpired ? 'Expired' : 'Valid'"
+                         :severity="isExpired ? 'danger' : 'success'" rounded class="text-[9px]"/>
+                    <Button icon="pi pi-copy" size="small" severity="secondary" text rounded @click="copy(payloadObj)"
+                            v-tooltip.bottom="'Copy Payload'"/>
                   </div>
                 </div>
               </template>
               <template #content>
                 <div class="flex flex-col gap-4 flex-1 h-full min-h-0 pt-2">
                   <!-- Payload Data -->
-                  <pre class="flex-1 font-mono text-xs p-4 rounded-2xl bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 overflow-auto leading-relaxed text-surface-700 dark:text-surface-300">{{ payloadObj ? JSON.stringify(payloadObj, null, 2) : 'Waiting for token...' }}</pre>
-                  
+                  <pre
+                      class="flex-1 font-mono text-xs p-4 rounded-2xl bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 overflow-auto leading-relaxed text-surface-700 dark:text-surface-300">{{
+                      payloadObj ? JSON.stringify(payloadObj, null, 2) : 'Waiting for token...'
+                    }}</pre>
+
                   <!-- Claim Inspector -->
                   <div v-if="payloadObj" class="grid grid-cols-1 md:grid-cols-2 gap-3 animate-in fade-in">
-                    <div v-if="payloadObj.iat" class="p-3 rounded-xl bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
-                      <div class="text-[9px] font-black uppercase text-surface-400 tracking-tighter mb-1">Issued At (iat)</div>
+                    <div v-if="payloadObj.iat"
+                         class="p-3 rounded-xl bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700">
+                      <div class="text-[9px] font-black uppercase text-surface-400 tracking-tighter mb-1">Issued At
+                        (iat)
+                      </div>
                       <div class="text-xs font-mono font-bold">{{ formatDate(payloadObj.iat) }}</div>
                     </div>
-                    <div v-if="payloadObj.exp" class="p-3 rounded-xl bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700" :class="{'ring-1 ring-red-500/30': isExpired}">
-                      <div class="text-[9px] font-black uppercase text-surface-400 tracking-tighter mb-1 flex justify-between">
+                    <div v-if="payloadObj.exp"
+                         class="p-3 rounded-xl bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700"
+                         :class="{'ring-1 ring-red-500/30': isExpired}">
+                      <div
+                          class="text-[9px] font-black uppercase text-surface-400 tracking-tighter mb-1 flex justify-between">
                         Expiration (exp)
                         <span v-if="timeRemaining" class="text-primary">{{ timeRemaining }}</span>
                       </div>
@@ -116,11 +137,12 @@
                     <i class="pi pi-pencil text-orange-500"></i>
                     <span>Signature</span>
                   </div>
-                  <Tag v-if="headerObj?.alg" :value="headerObj.alg" severity="secondary" rounded class="text-[9px]" />
+                  <Tag v-if="headerObj?.alg" :value="headerObj.alg" severity="secondary" rounded class="text-[9px]"/>
                 </div>
               </template>
               <template #content>
-                <div class="p-3 rounded-xl bg-orange-500/5 border border-orange-500/10 font-mono text-[10px] break-all leading-tight text-orange-600 dark:text-orange-400">
+                <div
+                    class="p-3 rounded-xl bg-orange-500/5 border border-orange-500/10 font-mono text-[10px] break-all leading-tight text-orange-600 dark:text-orange-400">
                   {{ signatureHex || 'Waiting for token...' }}
                 </div>
               </template>
@@ -131,7 +153,8 @@
     </div>
 
     <!-- Status Bar -->
-    <div class="z-10 flex items-center justify-between border-t border-surface-200 dark:border-white/10 bg-white/50 px-4 py-1.5 backdrop-blur-md dark:bg-surface-900/50 text-[11px] font-medium text-surface-500">
+    <div
+        class="z-10 flex items-center justify-between border-t border-surface-200 dark:border-white/10 bg-white/50 px-4 py-1.5 backdrop-blur-md dark:bg-surface-900/50 text-[11px] font-medium text-surface-500">
       <div class="flex items-center gap-4">
         <span>Token Length: {{ charCount }}</span>
         <div class="h-3 w-[1px] bg-surface-200 dark:bg-surface-700"></div>
@@ -148,14 +171,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, computed } from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import Card from 'primevue/card'
 import Button from 'primevue/button'
 import Textarea from 'primevue/textarea'
 import Tag from 'primevue/tag'
 import Message from 'primevue/message'
-import { useToast } from 'primevue/usetoast'
-import { Buffer } from 'buffer'
+import {useToast} from 'primevue/usetoast'
+import {Buffer} from 'buffer'
+import DToolbar from "@/components/DToolbar.vue";
 
 const toast = useToast()
 const token = ref('')
@@ -190,7 +214,7 @@ const decodeToken = () => {
 
     const headerJson = base64UrlDecode(parts[0] || '')
     const payloadJson = base64UrlDecode(parts[1] || '')
-    
+
     headerObj.value = JSON.parse(headerJson)
     payloadObj.value = JSON.parse(payloadJson)
     signatureHex.value = parts[2] || ''
@@ -218,7 +242,7 @@ const timeRemaining = computed(() => {
   if (!payloadObj.value?.exp) return null
   const diff = payloadObj.value.exp * 1000 - Date.now()
   if (diff < 0) return 'Expired'
-  
+
   const mins = Math.floor(diff / 60000)
   const hours = Math.floor(mins / 60)
   if (hours > 0) return `${hours}h ${mins % 60}m remaining`
@@ -229,13 +253,13 @@ const copy = (obj: any) => {
   if (!obj) return
   const text = typeof obj === 'string' ? obj : JSON.stringify(obj, null, 2)
   navigator.clipboard.writeText(text)
-  toast.add({ severity: 'success', summary: 'Copied', detail: 'Content copied to clipboard', life: 2000 })
+  toast.add({severity: 'success', summary: 'Copied', detail: 'Content copied to clipboard', life: 2000})
 }
 
 const insertSample = () => {
   // A standard sample token (HS256)
   token.value = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjI1MTYyMzkwMjIsImF1ZCI6ImRldnRvb2xzKyJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
-  toast.add({ severity: 'info', summary: 'Sample Loaded', detail: 'Test token inserted', life: 2000 })
+  toast.add({severity: 'info', summary: 'Sample Loaded', detail: 'Test token inserted', life: 2000})
 }
 
 const clearAll = () => {
@@ -255,6 +279,7 @@ onMounted(() => {
 :deep(.p-card-body) {
   @apply p-4! h-full flex flex-col;
 }
+
 :deep(.p-card-content) {
   @apply p-0! flex-1 flex flex-col min-h-0;
 }
@@ -264,7 +289,13 @@ onMounted(() => {
 }
 
 @keyframes animate-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

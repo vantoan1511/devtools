@@ -1,19 +1,19 @@
 <template>
   <Toolbar class="__toolbar">
-    <template #start>
+    <template #start v-if="$slots.start">
       <div
           :class="['__toolbar-start', {'rounded-full': pill}]">
         <slot name="start"></slot>
       </div>
     </template>
 
-    <template #center>
+    <template #center v-if="$slots.center">
       <div :class="['__toolbar-center', {'rounded-full': pill}]">
         <slot name="center"></slot>
       </div>
     </template>
 
-    <template #end>
+    <template #end v-if="$slots.end">
       <div :class="['__toolbar-end', {'rounded-full': pill}]">
         <slot name="end"></slot>
       </div>
