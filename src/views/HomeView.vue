@@ -254,11 +254,12 @@ const performSwap = (index: number) => {
 
   const newTools = [...displayTools.value]
   const [movedItem] = newTools.splice(draggedIndex.value, 1)
-  newTools.splice(index, 0, movedItem)
+  if (movedItem) {
+    newTools.splice(index, 0, movedItem)
 
-  displayTools.value = newTools
-  draggedIndex.value = index
-
+    displayTools.value = newTools
+    draggedIndex.value = index
+  }
   // Longer lock for stability
   setTimeout(() => {
     swapLock.value = false
