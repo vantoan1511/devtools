@@ -77,22 +77,39 @@
     </div>
 
     <!-- Status Bar -->
-    <div
-        class="sticky bottom-0 z-10 flex items-center justify-between border-t  px-4 py-1.5 text-[11px] font-medium text-surface-500 transition-colors duration-300 backdrop-grayscale-25 backdrop-blur-xs border border-surface-200/25 dark:border-surface-800 bg-surface-50 dark:bg-surface-950">
-      <div class="flex items-center gap-4">
-        <span>{{ lineCount }} Lines</span>
-        <div class="h-3 w-px bg-surface-200 dark:bg-surface-700"></div>
-        <span>{{ charCount }} Characters</span>
-        <div class="h-3 w-px bg-surface-200 dark:bg-surface-700"></div>
-        <span class="flex items-center gap-1">
+    <ToolStatusBar>
+      <template #start>
+        <div class="flex items-center gap-4">
+          <span>{{ lineCount }} Lines</span>
+          <div class="h-3 w-px bg-surface-200 dark:bg-surface-700"></div>
+          <span>{{ charCount }} Characters</span>
+          <div class="h-3 w-px bg-surface-200 dark:bg-surface-700"></div>
+          <span class="flex items-center gap-1">
           <i class="pi pi-code text-[8px]"></i>
           YAML / OpenAPI
         </span>
-      </div>
-      <div class="flex items-center gap-3">
-        <span class="uppercase tracking-widest text-[9px] font-bold opacity-70">Swagger UI Powered</span>
-      </div>
-    </div>
+        </div>
+      </template>
+      <template #end>
+        <div class="flex items-center gap-3">
+          <span class="uppercase tracking-widest text-[9px] font-bold opacity-70">Swagger UI Powered</span>
+        </div>
+      </template>
+    </ToolStatusBar>
+<!--    <div-->
+<!--        class="sticky bottom-0 z-10 flex items-center justify-between border-t  px-4 py-1.5 text-[11px] font-medium text-surface-500 transition-colors duration-300 backdrop-grayscale-25 backdrop-blur-xs border border-surface-200/25 dark:border-surface-800 bg-surface-50 dark:bg-surface-950">-->
+<!--      <div class="flex items-center gap-4">-->
+<!--        <span>{{ lineCount }} Lines</span>-->
+<!--        <div class="h-3 w-px bg-surface-200 dark:bg-surface-700"></div>-->
+<!--        <span>{{ charCount }} Characters</span>-->
+<!--        <div class="h-3 w-px bg-surface-200 dark:bg-surface-700"></div>-->
+<!--        <span class="flex items-center gap-1">-->
+<!--          <i class="pi pi-code text-[8px]"></i>-->
+<!--          YAML / OpenAPI-->
+<!--        </span>-->
+<!--      </div>-->
+
+<!--    </div>-->
   </div>
 </template>
 
@@ -109,6 +126,7 @@ import {SwaggerUIBundle, SwaggerUIStandalonePreset} from 'swagger-ui-dist'
 import {computed, nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import DToolbar from "@/components/DToolbar.vue";
+import ToolStatusBar from "@/components/ToolStatusBar.vue";
 
 const route = useRoute()
 const router = useRouter()

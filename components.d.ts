@@ -31,6 +31,7 @@ declare module 'vue' {
     Toast: typeof import('primevue/toast')['default']
     ToggleSwitch: typeof import('primevue/toggleswitch')['default']
     Toolbar: typeof import('primevue/toolbar')['default']
+    ToolStatusBar: typeof import('./src/components/ToolStatusBar.vue')['default']
   }
   export interface GlobalDirectives {
     FocusTrap: typeof import('primevue/focustrap')['default']
