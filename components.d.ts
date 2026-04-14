@@ -12,6 +12,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AboutMe: typeof import('./src/components/AboutMe.vue')['default']
+    AppHeader: typeof import('./src/components/AppHeader.vue')['default']
     BorderGlow: typeof import('./src/components/BorderGlow.vue')['default']
     Button: typeof import('primevue/button')['default']
     ConfirmDialog: typeof import('primevue/confirmdialog')['default']
